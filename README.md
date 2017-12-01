@@ -2,6 +2,7 @@
 Un gioco multiplayer fatto in Java.
 
 ## Giocatore
+- Nome utente
 - Carte sbloccate []
 - Mazzo []
 - Soldi
