@@ -6,11 +6,13 @@ public abstract class Carta
    // Costo mana- nome- descrizione/effetto
     public int costo_mana;
     public String nome;
+    public char rarita;
     
-    public Carta(int costo_m, String n)
+    public Carta(int costo_m, String n, char rar)
     {
-        costo_mana= costo_m;
-        nome =n;
+        costo_mana = costo_m;
+        nome = n;
+        rarita = rar;
     }
     
     
