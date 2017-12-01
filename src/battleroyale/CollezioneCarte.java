@@ -1,17 +1,22 @@
 package battleroyale;
 
+import battleroyale.Carta.AbilitaCarta;
+import battleroyale.Carta.ClasseCarta;
+import battleroyale.Carta.RaritaCarta;
+
 public class CollezioneCarte {
 	
 	//Attributi Magia
-	//Id, nome, costo ,rarità
+	//Id, nome, costo ,raritï¿½, effetto
 	
 	//Attributi personaggi
-	//id, nome, costo_mana,  rarità, classe, salute , attacco , difesa
+	//id, nome, costo_mana,  raritï¿½, classe, AbilitÃ  , salute , attacco 
 	
 	public static Carta[] collezione_carte = 
 		{
 		  //Carte personaggi
-				
+		 new Carta(0,"Podz",6,RaritaCarta.EPICA,ClasseCarta.AESTHETICS,AbilitaCarta.PROVOCAZIONE,7,7, " "),
+		  
 				
 				
 				

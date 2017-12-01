@@ -1,19 +1,20 @@
 package battleroyale;
 
-public abstract class Carta 
+public class Carta 
 {
    //Instanzio gli attributi generali
 	public int Id;
     public int costo_mana;
     public String nome;
+    public String effetto;
     public char rarita;
    // public int livello;   TODO
-    public String classe;
     public int salute;
     public int attacco;
-    public int difesa;
     public TipoCarta tipoCarta;
     public RaritaCarta raritaCarta;
+    public ClasseCarta classeCarta;
+    public AbilitaCarta abilitaCarta;
     
     //Classe che determina il tipo di carta
     public enum TipoCarta
@@ -21,34 +22,48 @@ public abstract class Carta
 	    PERSONAGGIO, MAGIA
 	}
     
-    //Classe che determina la rarià della carta
+    //Classe che determina la rariï¿½ della carta
     public enum RaritaCarta
     {
     	COMUNE, RARA, EPICA, LEGGENDARIA
     }
     
+    //Classer che determina la classe della carta
+    public enum ClasseCarta 
+    {
+    	AESTHETICS, COMUNISTA, SVILUPPATORE, SECCHIONE, DROGATO
+    }
+    
+    //Classe che identifica eventuali effetti del personaggio
+    public enum AbilitaCarta
+    {
+    	PROVOCAZIONE, RUBAVITA, FURTIVO, CARICA, FURIA, IMMUNE 
+    }
+    
     //Costruttore per carta magia
-    public Carta(int id, String n, int costo_m, RaritaCarta rar)
+    public Carta(int id, String n, int costo_m, RaritaCarta rar, String eff)
     {
     	Id=id;
         costo_mana = costo_m;
         nome = n;
         tipoCarta=TipoCarta.MAGIA;
         raritaCarta = rar;
+        effetto=eff;
     }
     
     //Costruttore per carte personaggio
-    public Carta(int id, String n, int costo_m, RaritaCarta rar,  String cls, int sal, int atk, int def)
+    public Carta(int id, String n, int costo_m, RaritaCarta rar, ClasseCarta cls, AbilitaCarta abilita, int sal, int atk, String eff)
     {
     	Id=id;
         costo_mana = costo_m;
         nome = n;
-        classe=cls;
+        classeCarta=cls;
         salute=sal;
         attacco = atk;
-        difesa=def;
         tipoCarta=TipoCarta.PERSONAGGIO;
+        abilitaCarta=abilita;
         raritaCarta=rar;
+        effetto=eff;
     }
     
  
