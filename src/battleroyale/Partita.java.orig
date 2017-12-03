@@ -37,10 +37,15 @@ public class Partita
 			carteNelCampo[i] = new ArrayList<Carta>();
 		}
 		
-		System.out.println("E' cominciata una nuova partita.");
+<<<<<<< HEAD
+		System.out.println("E' comminciata una nuova partita.");
 		System.out.println("Gioca per primo " + giocatori[turno].nomeGiocatore + ", cioè il giocatore numero " + turno);
 		
 		riepilogoPartita();
+=======
+		System.out.println("E' cominciata una nuova partita.");
+		System.out.println("Gioca per primo il giocatore " + turno);
+>>>>>>> 26308a9434d56ce7e66366ad19935733f04ab568
 	}
 	
 	public void cambiaTurno()
