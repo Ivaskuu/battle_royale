@@ -1,5 +1,7 @@
 package battleroyale;
 
+import java.util.Random;
+
 import battleroyale.Carta.AbilitaCarta;
 import battleroyale.Carta.ClasseCarta;
 import battleroyale.Carta.RaritaCarta;
@@ -62,6 +64,12 @@ public class CollezioneCarte {
 				
 		};
 	
+	
+	// Restituisce una carta a caso
+	public static Carta getRandomCarta()
+	{
+		return collezione_carte[new Random().nextInt(collezione_carte.length)];
+	}
 	
 	// Cerca la carta con lo specifico id
 	public static Carta idToCarta(int id)
