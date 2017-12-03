@@ -11,9 +11,9 @@ public class Carta
     public String nome;
     public String effetto;
     public char rarita;
-   // public int livello;   TODO
     public int salute;
     public int saluteMax;
+    //Aggiungere anche attacco massimo TODO
     public int attacco;
     public TipoCarta tipoCarta;
     public RaritaCarta raritaCarta;
