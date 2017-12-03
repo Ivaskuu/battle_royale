@@ -11,6 +11,67 @@ public class Main
         
         Partita partita = new Partita(new Giocatore[] {gg1, gg2});
 
-        
+    	partita.aggiungiCarta(0);
+    	partita.aggiungiCarta(1);
+    	partita.aggiungiCarta(3);
+    	
+    	partita.cambiaTurno();
+
+    	partita.aggiungiCarta(0);
+    	partita.aggiungiCarta(1);
+    	partita.aggiungiCarta(3);
+    	
+    	partita.cambiaTurno();
+
+    	partita.aggiungiCarta(0);
+    	partita.aggiungiCarta(1);
+    	partita.aggiungiCarta(3);
+    	
+    	partita.cambiaTurno();
+
+    	partita.aggiungiCarta(0);
+    	partita.aggiungiCarta(1);
+    	partita.aggiungiCarta(3);
+    	
+    	partita.cambiaTurno();
+
+    	partita.aggiungiCarta(0);
+    	partita.aggiungiCarta(1);
+    	partita.aggiungiCarta(3);
+    	
+    	partita.cambiaTurno();
+
+    	partita.aggiungiCarta(0);
+    	partita.aggiungiCarta(1);
+    	partita.aggiungiCarta(3);
+    	
+    	partita.cambiaTurno();
+
+    	partita.aggiungiCarta(0);
+    	partita.aggiungiCarta(1);
+    	partita.aggiungiCarta(3);
+    	
+    	partita.cambiaTurno();
+
+    	partita.aggiungiCarta(0);
+    	partita.aggiungiCarta(1);
+    	partita.aggiungiCarta(3);
+    	
+    	partita.cambiaTurno();
+
+    	partita.aggiungiCarta(0);
+    	partita.aggiungiCarta(1);
+    	partita.aggiungiCarta(3);
+    	
+    	partita.cambiaTurno();
+    	
+    	partita.attacca(0, 0);
+    	
+    	partita.cambiaTurno();
+    	
+    	partita.attacca(0, 0);
+    	
+    	partita.cambiaTurno();
+    	
     }
 }

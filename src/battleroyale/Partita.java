@@ -52,7 +52,10 @@ public class Partita
 		manaGiocatori[turno]++;
 		
 		notificaClient();
-		System.out.println("è cambiato il turno, ora tocca giocare al giocatore " + turno + ", " + giocatori[turno].nomeGiocatore);
+		System.out.println("\n-- Turno cambiato --");
+		System.out.println("Tocca giocare a " + giocatori[turno].nomeGiocatore);
+		
+		riepilogoPartita();
 	}
 	
 	public void controllaEffettiCarte()
@@ -76,22 +79,39 @@ public class Partita
 		// Controlla che la carta non ci sia giï¿½ nel campo da battaglia
 		for (int i = 0; i < carteNelCampo[turno].size(); i++)
 		{
-			if(carteNelCampo[turno].get(i).Id == id) break;
+			if(carteNelCampo[turno].get(i).Id == id)
+			{
+				System.out.println("La carta esiste già, non la puoi rimettere sul campo da battaglia");
+				return;
+			}
 		}
 		
-		carteNelCampo[turno].add(CollezioneCarte.collezione_carte[id]);
-		notificaClient();
+		Carta nuovaCarta = CollezioneCarte.collezione_carte[id];
 		
-		System.out.println("Il giocatore " + turno + ", " + giocatori[turno].nomeGiocatore + ", ha aggiunto una nuova carta sul campo da battaglia, cioè "
-				+ CollezioneCarte.collezione_carte[id].nome);
-		
-		System.out.println("Il giocatore " + turno + ", " + giocatori[turno].nomeGiocatore + ", ha " + carteNelCampo[turno].size() + " "
-				+ "carte nel campo da battaglia:");
-		for (int i = 0; i < carteNelCampo[turno].size(); i++)
+		if(nuovaCarta.costoMana > manaGiocatori[turno]) // Se il giocatore ha abbastanza mana
 		{
-			System.out.println("Carta " + i
-					+ "Nome: " + carteNelCampo[turno].get(i).nome
-					+ "Salute: " + carteNelCampo[turno].get(i).salute + "\n");
+			System.out.println(giocatori[turno].nomeGiocatore + " non ha abbastanza mana per aggiungere " + nuovaCarta.nome + " (costa " + nuovaCarta.costoMana + " e hai " + manaGiocatori[turno] + ")");
+			return;
+		}
+		else
+		{
+			manaGiocatori[turno] -= nuovaCarta.costoMana;
+			carteNelCampo[turno].add(nuovaCarta);
+			
+			notificaClient();
+			
+			System.out.println(giocatori[turno].nomeGiocatore + " (" + turno + "), ha aggiunto una nuova carta, cioè "
+					+ nuovaCarta.nome);
+			
+			System.out.println(giocatori[turno].nomeGiocatore + " (" + turno + ") ha " + carteNelCampo[turno].size() + " "
+					+ "carte nel campo da battaglia:");
+			for (int i = 0; i < carteNelCampo[turno].size(); i++)
+			{
+				System.out.println("Carta " + i + "\n"
+						+ "Nome: " + carteNelCampo[turno].get(i).nome + "\n"
+						+ "Salute: " + carteNelCampo[turno].get(i).salute + "\n"
+						+ "Attacco: " + carteNelCampo[turno].get(i).attacco + "\n");
+			}
 		}
 	}
 	
@@ -99,43 +119,59 @@ public class Partita
 	public void attacca(int idCartaAtt, int idCartaAvv)
 	{
 		int avversario = turno + 1;
-		if(avversario == MAX_GIOCATORI) avversario = 0;
+		if(avversario == NUM_GG) avversario = 0;
+		
+		System.out.println(turno + " " + avversario);
 		
 		if(carteNelCampo[turno].get(idCartaAtt) != null && carteNelCampo[avversario].get(idCartaAvv) != null) // Se le carte esistono veramente
 		{
-			if(carteNelCampo[turno].get(idCartaAtt).costo_mana <= manaGiocatori[turno]) // Se il giocatore ha abbastanza mana
+			Carta att = carteNelCampo[turno].get(idCartaAtt);
+			Carta avv = carteNelCampo[avversario].get(idCartaAvv);
+			
+			System.out.println(giocatori[turno].nomeGiocatore + " (" + att.nome + ") sta attcando " + giocatori[avversario].nomeGiocatore + " (" + avv.nome + ")");
+			
+			// Rimuovi la vita della carta dell'avversario
+			avv.salute -= att.attacco;
+			System.out.println("La carta dell'avversario ha perso " + att.attacco + " di vita");
+			
+			// Rimuovi la carta dell'avversario se la sua salute ï¿½ <= 0
+			if(avv.salute <= 0)
 			{
-				// Rimuovi la vita della carta dell'avversario
-				carteNelCampo[avversario].get(idCartaAvv).salute -= carteNelCampo[turno].get(idCartaAtt).attacco;
-				
-				// Rimuovi la carta dell'avversario se la sua salute ï¿½ <= 0
-				if(carteNelCampo[avversario].get(idCartaAvv).salute <= 0) carteNelCampo[avversario].remove(idCartaAvv);
-				
-				// Rimuovi il mana del giocatore
-				manaGiocatori[turno] -= carteNelCampo[turno].get(idCartaAtt).costo_mana;
-				
-				notificaClient();
+				carteNelCampo[avversario].remove(idCartaAvv);
+				System.out.println("La carta dell'avversario è stata distrutta");
 			}
+			else
+			{
+				System.out.println("Gli sono rimasti " + avv.salute + " punti di vita");
+			}
+			
+			notificaClient();
 		}
+		else System.out.println("C'è qualcosa che non quadra.");
+		
+		riepilogoPartita();
 	}
 	
 	public void riepilogoPartita()
 	{
 		String riepilogo = "\n-- Riepilogo partia --\n";
 		
-		riepilogo += "Ci sono " + NUM_GG + " giocatori\n";
+		//riepilogo += "Ci sono " + NUM_GG + " giocatori\n";
 		
 		for (int i = 0; i < NUM_GG; i++)
 		{
 			riepilogo += "Giocatore " + i + ", " + giocatori[i].nomeGiocatore + ":\n";
 			riepilogo += "Ha " + manaGiocatori[i] + " mana\n";
+			
 			riepilogo += "Ha " + carteNelCampo[i].size() + " carte nel campo da battaglia:\n";
-			for (int j = 0; j < carteNelCampo[turno].size(); j++)
+			for (int j = 0; j < carteNelCampo[i].size(); j++)
 			{
-				riepilogo += "Carta " + j
-						+ "Nome: " + carteNelCampo[turno].get(j).nome
-						+ "Salute: " + carteNelCampo[turno].get(j).salute + "\n";
+				riepilogo += "Carta " + j + "\n"
+						+ "Nome: " + carteNelCampo[i].get(j).nome + "\n"
+						+ "Salute: " + carteNelCampo[i].get(j).salute + "\n";
 			}
+			
+			riepilogo += "\n";
 		}
 		
 		System.out.println(riepilogo);
