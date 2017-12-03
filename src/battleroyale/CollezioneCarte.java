@@ -63,6 +63,15 @@ public class CollezioneCarte {
 		};
 	
 	
-	
+	// Cerca la carta con lo specifico id
+	public static Carta idToCarta(int id)
+	{
+		for (int i = 0; i < collezione_carte.length; i++)
+		{
+			if(collezione_carte[i].Id == id) return collezione_carte[i];
+		}
+		
+		return null;
+	}
 
 }
