@@ -32,7 +32,7 @@ public class Partita
 			carteNelCampo[i] = new ArrayList<Carta>();
 		}
 		
-		System.out.println("E' comminciata una nuova partita.");
+		System.out.println("E' cominciata una nuova partita.");
 		System.out.println("Gioca per primo il giocatore " + turno);
 	}
 	
@@ -65,7 +65,7 @@ public class Partita
 	// Aggiungi una carta nel campo di battaglia
 	public void aggiungiCarta(int id)
 	{
-		// Controlla che la carta non ci sia già nel campo da battaglia
+		// Controlla che la carta non ci sia giï¿½ nel campo da battaglia
 		for (int i = 0; i < carteNelCampo[turno].size(); i++)
 		{
 			if(carteNelCampo[turno].get(i).Id == id) break;
@@ -88,7 +88,7 @@ public class Partita
 				// Rimuovi la vita della carta dell'avversario
 				carteNelCampo[avversario].get(idCartaAvv).salute -= carteNelCampo[turno].get(idCartaAtt).attacco;
 				
-				// Rimuovi la carta dell'avversario se la sua salute è <= 0
+				// Rimuovi la carta dell'avversario se la sua salute ï¿½ <= 0
 				if(carteNelCampo[avversario].get(idCartaAvv).salute <= 0) carteNelCampo[avversario].remove(idCartaAvv);
 				
 				// Rimuovi il mana del giocatore

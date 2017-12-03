@@ -1,20 +1,24 @@
 package battleroyale;
 
+import java.awt.image.BufferedImage;
+
 public class Carta 
 {
    //Instanzio gli attributi generali
 	public int Id;
-    public int costo_mana;
+	public BufferedImage immagine;
+    public int costoMana;
     public String nome;
     public String effetto;
     public char rarita;
    // public int livello;   TODO
     public int salute;
+    public int saluteMax;
     public int attacco;
     public TipoCarta tipoCarta;
     public RaritaCarta raritaCarta;
     public ClasseCarta classeCarta;
-    public AbilitaCarta abilitaCarta;
+    public AbilitaCarta[] abilitaCarta;
     
     //Classe che determina il tipo di carta
     public enum TipoCarta
@@ -34,17 +38,19 @@ public class Carta
     	AESTHETICS, COMUNISTA, SVILUPPATORE, SECCHIONE, DROGATO
     }
     
-    //Classe che identifica eventuali effetti del personaggio
+	//Classe che identifica eventuali abilità del personaggio
     public enum AbilitaCarta
     {
     	PROVOCAZIONE, RUBAVITA, FURTIVO, CARICA, FURIA, IMMUNE 
     }
     
+   
     //Costruttore per carta magia
-    public Carta(int id, String n, int costo_m, RaritaCarta rar, String eff)
+    public Carta(int id, BufferedImage img,String n, int costo_m, RaritaCarta rar, String eff)
     {
     	Id=id;
-        costo_mana = costo_m;
+    	immagine=img;
+        costoMana = costo_m;
         nome = n;
         tipoCarta=TipoCarta.MAGIA;
         raritaCarta = rar;
@@ -52,16 +58,18 @@ public class Carta
     }
     
     //Costruttore per carte personaggio
-    public Carta(int id, String n, int costo_m, RaritaCarta rar, ClasseCarta cls, AbilitaCarta abilita, int sal, int atk, String eff)
+    public Carta(int id, BufferedImage img, String n, int costo_m, RaritaCarta rar, ClasseCarta cls, AbilitaCarta[] abilita, int atk, int sal, int salmax, String eff)
     {
     	Id=id;
-        costo_mana = costo_m;
+    	immagine=img;
+        costoMana = costo_m;
         nome = n;
         classeCarta=cls;
         salute=sal;
+        saluteMax=salmax;
         attacco = atk;
-        tipoCarta=TipoCarta.PERSONAGGIO;
-        abilitaCarta=abilita;
+        tipoCarta=TipoCarta.PERSONAGGIO;    
+        abilitaCarta=abilita;   //Un giocatore può avere uno o più abilità
         raritaCarta=rar;
         effetto=eff;
     }
