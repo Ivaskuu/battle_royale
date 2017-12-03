@@ -6,8 +6,16 @@ import java.util.ArrayList;
 
 public class Giocatore
 {
-	public static String nomeGiocatore;
-	public static int gold;
-	public static ArrayList<Carta> mazzo;
-	public static Carta[] carteSbloccate;
+	public String nomeGiocatore;
+	public int gold;
+	public ArrayList<Carta> mazzo;
+	public Carta[] carteSbloccate;
+	
+	public Giocatore(String nomeGiocatore, int gold, ArrayList<Carta> mazzo, Carta[] carteSbloccate)
+	{
+		this.nomeGiocatore = nomeGiocatore;
+		this.gold = gold;
+		this.mazzo = mazzo;
+		this.carteSbloccate = carteSbloccate;
+	}
 }

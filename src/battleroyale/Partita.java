@@ -9,6 +9,9 @@ public class Partita
 {
 	public static final int MAX_GIOCATORI = 2;
 	
+	public final int NUM_GG;
+	public final Giocatore[] giocatori;
+	
 	// Il mana dei 2 o piu giocatori
 	public int[] manaGiocatori = new int[MAX_GIOCATORI];
 	
@@ -18,13 +21,15 @@ public class Partita
 	// Quale giocatore sta giocando adesso
 	public int turno = 0;
 	
-	public Partita()
+	public Partita(Giocatore[] giocatori)
 	{
-		// Se r == true turno=0 else turno=1
-		this.turno = new Random().nextInt(MAX_GIOCATORI);
+		NUM_GG = giocatori.length;
+		this.giocatori = giocatori;
+		
+		this.turno = new Random().nextInt(NUM_GG);
 		
 		// Inizializza i giocatori
-		for(int i = 0; i < MAX_GIOCATORI; i++)
+		for(int i = 0; i < NUM_GG; i++)
 		{
 			if(i == turno) manaGiocatori[i] = 1;
 			else manaGiocatori[i] = 0;
@@ -33,7 +38,9 @@ public class Partita
 		}
 		
 		System.out.println("E' comminciata una nuova partita.");
-		System.out.println("Gioca per primo il giocatore " + turno);
+		System.out.println("Gioca per primo " + giocatori[turno].nomeGiocatore + ", cioè il giocatore numero " + turno);
+		
+		riepilogoPartita();
 	}
 	
 	public void cambiaTurno()
@@ -45,6 +52,7 @@ public class Partita
 		manaGiocatori[turno]++;
 		
 		notificaClient();
+		System.out.println("è cambiato il turno, ora tocca giocare al giocatore " + turno + ", " + giocatori[turno].nomeGiocatore);
 	}
 	
 	public void controllaEffettiCarte()
@@ -73,6 +81,18 @@ public class Partita
 		
 		carteNelCampo[turno].add(CollezioneCarte.collezione_carte[id]);
 		notificaClient();
+		
+		System.out.println("Il giocatore " + turno + ", " + giocatori[turno].nomeGiocatore + ", ha aggiunto una nuova carta sul campo da battaglia, cioè "
+				+ CollezioneCarte.collezione_carte[id].nome);
+		
+		System.out.println("Il giocatore " + turno + ", " + giocatori[turno].nomeGiocatore + ", ha " + carteNelCampo[turno].size() + " "
+				+ "carte nel campo da battaglia:");
+		for (int i = 0; i < carteNelCampo[turno].size(); i++)
+		{
+			System.out.println("Carta " + i
+					+ "Nome: " + carteNelCampo[turno].get(i).nome
+					+ "Salute: " + carteNelCampo[turno].get(i).salute + "\n");
+		}
 	}
 	
 	// Quando il giocatore attacca una carta dell'avversario
@@ -97,6 +117,28 @@ public class Partita
 				notificaClient();
 			}
 		}
+	}
+	
+	public void riepilogoPartita()
+	{
+		String riepilogo = "\n-- Riepilogo partia --\n";
+		
+		riepilogo += "Ci sono " + NUM_GG + " giocatori\n";
+		
+		for (int i = 0; i < NUM_GG; i++)
+		{
+			riepilogo += "Giocatore " + i + ", " + giocatori[i].nomeGiocatore + ":\n";
+			riepilogo += "Ha " + manaGiocatori[i] + " mana\n";
+			riepilogo += "Ha " + carteNelCampo[i].size() + " carte nel campo da battaglia:\n";
+			for (int j = 0; j < carteNelCampo[turno].size(); j++)
+			{
+				riepilogo += "Carta " + j
+						+ "Nome: " + carteNelCampo[turno].get(j).nome
+						+ "Salute: " + carteNelCampo[turno].get(j).salute + "\n";
+			}
+		}
+		
+		System.out.println(riepilogo);
 	}
 	
 	public void notificaClient()
