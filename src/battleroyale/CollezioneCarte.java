@@ -42,6 +42,11 @@ public class CollezioneCarte {
 		 new Carta(30,null,"Naji il pescatore",6,RaritaCarta.EPICA, ClasseCarta.DROGATO, null,6,6,5,5,"All'inizio di ogni tuo turno hai il 50% di possibilità di pescare una carta aggiuntiva. "), 
 		 new Carta(31,null,"Nick", 8, RaritaCarta.EPICA, ClasseCarta.HACKERINO, new AbilitaCarta[] {AbilitaCarta.PROVOCAZIONE, AbilitaCarta.CARICA},6,6,8,8," "),
 		 new Carta(32,null,"Pizio",3, RaritaCarta.RARA, ClasseCarta.HACKERINO, new AbilitaCarta[] {AbilitaCarta.FURTIVO},3,3,3,3," "),
+		 new Carta(33,null,"Luciano",5,RaritaCarta.RARA,ClasseCarta.PERSONALESC,new AbilitaCarta[] {AbilitaCarta.GRIDO},4,4,4,4,"Quando giochi questa carta distrugge TUTTI i personaggi che appartengono alla classe 'HACKERINO'"),
+		 new Carta(34,null,"Concettina",2,RaritaCarta.LEGGENDARIA,ClasseCarta.PERSONALESC, null,0,0,2,2," "),
+		 new Carta(35,null,"Prof. Mariani",3,RaritaCarta.RARA,ClasseCarta.PERSONALESC,new AbilitaCarta[] {AbilitaCarta.GRIDO},3,3,3,3,"Quando giochi questa carta distrugge tutte le carte sul campo di battaglia di tipo 'DROGATO' e il personaggio 'Nick'"),
+		 new Carta(36,null,"Meani",4, RaritaCarta.RARA, ClasseCarta.COMUNISTA, new AbilitaCarta[] {AbilitaCarta.GRIDO},2,2,3,3,"Imposta l'attacco e la salute di TUTTI i personaggi a 2/2"),
+		 new Carta(37,null,"Prof. Giuimp",5, RaritaCarta.RARA, ClasseCarta.PERSONALESC, new AbilitaCarta[] {AbilitaCarta.GRIDO},4,4,4,4,"Quando giochi questa carta evoca 2 studenti generici 1/1"),
 		 
 		 
 		 
@@ -49,10 +54,13 @@ public class CollezioneCarte {
 		 
 	
 		 
+		
+		 new Carta(40,null,"Preside",8,RaritaCarta.LEGGENDARIA,ClasseCarta.PERSONALESC, new AbilitaCarta[] {AbilitaCarta.GRIDO},6,6,6,6,"Quando giochi questa carta fornisce +2/+2 a TUTTI i personaggi di tipo 'PERSONALE SCOLASTICO'"),
 		 
-		 
-		 
-		 
+		 //Carte personaggi generici (Non sbloccabili)
+		 new Carta(98,null,"Studente generico",1,RaritaCarta.COMUNE,ClasseCarta.STUDENTE,null,1,1,1,1," "),
+		 new Carta(99,null,"Personale Ata",1, RaritaCarta.COMUNE,ClasseCarta.PERSONALESC,null,1,1,1,1," "),
+		
 		 
 		 
 		 
@@ -61,8 +69,9 @@ public class CollezioneCarte {
 		//Attributi Magia
 		//Id,immagine, nome, costo ,rarit�, effetto
 		 //  GLI ID DELLE CARTE MAGIE VANNO DA 100 IN POI
-		 new Carta(100,null,"Moneta", 0, null, "Ti da 1 punto mana solo per questo turno"),
+		 new Carta(100,null,"Moneta", 0, RaritaCarta.COMUNE, "Ti da 1 punto mana solo per questo turno"),
 		 new Carta(101,null,"Potere agli sviluppatori!",10,RaritaCarta.LEGGENDARIA,"Evoca sul campo di battaglia 'Simone' e 'Adrian' e gli fornisce +5/+5"),
+		 new Carta(102,null,"Trasformazione",5,RaritaCarta.RARA,"Trasforma un personaggio nemico in un personale ATA 1/1"),
 	
 			
 		 

@@ -36,7 +36,7 @@ public class Carta
     public enum ClasseCarta 
     {
     	SVILUPPATORE,
-    	AESTHETICS, COMUNISTA, HACKERINO, SECCHIONE, DROGATO, PERSONALESC
+    	STUDENTE,AESTHETICS, COMUNISTA, HACKERINO, SECCHIONE, DROGATO, PERSONALESC
     }
     
 	//Classe che identifica eventuali abilità del personaggio
