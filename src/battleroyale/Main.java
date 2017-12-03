@@ -27,6 +27,7 @@ public class Main
         				+ "[3] Attacca\n"
         				+ "[4] Aggiungi carta nel campo da battaglia\n"
         				+ "[5] Mostra mazzo\n"
+        				+ "[6] Mostra campo battaglia\n"
         				+ "\nScelta: ");
         		scelta = tast.readLine().charAt(0);
         		
@@ -41,13 +42,13 @@ public class Main
         			case '3':
         				if(partita.carteNelCampo[partita.turno].size() > 0)
         				{
-        					partita.mostraMazzo(partita.turno);
+        					partita.mostraCampoBattaglia();
         					
-        					System.out.print("Scegli la tua carta (0 per annullare attacco)"
+        					System.out.print("Scegli la tua carta (-1 per annullare attacco)"
         	        				+ "\nScelta: ");
         					scelta = tast.readLine().charAt(0);
         					
-        					if(scelta == '0')
+        					if(scelta == '-')
         					{
         						scelta = '3'; // Per ritornare al menu di prima
         						break;
@@ -55,15 +56,13 @@ public class Main
         					else
         					{
         						int cartaAtt = Integer.parseInt("" + scelta);
-        						
         						int avversario = partita.turno + 1 == partita.NUM_GG ? 0 : partita.turno + 1;
-        						partita.mostraMazzo(avversario);
             					
-            					System.out.print("Scegli la carta da attaccare (0 per annullare attacco)"
+            					System.out.print("Scegli la carta da attaccare (-1 per annullare attacco)"
             	        				+ "\nScelta: ");
             					scelta = tast.readLine().charAt(0);
             					
-            					if(scelta == '0')
+            					if(scelta == '-')
             					{
             						scelta = '3'; // Per ritornare al menu di prima
             						break;
@@ -77,17 +76,42 @@ public class Main
         				}
         				else
         				{
-        					System.out.println("Non hai nessuna carta nel campo di battaglia");
+        					System.out.println("Aggiungi almeno una carta nel campo di battaglia\n");
         				}
         				break;
         			case '4':
-        				
+        				if(partita.mazzo[partita.turno].size() > 0)
+        				{
+        					partita.mostraMazzo(partita.turno);
+        					
+        					System.out.print("Scegli la carta da aggiungere nel campo di battaglia\n(-1 per annullare attacco)"
+        	        				+ "\n\nScelta: ");
+        					scelta = tast.readLine().charAt(0);
+        					
+        					if(scelta == '-')
+        					{
+        						scelta = '3'; // Per ritornare al menu di prima
+        						break;
+        					}
+        					else
+        					{
+        						int posCarta = Integer.parseInt("" + scelta);
+        						partita.aggiungiCartaSulCampo(posCarta);
+        					}
+        				}
+        				else
+        				{
+        					System.out.println("Non hai nessuna carta nel mazzo\n");
+        				}
         				break;
         			case '5':
         				partita.mostraMazzo(partita.turno);
         				break;
+        			case '6':
+        				partita.mostraCampoBattaglia();
+        				break;
         			default:
-        				
+        				System.out.println("\nCoes ?\n");
         				break;
         		}
         	}

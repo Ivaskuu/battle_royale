@@ -87,10 +87,11 @@ public class Partita
 		}
 	}
 	
-	// Aggiungi una carta nel campo di battaglia
-	public void aggiungiCartaSulCampo(int id)
+	// Aggiungi una carta nel campo di battaglia dal mazzo
+	public void aggiungiCartaSulCampo(int posMazzo)
 	{
-		// Controlla che la carta non ci sia giï¿½ nel campo da battaglia
+		// Perché ?? -- Mi sa che non mi serve più
+		/*// Controlla che la carta non ci sia giï¿½ nel campo da battaglia
 		for (int i = 0; i < carteNelCampo[turno].size(); i++)
 		{
 			if(carteNelCampo[turno].get(i).Id == id)
@@ -98,34 +99,24 @@ public class Partita
 				System.out.println("La carta esiste già, non la puoi rimettere sul campo da battaglia");
 				return;
 			}
-		}
+		}*/
 		
-		Carta nuovaCarta = CollezioneCarte.collezione_carte[id];
+		Carta carta = mazzo[turno].get(posMazzo);
 		
-		if(nuovaCarta.costoMana > manaGiocatori[turno]) // Se il giocatore ha abbastanza mana
+		if(carta.costoMana > manaGiocatori[turno]) // Se il giocatore ha abbastanza mana
 		{
-			System.out.println(giocatori[turno].nomeGiocatore + " non ha abbastanza mana per aggiungere " + nuovaCarta.nome + " (costa " + nuovaCarta.costoMana + " e hai " + manaGiocatori[turno] + ")");
+			System.out.println(giocatori[turno].nomeGiocatore + " non ha abbastanza mana per aggiungere " + carta.nome + " (costa " + carta.costoMana + " e hai " + manaGiocatori[turno] + ")");
 			return;
 		}
 		else
 		{
-			manaGiocatori[turno] -= nuovaCarta.costoMana;
-			carteNelCampo[turno].add(nuovaCarta);
+			manaGiocatori[turno] -= carta.costoMana;
+			carteNelCampo[turno].add(carta);
 			
 			notificaClient();
 			
-			System.out.println(giocatori[turno].nomeGiocatore + " (" + turno + "), ha aggiunto una nuova carta, cioè "
-					+ nuovaCarta.nome);
-			
-			System.out.println(giocatori[turno].nomeGiocatore + " (" + turno + ") ha " + carteNelCampo[turno].size() + " "
-					+ "carte nel campo da battaglia:");
-			for (int i = 0; i < carteNelCampo[turno].size(); i++)
-			{
-				System.out.println("Carta " + i + "\n"
-						+ "Nome: " + carteNelCampo[turno].get(i).nome + "\n"
-						+ "Salute: " + carteNelCampo[turno].get(i).salute + "\n"
-						+ "Attacco: " + carteNelCampo[turno].get(i).attacco + "\n");
-			}
+			System.out.println(giocatori[turno].nomeGiocatore + " (" + turno + "), ha aggiunto una nuova carta sul campo, cioè "
+					+ carta.nome);
 		}
 	}
 	
@@ -178,9 +169,44 @@ public class Partita
 		}
 	}
 	
+	public void mostraCampoBattaglia()
+	{
+		for (int i = 0; i < NUM_GG; i++)
+		{
+			System.out.println("\nGiocatore " + i + " (" + giocatori[i].nomeGiocatore + ")");
+			
+			for (int j = 0; j < carteNelCampo[i].size(); j++)
+			{
+				System.out.println("Carta " + j + "\n"
+						+ "Nome: " + carteNelCampo[i].get(j).nome + "\n"
+						+ "Salute: " + carteNelCampo[i].get(j).salute + "\n"
+						+ "Attacco: " + carteNelCampo[i].get(j).attacco + "\n");
+			}
+		}
+	}
+	
+	public void mostraMazzo(int giocatore)
+	{
+		if(mazzo[giocatore].size() == 0)
+		{
+			System.out.println("Non hai nessuna carta nel mazzo");
+		}
+		else
+		{
+			for (int j = 0; j < mazzo[giocatore].size(); j++)
+			{
+				System.out.println("Carta " + j + "\n"
+						+ "Nome: " + mazzo[giocatore].get(j).nome + "\n"
+						+ "Salute: " + mazzo[giocatore].get(j).salute + "\n"
+						+ "Attacco: " + mazzo[giocatore].get(j).nome + "\n"
+						+ "Costo mana: " + mazzo[giocatore].get(j).costoMana + "\n");
+			}
+		}
+	}
+	
 	public void riepilogoPartita()
 	{
-		String riepilogo = "\n-- Riepilogo partia --\n";
+		String riepilogo = "\n-- Riepilogo partita --\n";
 		
 		//riepilogo += "Ci sono " + NUM_GG + " giocatori\n";
 		
@@ -201,23 +227,6 @@ public class Partita
 		}
 		
 		System.out.println(riepilogo);
-	}
-	
-	public void mostraMazzo(int giocatore)
-	{
-		if(carteNelCampo[giocatore].size() == 0)
-		{
-			System.out.println("Non hai nessuna carta nel campo di battaglia");
-		}
-		else
-		{
-			for (int j = 0; j < carteNelCampo[giocatore].size(); j++)
-			{
-				System.out.println("Carta " + j + "\n"
-						+ "Nome: " + carteNelCampo[giocatore].get(j).nome + "\n"
-						+ "Salute: " + carteNelCampo[giocatore].get(j).salute + "\n");
-			}
-		}
 	}
 	
 	public void notificaClient()
