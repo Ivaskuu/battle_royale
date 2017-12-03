@@ -13,8 +13,8 @@ public class Carta
     public char rarita;
     public int salute;
     public int saluteMax;
-    //Aggiungere anche attacco massimo TODO
     public int attacco;
+    public int attaccoMax;
     public TipoCarta tipoCarta;
     public RaritaCarta raritaCarta;
     public ClasseCarta classeCarta;
@@ -35,13 +35,14 @@ public class Carta
     //Classer che determina la classe della carta
     public enum ClasseCarta 
     {
-    	AESTHETICS, COMUNISTA, SVILUPPATORE, SECCHIONE, DROGATO
+    	SVILUPPATORE,
+    	AESTHETICS, COMUNISTA, HACKERINO, SECCHIONE, DROGATO, PERSONALESC
     }
     
 	//Classe che identifica eventuali abilità del personaggio
     public enum AbilitaCarta
     {
-    	PROVOCAZIONE, RUBAVITA, FURTIVO, CARICA, FURIA, IMMUNE 
+    	PROVOCAZIONE, RUBAVITA, FURTIVO, CARICA, FURIA, IMMUNE, SCUDO, RANTOLO, GRIDO, EFFETTO
     }
     
    
@@ -58,7 +59,7 @@ public class Carta
     }
     
     //Costruttore per carte personaggio
-    public Carta(int id, BufferedImage img, String n, int costo_m, RaritaCarta rar, ClasseCarta cls, AbilitaCarta[] abilita, int atk, int sal, int salmax, String eff)
+    public Carta(int id, BufferedImage img, String n, int costo_m, RaritaCarta rar, ClasseCarta cls, AbilitaCarta[] abilita, int atk,int atkmax, int sal, int salmax, String eff)
     {
     	Id=id;
     	immagine=img;
@@ -68,6 +69,7 @@ public class Carta
         salute=sal;
         saluteMax=salmax;
         attacco = atk;
+        attaccoMax = atkmax;
         tipoCarta=TipoCarta.PERSONAGGIO;    
         abilitaCarta=abilita;   //Un giocatore può avere uno o più abilità
         raritaCarta=rar;
