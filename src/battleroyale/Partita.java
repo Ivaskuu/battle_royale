@@ -16,7 +16,13 @@ public class Partita
 	public int[] manaGiocatori = new int[MAX_GIOCATORI];
 	
 	// Le carte piazzate dai giocatori nel campo di battaglia
-	public ArrayList<Carta>[] carteNelCampo = new ArrayList[MAX_GIOCATORI];
+	public ArrayList<Carta>[] carteNelCampo; // Array di ArrayList
+	
+	// Le carte che il giocatore ha pescato ma non aggiunto nel campo di battaglia
+	public ArrayList<Carta>[] mazzo; // Array di ArrayList
+	
+	// Le carte piazzate dai giocatori nel campo di battaglia
+	// public ArrayList<Carta> carteDistrutte; // Serve davvero ??
 	
 	// Quale giocatore sta giocando adesso
 	public int turno = 0;
@@ -26,7 +32,13 @@ public class Partita
 		NUM_GG = giocatori.length;
 		this.giocatori = giocatori;
 		
+		carteNelCampo = new ArrayList[NUM_GG];
+		mazzo = new ArrayList[NUM_GG];
+		
 		this.turno = new Random().nextInt(NUM_GG);
+
+		System.out.println("\nE' cominciata una nuova partita.");
+		System.out.println("Gioca per primo " + giocatori[turno].nomeGiocatore + ", cioè il giocatore numero " + turno + "\n");
 		
 		// Inizializza i giocatori
 		for(int i = 0; i < NUM_GG; i++)
@@ -35,10 +47,10 @@ public class Partita
 			else manaGiocatori[i] = 0;
 			
 			carteNelCampo[i] = new ArrayList<Carta>();
+			mazzo[i] = new ArrayList<Carta>();
+			
+			pescaCarta(i, 4);
 		}
-		
-		System.out.println("E' cominciata una nuova partita.");
-		System.out.println("Gioca per primo " + giocatori[turno].nomeGiocatore + ", cioè il giocatore numero " + turno);
 		
 		riepilogoPartita();
 	}
@@ -54,6 +66,8 @@ public class Partita
 		notificaClient();
 		System.out.println("\n-- Turno cambiato --");
 		System.out.println("Tocca giocare a " + giocatori[turno].nomeGiocatore);
+		
+		pescaCarta(turno, 1);
 		
 		riepilogoPartita();
 	}
@@ -74,7 +88,7 @@ public class Partita
 	}
 	
 	// Aggiungi una carta nel campo di battaglia
-	public void aggiungiCarta(int id)
+	public void aggiungiCartaSulCampo(int id)
 	{
 		// Controlla che la carta non ci sia giï¿½ nel campo da battaglia
 		for (int i = 0; i < carteNelCampo[turno].size(); i++)
@@ -152,6 +166,18 @@ public class Partita
 		riepilogoPartita();
 	}
 	
+	public void pescaCarta(int giocatore, int nCarte)
+	{
+		for (int i = 0; i < nCarte; i++)
+		{
+			Carta cartaPescata = CollezioneCarte.getRandomCarta();
+			mazzo[giocatore].add(cartaPescata);
+			
+			System.out.println("Il giocatore " + giocatore + " (" + giocatori[giocatore].nomeGiocatore + ") "
+					+ "ha pescato " + cartaPescata.nome + " (HP: " + cartaPescata.salute + " / ATT: " + cartaPescata.attacco + ")");
+		}
+	}
+	
 	public void riepilogoPartita()
 	{
 		String riepilogo = "\n-- Riepilogo partia --\n";
@@ -175,6 +201,23 @@ public class Partita
 		}
 		
 		System.out.println(riepilogo);
+	}
+	
+	public void mostraMazzo(int giocatore)
+	{
+		if(carteNelCampo[giocatore].size() == 0)
+		{
+			System.out.println("Non hai nessuna carta nel campo di battaglia");
+		}
+		else
+		{
+			for (int j = 0; j < carteNelCampo[giocatore].size(); j++)
+			{
+				System.out.println("Carta " + j + "\n"
+						+ "Nome: " + carteNelCampo[giocatore].get(j).nome + "\n"
+						+ "Salute: " + carteNelCampo[giocatore].get(j).salute + "\n");
+			}
+		}
 	}
 	
 	public void notificaClient()
