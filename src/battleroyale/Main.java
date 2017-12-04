@@ -9,8 +9,53 @@ public class Main
     {
         System.out.println("Ciao");
         
-        Giocatore gg1 = new Giocatore("Adrian", 50, null, null);
-        Giocatore gg2 = new Giocatore("Scino", 50, null, null);
+        Giocatore gg1 = new Giocatore("Adrian", 50, null, new Carta[]
+		{
+			CollezioneCarte.collezione_carte[0],
+			CollezioneCarte.collezione_carte[1],
+			CollezioneCarte.collezione_carte[2],
+			CollezioneCarte.collezione_carte[3],
+			CollezioneCarte.collezione_carte[4],
+			CollezioneCarte.collezione_carte[5],
+			CollezioneCarte.collezione_carte[6],
+			CollezioneCarte.collezione_carte[7],
+			CollezioneCarte.collezione_carte[8],
+			CollezioneCarte.collezione_carte[9],
+			CollezioneCarte.collezione_carte[0],
+			CollezioneCarte.collezione_carte[1],
+			CollezioneCarte.collezione_carte[2],
+			CollezioneCarte.collezione_carte[3],
+			CollezioneCarte.collezione_carte[4],
+			CollezioneCarte.collezione_carte[5],
+			CollezioneCarte.collezione_carte[6],
+			CollezioneCarte.collezione_carte[7],
+			CollezioneCarte.collezione_carte[8],
+			CollezioneCarte.collezione_carte[9],
+		});
+        
+        Giocatore gg2 = new Giocatore("Scino", 50, null, new Carta[]
+		{
+			CollezioneCarte.collezione_carte[0],
+			CollezioneCarte.collezione_carte[1],
+			CollezioneCarte.collezione_carte[2],
+			CollezioneCarte.collezione_carte[3],
+			CollezioneCarte.collezione_carte[4],
+			CollezioneCarte.collezione_carte[5],
+			CollezioneCarte.collezione_carte[6],
+			CollezioneCarte.collezione_carte[7],
+			CollezioneCarte.collezione_carte[8],
+			CollezioneCarte.collezione_carte[9],
+			CollezioneCarte.collezione_carte[0],
+			CollezioneCarte.collezione_carte[1],
+			CollezioneCarte.collezione_carte[2],
+			CollezioneCarte.collezione_carte[3],
+			CollezioneCarte.collezione_carte[4],
+			CollezioneCarte.collezione_carte[5],
+			CollezioneCarte.collezione_carte[6],
+			CollezioneCarte.collezione_carte[7],
+			CollezioneCarte.collezione_carte[8],
+			CollezioneCarte.collezione_carte[9],
+		});
         
         Partita partita = new Partita(new Giocatore[] {gg1, gg2});
         

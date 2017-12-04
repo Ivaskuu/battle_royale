@@ -1,6 +1,7 @@
 package battleroyale;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 
 import battleroyale.Carta.TipoCarta;
@@ -8,6 +9,9 @@ import battleroyale.Carta.TipoCarta;
 public class Partita
 {
 	public static final int MAX_GIOCATORI = 2;
+	
+	public static final int MAX_CARTE_MANO = 10;
+	public static final int MAX_CARTE_CAMPO = 1;
 	
 	public final int NUM_GG;
 	public final Giocatore[] giocatori;
@@ -20,6 +24,9 @@ public class Partita
 	
 	// Le carte che il giocatore ha pescato ma non aggiunto nel campo di battaglia
 	public ArrayList<Carta>[] mano; // Array di ArrayList
+	
+	// Il deck del giocatore
+	public ArrayList<Carta>[] deck; // Array di ArrayList
 	
 	// Le carte piazzate dai giocatori nel campo di battaglia
 	// public ArrayList<Carta> carteDistrutte; // Serve davvero ??
@@ -34,6 +41,7 @@ public class Partita
 		
 		carteNelCampo = new ArrayList[NUM_GG];
 		mano = new ArrayList[NUM_GG];
+		deck = new ArrayList[NUM_GG];
 		
 		this.turno = new Random().nextInt(NUM_GG);
 
@@ -48,8 +56,11 @@ public class Partita
 			
 			carteNelCampo[i] = new ArrayList<Carta>();
 			mano[i] = new ArrayList<Carta>();
+			deck[i] = new ArrayList<Carta>();
 			
-			pescaCarta(i, 4);
+			copiaEMescolaDeck(i);
+			
+			pescaCarta(i, 3);
 		}
 		
 		riepilogoPartita();
@@ -90,17 +101,23 @@ public class Partita
 	// Aggiungi una carta nel campo di battaglia dalla mano
 	public void aggiungiCartaSulCampo(int posMazzo)
 	{
+		if(carteNelCampo[turno].size() >= MAX_CARTE_CAMPO) // Se ci sono troppe carte sul campo
+		{
+			System.out.println(giocatori[turno].nomeGiocatore + " ha raggiunto il numero max di carte sul campo (" + MAX_CARTE_CAMPO + ")");
+			return;
+		}
+
 		Carta carta = mano[turno].get(posMazzo);
 		
-		if(carta.costoMana > manaGiocatori[turno]) // Se il giocatore ha abbastanza mana
+		if(carta.costoMana > manaGiocatori[turno]) // Se il giocatore non ha abbastanza mana
 		{
 			System.out.println(giocatori[turno].nomeGiocatore + " non ha abbastanza mana per aggiungere " + carta.nome + " (costa " + carta.costoMana + " e hai " + manaGiocatori[turno] + ")");
-			return;
 		}
 		else
 		{
 			manaGiocatori[turno] -= carta.costoMana;
 			carteNelCampo[turno].add(carta);
+			mano[turno].remove(posMazzo);
 			
 			notificaClient();
 			
@@ -155,12 +172,31 @@ public class Partita
 	{
 		for (int i = 0; i < nCarte; i++)
 		{
-			Carta cartaPescata = CollezioneCarte.getRandomCarta();
-			mano[giocatore].add(cartaPescata);
-			
-			System.out.println("Il giocatore " + giocatore + " (" + giocatori[giocatore].nomeGiocatore + ") "
-					+ "ha pescato " + cartaPescata.nome + " (HP: " + cartaPescata.salute + " / ATT: " + cartaPescata.attacco + ")");
+			if(deck[giocatore].size() > 0)
+			{
+				if(mano[giocatore].size() < MAX_CARTE_MANO)
+				{
+					Carta cartaPescata = deck[giocatore].get(0);
+					deck[giocatore].remove(0);
+					mano[giocatore].add(cartaPescata);
+					
+					System.out.println("Il giocatore " + giocatore + " (" + giocatori[giocatore].nomeGiocatore + ") "
+							+ "ha pescato " + cartaPescata.nome + " (HP: " + cartaPescata.salute + " / ATT: " + cartaPescata.attacco + ").");
+				}
+				else
+				{
+					System.out.println(giocatori[turno].nomeGiocatore + " ha raggiunto il numero max di carte nella mano (" + MAX_CARTE_MANO + ")");
+					return;
+				}
+			}
+			else
+			{
+				System.out.println("Il giocatore " + giocatore + " (" + giocatori[giocatore].nomeGiocatore + ") "
+						+ "non ha più carte nel deck.");
+			}
 		}
+		
+		System.out.println("Ci sono rimaste " + deck[giocatore].size() + " carte nel suo deck.\n");
 	}
 	
 	public void mostraCampoBattaglia(int giocatore)
@@ -248,6 +284,16 @@ public class Partita
 		}
 		
 		System.out.println(riepilogo);
+	}
+	
+	public void copiaEMescolaDeck(int giocatore)
+	{
+		for (int j = 0; j < giocatori[giocatore].deck.length; j++)
+		{
+			deck[giocatore].add(giocatori[giocatore].deck[j]);
+		}
+		
+		Collections.shuffle(deck[giocatore]);
 	}
 	
 	public void notificaClient()
