@@ -9,15 +9,17 @@ import battleroyale.Carta.TipoCarta;
 public class Partita
 {
 	public static final int MAX_GIOCATORI = 2;
-	
 	public static final int MAX_CARTE_MANO = 10;
 	public static final int MAX_CARTE_CAMPO = 1;
+	public static final int MAX_MANA = 10;
 	
 	public final int NUM_GG;
+	public final int PRIMO_GG; // Soluzione temporanea (pigra) per manaMax TODO
 	public final Giocatore[] giocatori;
 	
 	// Il mana dei 2 o piu giocatori
-	public int[] manaGiocatori = new int[MAX_GIOCATORI];
+	public int manaMax;
+	public int manaAtt;
 	
 	// Le carte piazzate dai giocatori nel campo di battaglia
 	public ArrayList<Carta>[] carteNelCampo; // Array di ArrayList
@@ -42,8 +44,12 @@ public class Partita
 		carteNelCampo = new ArrayList[NUM_GG];
 		mano = new ArrayList[NUM_GG];
 		deck = new ArrayList[NUM_GG];
+
+		PRIMO_GG = new Random().nextInt(NUM_GG);
+		turno = PRIMO_GG;
 		
-		this.turno = new Random().nextInt(NUM_GG);
+		manaMax = 1;
+		manaAtt = manaMax;
 
 		System.out.println("\nE' cominciata una nuova partita.");
 		System.out.println("Gioca per primo " + giocatori[turno].nomeGiocatore + ", cioè il giocatore numero " + turno + "\n");
@@ -51,9 +57,6 @@ public class Partita
 		// Inizializza i giocatori
 		for(int i = 0; i < NUM_GG; i++)
 		{
-			if(i == turno) manaGiocatori[i] = 1;
-			else manaGiocatori[i] = 0;
-			
 			carteNelCampo[i] = new ArrayList<Carta>();
 			mano[i] = new ArrayList<Carta>();
 			deck[i] = new ArrayList<Carta>();
@@ -72,7 +75,9 @@ public class Partita
 		if(turno == MAX_GIOCATORI) turno = 0;
 
 		controllaEffettiCarte();
-		manaGiocatori[turno]++;
+		
+		if(turno == PRIMO_GG && manaMax < MAX_MANA) manaMax++;
+		manaAtt = manaMax;
 		
 		notificaClient();
 		System.out.println("\n-- Turno cambiato --");
@@ -109,13 +114,13 @@ public class Partita
 
 		Carta carta = mano[turno].get(posMazzo);
 		
-		if(carta.costoMana > manaGiocatori[turno]) // Se il giocatore non ha abbastanza mana
+		if(carta.costoMana > manaAtt) // Se il giocatore non ha abbastanza mana
 		{
-			System.out.println(giocatori[turno].nomeGiocatore + " non ha abbastanza mana per aggiungere " + carta.nome + " (costa " + carta.costoMana + " e hai " + manaGiocatori[turno] + ")");
+			System.out.println(giocatori[turno].nomeGiocatore + " non ha abbastanza mana per aggiungere " + carta.nome + " (costa " + carta.costoMana + " e hai " + manaAtt + ")");
 		}
 		else
 		{
-			manaGiocatori[turno] -= carta.costoMana;
+			manaAtt -= carta.costoMana;
 			carteNelCampo[turno].add(carta);
 			mano[turno].remove(posMazzo);
 			
@@ -269,7 +274,7 @@ public class Partita
 		for (int i = 0; i < NUM_GG; i++)
 		{
 			riepilogo += "Giocatore " + i + ", " + giocatori[i].nomeGiocatore + ":\n";
-			riepilogo += "Ha " + manaGiocatori[i] + " mana\n";
+			riepilogo += "Ha " + manaAtt + " mana\n";
 			
 			riepilogo += "Ha " + carteNelCampo[i].size() + " carte nel campo da battaglia:\n";
 			for (int j = 0; j < carteNelCampo[i].size(); j++)
