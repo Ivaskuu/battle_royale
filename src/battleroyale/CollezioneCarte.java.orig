@@ -71,6 +71,19 @@ public class CollezioneCarte {
 		 //Attributi Magia
 		 //Id,immagine, nome, costo ,rarit�, effetto
 		 //  GLI ID DELLE CARTE MAGIE VANNO DA 100 IN POI
+<<<<<<< HEAD
+		 new Carta(100,null,"Moneta", 0, null, "Ti da 1 punto mana solo per questo turno"),
+	
+				
+		};
+	
+	
+	// Restituisce una carta a caso
+	public static Carta getRandomCarta()
+	{
+		return collezione_carte[new Random().nextInt(collezione_carte.length)];
+	}
+=======
 		 new Carta(100,null,"Moneta", 0, RaritaCarta.COMUNE, "Ti da 1 punto mana solo per questo turno"),
 		 new Carta(101,null,"Potere agli sviluppatori!",10,RaritaCarta.LEGGENDARIA,"Evoca sul campo di battaglia 'Simone' e 'Adrian' e gli fornisce +5/+5"),
 		 new Carta(102,null,"Trasformazione",5,RaritaCarta.RARA,"Trasforma un personaggio nemico in un personale ATA 1/1"),
@@ -81,12 +94,8 @@ public class CollezioneCarte {
 		 
 		 };
 		
+>>>>>>> a1c3c200ff7f8f99afba6cf0cb3896ee71d22462
 	
-	// Restituisce una carta a caso
-	public static Carta getRandomCarta()
-	{
-		return collezione_carte[new Random().nextInt(collezione_carte.length)];
-	}
 	// Cerca la carta con lo specifico id
 	public static Carta idToCarta(int id)
 	{
