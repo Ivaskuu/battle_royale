@@ -19,7 +19,7 @@ public class Partita
 	public ArrayList<Carta>[] carteNelCampo; // Array di ArrayList
 	
 	// Le carte che il giocatore ha pescato ma non aggiunto nel campo di battaglia
-	public ArrayList<Carta>[] mazzo; // Array di ArrayList
+	public ArrayList<Carta>[] mano; // Array di ArrayList
 	
 	// Le carte piazzate dai giocatori nel campo di battaglia
 	// public ArrayList<Carta> carteDistrutte; // Serve davvero ??
@@ -33,7 +33,7 @@ public class Partita
 		this.giocatori = giocatori;
 		
 		carteNelCampo = new ArrayList[NUM_GG];
-		mazzo = new ArrayList[NUM_GG];
+		mano = new ArrayList[NUM_GG];
 		
 		this.turno = new Random().nextInt(NUM_GG);
 
@@ -47,7 +47,7 @@ public class Partita
 			else manaGiocatori[i] = 0;
 			
 			carteNelCampo[i] = new ArrayList<Carta>();
-			mazzo[i] = new ArrayList<Carta>();
+			mano[i] = new ArrayList<Carta>();
 			
 			pescaCarta(i, 4);
 		}
@@ -87,21 +87,10 @@ public class Partita
 		}
 	}
 	
-	// Aggiungi una carta nel campo di battaglia dal mazzo
+	// Aggiungi una carta nel campo di battaglia dalla mano
 	public void aggiungiCartaSulCampo(int posMazzo)
 	{
-		// Perché ?? -- Mi sa che non mi serve più
-		/*// Controlla che la carta non ci sia giï¿½ nel campo da battaglia
-		for (int i = 0; i < carteNelCampo[turno].size(); i++)
-		{
-			if(carteNelCampo[turno].get(i).Id == id)
-			{
-				System.out.println("La carta esiste già, non la puoi rimettere sul campo da battaglia");
-				return;
-			}
-		}*/
-		
-		Carta carta = mazzo[turno].get(posMazzo);
+		Carta carta = mano[turno].get(posMazzo);
 		
 		if(carta.costoMana > manaGiocatori[turno]) // Se il giocatore ha abbastanza mana
 		{
@@ -117,6 +106,8 @@ public class Partita
 			
 			System.out.println(giocatori[turno].nomeGiocatore + " (" + turno + "), ha aggiunto una nuova carta sul campo, cioè "
 					+ carta.nome);
+			
+			mostraCampoBattaglia(-1);
 		}
 	}
 	
@@ -137,17 +128,20 @@ public class Partita
 			
 			// Rimuovi la vita della carta dell'avversario
 			avv.salute -= att.attacco;
-			System.out.println("La carta dell'avversario ha perso " + att.attacco + " di vita");
-			
-			// Rimuovi la carta dell'avversario se la sua salute ï¿½ <= 0
-			if(avv.salute <= 0)
-			{
-				carteNelCampo[avversario].remove(idCartaAvv);
-				System.out.println("La carta dell'avversario è stata distrutta");
-			}
+			if(avv.salute > 0) System.out.println("\nLa carta dell'avversario ha perso " + att.attacco + " HP (rimasti " + avv.salute + " HP)\n");
 			else
 			{
-				System.out.println("Gli sono rimasti " + avv.salute + " punti di vita");
+				carteNelCampo[avversario].remove(idCartaAvv);
+				System.out.println("\nLa carta dell'avversario è stata distrutta\n");
+			}
+
+			// Rimuovi la vita della carta dell'attaccante
+			att.salute -= avv.attacco;
+			if(att.salute > 0) System.out.println("\nLa carta dell'attaccante ha perso " + avv.attacco + " HP (rimasti " + att.salute + " HP)\n");
+			else
+			{
+				carteNelCampo[turno].remove(idCartaAtt);
+				System.out.println("\nLa carta dell'attaccante è stata distrutta\n");
 			}
 			
 			notificaClient();
@@ -162,44 +156,70 @@ public class Partita
 		for (int i = 0; i < nCarte; i++)
 		{
 			Carta cartaPescata = CollezioneCarte.getRandomCarta();
-			mazzo[giocatore].add(cartaPescata);
+			mano[giocatore].add(cartaPescata);
 			
 			System.out.println("Il giocatore " + giocatore + " (" + giocatori[giocatore].nomeGiocatore + ") "
 					+ "ha pescato " + cartaPescata.nome + " (HP: " + cartaPescata.salute + " / ATT: " + cartaPescata.attacco + ")");
 		}
 	}
 	
-	public void mostraCampoBattaglia()
+	public void mostraCampoBattaglia(int giocatore)
 	{
-		for (int i = 0; i < NUM_GG; i++)
+		if(giocatore == -1) // Fai vedere le carte nel campo di tutti i giocatori
 		{
-			System.out.println("\nGiocatore " + i + " (" + giocatori[i].nomeGiocatore + ")");
+			System.out.println("\n-- Lista carte nel campo di battaglia --\n");
 			
-			for (int j = 0; j < carteNelCampo[i].size(); j++)
+			for (int i = 0; i < NUM_GG; i++)
 			{
-				System.out.println("Carta " + j + "\n"
-						+ "Nome: " + carteNelCampo[i].get(j).nome + "\n"
-						+ "Salute: " + carteNelCampo[i].get(j).salute + "\n"
-						+ "Attacco: " + carteNelCampo[i].get(j).attacco + "\n");
+				if(carteNelCampo[i].size() == 0) // Se non ha nessuna carta, fai vedere un bel messaggio
+				{
+					System.out.println("Il giocatore " + i + " (" + giocatori[i].nomeGiocatore + "), non ha nessuna carta nel campo da battaglia");
+				}
+				else
+				{
+					System.out.println("\nGiocatore " + i + " (" + giocatori[i].nomeGiocatore + ")");
+					
+					for (int j = 0; j < carteNelCampo[i].size(); j++)
+					{
+						System.out.println("Carta " + j + "\n"
+								+ "Nome: " + carteNelCampo[i].get(j).nome + "\n"
+								+ "Salute: " + carteNelCampo[i].get(j).salute + "\n"
+								+ "Attacco: " + carteNelCampo[i].get(j).attacco + "\n");
+					}
+				}
 			}
 		}
+		else // Fai vedere le carte in campo di un determinato giocatore
+		{
+			System.out.println("\nGiocatore " + giocatore + " (" + giocatori[giocatore].nomeGiocatore + ")");
+			
+			for (int j = 0; j < carteNelCampo[giocatore].size(); j++)
+			{
+				System.out.println("Carta " + j + "\n"
+						+ "Nome: " + carteNelCampo[giocatore].get(j).nome + "\n"
+						+ "Salute: " + carteNelCampo[giocatore].get(j).salute + "\n"
+						+ "Attacco: " + carteNelCampo[giocatore].get(j).attacco + "\n");
+			}
+		}
+		
+		System.out.println("\n");
 	}
 	
-	public void mostraMazzo(int giocatore)
+	public void mostraMano(int giocatore)
 	{
-		if(mazzo[giocatore].size() == 0)
+		if(mano[giocatore].size() == 0)
 		{
-			System.out.println("Non hai nessuna carta nel mazzo");
+			System.out.println("Non hai nessuna carta nella mano");
 		}
 		else
 		{
-			for (int j = 0; j < mazzo[giocatore].size(); j++)
+			for (int j = 0; j < mano[giocatore].size(); j++)
 			{
 				System.out.println("Carta " + j + "\n"
-						+ "Nome: " + mazzo[giocatore].get(j).nome + "\n"
-						+ "Salute: " + mazzo[giocatore].get(j).salute + "\n"
-						+ "Attacco: " + mazzo[giocatore].get(j).nome + "\n"
-						+ "Costo mana: " + mazzo[giocatore].get(j).costoMana + "\n");
+						+ "Nome: " + mano[giocatore].get(j).nome + "\n"
+						+ "Salute: " + mano[giocatore].get(j).salute + "\n"
+						+ "Attacco: " + mano[giocatore].get(j).attacco + "\n"
+						+ "Costo mana: " + mano[giocatore].get(j).costoMana + "\n");
 			}
 		}
 	}
@@ -220,7 +240,8 @@ public class Partita
 			{
 				riepilogo += "Carta " + j + "\n"
 						+ "Nome: " + carteNelCampo[i].get(j).nome + "\n"
-						+ "Salute: " + carteNelCampo[i].get(j).salute + "\n";
+						+ "Salute: " + carteNelCampo[i].get(j).salute + "\n"
+						+ "Attacco: " + carteNelCampo[i].get(j).attacco + "\n";
 			}
 			
 			riepilogo += "\n";

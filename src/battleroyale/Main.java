@@ -26,7 +26,7 @@ public class Main
         				+ "[2] Riepilogo\n"
         				+ "[3] Attacca\n"
         				+ "[4] Aggiungi carta nel campo da battaglia\n"
-        				+ "[5] Mostra mazzo\n"
+        				+ "[5] Mostra mano\n"
         				+ "[6] Mostra campo battaglia\n"
         				+ "\nScelta: ");
         		scelta = tast.readLine().charAt(0);
@@ -42,7 +42,7 @@ public class Main
         			case '3':
         				if(partita.carteNelCampo[partita.turno].size() > 0)
         				{
-        					partita.mostraCampoBattaglia();
+        					partita.mostraCampoBattaglia(partita.turno);
         					
         					System.out.print("Scegli la tua carta (-1 per annullare attacco)"
         	        				+ "\nScelta: ");
@@ -57,6 +57,8 @@ public class Main
         					{
         						int cartaAtt = Integer.parseInt("" + scelta);
         						int avversario = partita.turno + 1 == partita.NUM_GG ? 0 : partita.turno + 1;
+
+            					partita.mostraCampoBattaglia(avversario);
             					
             					System.out.print("Scegli la carta da attaccare (-1 per annullare attacco)"
             	        				+ "\nScelta: ");
@@ -80,9 +82,9 @@ public class Main
         				}
         				break;
         			case '4':
-        				if(partita.mazzo[partita.turno].size() > 0)
+        				if(partita.mano[partita.turno].size() > 0)
         				{
-        					partita.mostraMazzo(partita.turno);
+        					partita.mostraMano(partita.turno);
         					
         					System.out.print("Scegli la carta da aggiungere nel campo di battaglia\n(-1 per annullare attacco)"
         	        				+ "\n\nScelta: ");
@@ -101,14 +103,14 @@ public class Main
         				}
         				else
         				{
-        					System.out.println("Non hai nessuna carta nel mazzo\n");
+        					System.out.println("Non hai nessuna carta nella mano\n");
         				}
         				break;
         			case '5':
-        				partita.mostraMazzo(partita.turno);
+        				partita.mostraMano(partita.turno);
         				break;
         			case '6':
-        				partita.mostraCampoBattaglia();
+        				partita.mostraCampoBattaglia(-1);
         				break;
         			default:
         				System.out.println("\nCoes ?\n");
