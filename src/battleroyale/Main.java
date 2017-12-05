@@ -85,7 +85,8 @@ public class Main
         				partita.riepilogoPartita();
         				break;
         			case '3':
-        				if(partita.carteNelCampo[partita.turno].size() > 0)
+						int avversario = partita.turno + 1 == partita.NUM_GG ? 0 : partita.turno + 1;
+        				if(partita.carteNelCampo[partita.turno].size() > 0 && partita.carteNelCampo[avversario].size() > 0)
         				{
         					partita.mostraCampoBattaglia(partita.turno);
         					
@@ -101,7 +102,6 @@ public class Main
         					else
         					{
         						int cartaAtt = Integer.parseInt("" + scelta);
-        						int avversario = partita.turno + 1 == partita.NUM_GG ? 0 : partita.turno + 1;
 
             					partita.mostraCampoBattaglia(avversario);
             					
@@ -123,7 +123,7 @@ public class Main
         				}
         				else
         				{
-        					System.out.println("Aggiungi almeno una carta nel campo di battaglia\n");
+        					System.out.println("Ogni giocatore deve avere almeno una carta nel campo di battaglia\n");
         				}
         				break;
         			case '4':
@@ -131,8 +131,9 @@ public class Main
         				{
         					partita.mostraMano(partita.turno);
         					
-        					System.out.print("Scegli la carta da aggiungere nel campo di battaglia\n(-1 per annullare attacco)"
-        	        				+ "\n\nScelta: ");
+        					System.out.print("Hai " + partita.manaAtt + " mana.\n"
+        							+ "Scegli la carta da aggiungere nel campo di battaglia\n(-1 per annullare attacco)\n\n"
+        	        				+ "Scelta: ");
         					scelta = tast.readLine().charAt(0);
         					
         					if(scelta == '-')

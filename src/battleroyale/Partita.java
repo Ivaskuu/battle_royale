@@ -168,7 +168,7 @@ public class Partita
 			
 			notificaClient();
 		}
-		else System.out.println("C'è qualcosa che non quadra.");
+		else System.out.println("Le carte non esistono sul campo da battaglia. Attacco annullato.");
 		
 		riepilogoPartita();
 	}
