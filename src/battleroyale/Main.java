@@ -9,53 +9,8 @@ public class Main
     {
         System.out.println("Ciao");
         
-        Giocatore gg1 = new Giocatore("Adrian", 50, null, new Carta[]
-		{
-			CollezioneCarte.collezione_carte[0],
-			CollezioneCarte.collezione_carte[1],
-			CollezioneCarte.collezione_carte[2],
-			CollezioneCarte.collezione_carte[3],
-			CollezioneCarte.collezione_carte[4],
-			CollezioneCarte.collezione_carte[5],
-			CollezioneCarte.collezione_carte[6],
-			CollezioneCarte.collezione_carte[7],
-			CollezioneCarte.collezione_carte[8],
-			CollezioneCarte.collezione_carte[9],
-			CollezioneCarte.collezione_carte[0],
-			CollezioneCarte.collezione_carte[1],
-			CollezioneCarte.collezione_carte[2],
-			CollezioneCarte.collezione_carte[3],
-			CollezioneCarte.collezione_carte[4],
-			CollezioneCarte.collezione_carte[5],
-			CollezioneCarte.collezione_carte[6],
-			CollezioneCarte.collezione_carte[7],
-			CollezioneCarte.collezione_carte[8],
-			CollezioneCarte.collezione_carte[9],
-		});
-        
-        Giocatore gg2 = new Giocatore("Scino", 50, null, new Carta[]
-		{
-			CollezioneCarte.collezione_carte[0],
-			CollezioneCarte.collezione_carte[1],
-			CollezioneCarte.collezione_carte[2],
-			CollezioneCarte.collezione_carte[3],
-			CollezioneCarte.collezione_carte[4],
-			CollezioneCarte.collezione_carte[5],
-			CollezioneCarte.collezione_carte[6],
-			CollezioneCarte.collezione_carte[7],
-			CollezioneCarte.collezione_carte[8],
-			CollezioneCarte.collezione_carte[9],
-			CollezioneCarte.collezione_carte[0],
-			CollezioneCarte.collezione_carte[1],
-			CollezioneCarte.collezione_carte[2],
-			CollezioneCarte.collezione_carte[3],
-			CollezioneCarte.collezione_carte[4],
-			CollezioneCarte.collezione_carte[5],
-			CollezioneCarte.collezione_carte[6],
-			CollezioneCarte.collezione_carte[7],
-			CollezioneCarte.collezione_carte[8],
-			CollezioneCarte.collezione_carte[9],
-		});
+        Giocatore gg1 = new Giocatore("Adrian", 50, null, CollezioneCarte.collezioneCarte);
+        Giocatore gg2 = new Giocatore("Scino", 50, null, CollezioneCarte.collezioneCarte);
         
         Partita partita = new Partita(new Giocatore[] {gg1, gg2});
         
@@ -90,7 +45,29 @@ public class Main
         				{
         					partita.mostraCampoBattaglia(partita.turno);
         					
-        					System.out.print("Scegli la tua carta (-1 per annullare attacco)"
+        					do
+        					{
+        						System.out.print("Scegli la tua carta (-1 per annullare attacco)"
+            	        				+ "\nScelta: ");
+            					scelta = tast.readLine().charAt(0);
+            					
+            					if(scelta == '-')
+            					{
+            						scelta = '3'; // Per ritornare al menu di prima
+            						break;
+            					}
+            					
+            					if(partita.carteNelCampo[partita.turno].get(Integer.parseInt("" + scelta)).giocatePerTurnoAtt <= 0)
+            					{
+            						System.out.println("Hai già usato questa carta durante questo turno\n");
+            					}
+        					}
+        					while(partita.carteNelCampo[partita.turno].get(Integer.parseInt("" + scelta)).giocatePerTurnoAtt <= 0);
+        					
+        					int cartaAtt = Integer.parseInt("" + scelta);
+        					partita.mostraCampoBattaglia(avversario);
+        					
+        					System.out.print("Scegli la carta da attaccare (-1 per annullare attacco)"
         	        				+ "\nScelta: ");
         					scelta = tast.readLine().charAt(0);
         					
@@ -101,24 +78,8 @@ public class Main
         					}
         					else
         					{
-        						int cartaAtt = Integer.parseInt("" + scelta);
-
-            					partita.mostraCampoBattaglia(avversario);
-            					
-            					System.out.print("Scegli la carta da attaccare (-1 per annullare attacco)"
-            	        				+ "\nScelta: ");
-            					scelta = tast.readLine().charAt(0);
-            					
-            					if(scelta == '-')
-            					{
-            						scelta = '3'; // Per ritornare al menu di prima
-            						break;
-            					}
-            					else
-            					{
-            						int cartaAvv = Integer.parseInt("" + scelta);
-            						partita.attacca(cartaAtt, cartaAvv);
-            					}
+        						int cartaAvv = Integer.parseInt("" + scelta);
+        						partita.attacca(cartaAtt, cartaAvv);
         					}
         				}
         				else

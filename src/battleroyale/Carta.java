@@ -4,75 +4,104 @@ import java.awt.image.BufferedImage;
 
 public class Carta 
 {
-   //Instanzio gli attributi generali
-	public int Id;
-	public BufferedImage immagine;
-    public int costoMana;
+	//
+    // ATTRIBUTI
+    //
+	
+	// Attributi generali
     public String nome;
-    public String effetto;
-    public char rarita;
-    public int salute;
-    public int attacco;
+    public int saluteMax;
+    public int attaccoMax;
+    public int costoMana;
+
     public TipoCarta tipoCarta;
     public RaritaCarta raritaCarta;
     public ClasseCarta classeCarta;
     public AbilitaCarta[] abilitaCarta;
     
-    //Classe che determina il tipo di carta
+	public BufferedImage immagine;
+    public String effetto;
+    
+    // Attributi necessari durante la partita
+    public int saluteAtt;
+    public int attaccoAtt;
+    public int giocatePerTurnoMax; // Quante volte la carta e stata giocata durante questo turno (di solito 1)
+    public int giocatePerTurnoAtt; // Quante volte la carta e stata giocata durante questo turno (di solito 1)
+    
+    // Il tipo di carta
     public enum TipoCarta
 	{
 	    PERSONAGGIO, MAGIA
 	}
     
-    //Classe che determina la rari� della carta
+    // La rarita della carta
     public enum RaritaCarta
     {
     	COMUNE, RARA, EPICA, LEGGENDARIA
     }
     
-    //Classer che determina la classe della carta
+    // La classe della carta
     public enum ClasseCarta 
     {
     	SVILUPPATORE,
     	STUDENTE,AESTHETICS, COMUNISTA, HACKERINO, SECCHIONE, DROGATO, PERSONALESC
     }
     
-	//Classe che identifica eventuali abilità del personaggio
+	// Eventuali abilita del personaggio
     public enum AbilitaCarta
     {
     	PROVOCAZIONE, RUBAVITA, FURTIVO, CARICA, FURIA, IMMUNE, SCUDO, RANTOLO, GRIDO, EFFETTO, VELENO
     }
     
+    //
+    // COSTRUTTORI
+    //
    
-    //Costruttore per carta magia
-    public Carta(int id, BufferedImage img,String n, int costo_m, RaritaCarta rar, String eff)
+    // Carta magia
+    public Carta(BufferedImage img,String n, int costo_m, RaritaCarta rar, String eff)
     {
-    	Id=id;
-    	immagine=img;
+    	immagine = img;
         costoMana = costo_m;
         nome = n;
-        tipoCarta=TipoCarta.MAGIA;
+        tipoCarta = TipoCarta.MAGIA;
         raritaCarta = rar;
-        effetto=eff;
+        effetto = eff;
     }
-    
-    //Costruttore per carte personaggio
-    public Carta(int id, BufferedImage img, String n, int costo_m, RaritaCarta rar, ClasseCarta cls, AbilitaCarta[] abilita, int atk, int sal, String eff)
+
+    /*// Carta magia durante la partita
+    public static Carta cartaToCartaPartita(Carta carta, int giocatePerTurno)
     {
-    	Id=id;
-    	immagine=img;
+    	carta.saluteAtt = carta.saluteMax;
+    	carta.attaccoAtt = carta.attaccoMax;
+    	carta.giocatePerTurnoMax = giocatePerTurno;
+    	carta.giocatePerTurnoAtt = giocatePerTurno;
+    	
+    	return carta;
+    }*/
+    
+    // Carta personaggio
+    public Carta(BufferedImage img, String n, int costo_m, RaritaCarta rar, ClasseCarta cls, AbilitaCarta[] abilita, int atk, int sal, String eff)
+    {
+    	immagine = img;
         costoMana = costo_m;
         nome = n;
-        classeCarta=cls;
-        salute=sal;
-        attacco = atk;
-        tipoCarta=TipoCarta.PERSONAGGIO;    
-        abilitaCarta=abilita;   //Un giocatore può avere uno o più abilità
-        raritaCarta=rar;
-        effetto=eff;
+        classeCarta = cls;
+        saluteMax = sal;
+        attaccoMax = atk;
+        abilitaCarta = abilita; //Un giocatore puo avere una o piu abilita
+        tipoCarta = TipoCarta.PERSONAGGIO;
+        raritaCarta = rar;
+        effetto = eff;
     }
     
- 
-    
-
+    // Carta personaggio durante la partita
+    public static Carta cartaToCartaPartita(Carta carta)
+    {
+    	carta.saluteAtt = carta.saluteMax;
+    	carta.attaccoAtt = carta.attaccoMax;
+    	carta.giocatePerTurnoMax = 1; // TODO: Se effetto allora incrementalo
+    	carta.giocatePerTurnoAtt = carta.giocatePerTurnoMax;
+    	
+    	return carta;
+    }
 }

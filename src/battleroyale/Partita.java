@@ -10,7 +10,7 @@ public class Partita
 {
 	public static final int MAX_GIOCATORI = 2;
 	public static final int MAX_CARTE_MANO = 10;
-	public static final int MAX_CARTE_CAMPO = 1;
+	public static final int MAX_CARTE_CAMPO = 5;
 	public static final int MAX_MANA = 10;
 	
 	public final int NUM_GG;
@@ -74,7 +74,8 @@ public class Partita
 		turno++;
 		if(turno == MAX_GIOCATORI) turno = 0;
 
-		controllaEffettiCarte();
+		//controllaEffettiCarte(); TODO
+		ripristinaGiocateCarte(turno);
 		
 		if(turno == PRIMO_GG && manaMax < MAX_MANA) manaMax++;
 		manaAtt = manaMax;
@@ -144,29 +145,38 @@ public class Partita
 		if(carteNelCampo[turno].get(idCartaAtt) != null && carteNelCampo[avversario].get(idCartaAvv) != null) // Se le carte esistono veramente
 		{
 			Carta att = carteNelCampo[turno].get(idCartaAtt);
-			Carta avv = carteNelCampo[avversario].get(idCartaAvv);
 			
-			System.out.println(giocatori[turno].nomeGiocatore + " (" + att.nome + ") sta attcando " + giocatori[avversario].nomeGiocatore + " (" + avv.nome + ")");
-			
-			// Rimuovi la vita della carta dell'avversario
-			avv.salute -= att.attacco;
-			if(avv.salute > 0) System.out.println("\nLa carta dell'avversario ha perso " + att.attacco + " HP (rimasti " + avv.salute + " HP)\n");
-			else
+			if(att.giocatePerTurnoAtt > 0)
 			{
-				carteNelCampo[avversario].remove(idCartaAvv);
-				System.out.println("\nLa carta dell'avversario è stata distrutta\n");
-			}
+				Carta avv = carteNelCampo[avversario].get(idCartaAvv);
+				
+				carteNelCampo[turno].get(idCartaAtt).giocatePerTurnoAtt--;
+				System.out.println(giocatori[turno].nomeGiocatore + " (" + att.nome + ") sta attcando " + giocatori[avversario].nomeGiocatore + " (" + avv.nome + ")");
+				
+				// Rimuovi la vita della carta dell'avversario
+				avv.saluteAtt -= att.attaccoAtt;
+				if(avv.saluteAtt > 0) System.out.println("\nLa carta dell'avversario ha perso " + att.attaccoAtt + " HP (rimasti " + avv.saluteAtt + " HP)\n");
+				else
+				{
+					carteNelCampo[avversario].remove(idCartaAvv);
+					System.out.println("\nLa carta dell'avversario è stata distrutta\n");
+				}
 
-			// Rimuovi la vita della carta dell'attaccante
-			att.salute -= avv.attacco;
-			if(att.salute > 0) System.out.println("\nLa carta dell'attaccante ha perso " + avv.attacco + " HP (rimasti " + att.salute + " HP)\n");
+				// Rimuovi la vita della carta dell'attaccante
+				att.saluteAtt -= avv.attaccoAtt;
+				if(att.saluteAtt > 0) System.out.println("\nLa carta dell'attaccante ha perso " + avv.attaccoAtt + " HP (rimasti " + att.saluteAtt + " HP)\n");
+				else
+				{
+					carteNelCampo[turno].remove(idCartaAtt);
+					System.out.println("\nLa carta dell'attaccante è stata distrutta\n");
+				}
+				
+				notificaClient();
+			}
 			else
 			{
-				carteNelCampo[turno].remove(idCartaAtt);
-				System.out.println("\nLa carta dell'attaccante è stata distrutta\n");
+				System.out.println("Hai gia usato questa carta durante questo turno");
 			}
-			
-			notificaClient();
 		}
 		else System.out.println("Le carte non esistono sul campo da battaglia. Attacco annullato.");
 		
@@ -181,12 +191,12 @@ public class Partita
 			{
 				if(mano[giocatore].size() < MAX_CARTE_MANO)
 				{
-					Carta cartaPescata = deck[giocatore].get(0);
+					Carta cartaPescata = Carta.cartaToCartaPartita(deck[giocatore].get(0));
 					deck[giocatore].remove(0);
 					mano[giocatore].add(cartaPescata);
 					
 					System.out.println("Il giocatore " + giocatore + " (" + giocatori[giocatore].nomeGiocatore + ") "
-							+ "ha pescato " + cartaPescata.nome + " (HP: " + cartaPescata.salute + " / ATT: " + cartaPescata.attacco + ").");
+							+ "ha pescato " + cartaPescata.nome + " (ATT: " + cartaPescata.attaccoAtt + " / HP: " + cartaPescata.saluteAtt + ").");
 				}
 				else
 				{
@@ -224,8 +234,14 @@ public class Partita
 					{
 						System.out.println("Carta " + j + "\n"
 								+ "Nome: " + carteNelCampo[i].get(j).nome + "\n"
-								+ "Salute: " + carteNelCampo[i].get(j).salute + "\n"
-								+ "Attacco: " + carteNelCampo[i].get(j).attacco + "\n");
+								+ "Salute: " + carteNelCampo[i].get(j).saluteAtt + "\n"
+								+ "Attacco: " + carteNelCampo[i].get(j).attaccoAtt + "\n");
+						
+						if(giocatore == turno)
+						{
+							if(carteNelCampo[turno].get(j).giocatePerTurnoAtt > 0) System.out.println("Carta giocabile\n");
+							else System.out.println("Carta già giocata questo turno\n");
+						}
 					}
 				}
 			}
@@ -238,8 +254,8 @@ public class Partita
 			{
 				System.out.println("Carta " + j + "\n"
 						+ "Nome: " + carteNelCampo[giocatore].get(j).nome + "\n"
-						+ "Salute: " + carteNelCampo[giocatore].get(j).salute + "\n"
-						+ "Attacco: " + carteNelCampo[giocatore].get(j).attacco + "\n");
+						+ "Salute: " + carteNelCampo[giocatore].get(j).saluteAtt + "\n"
+						+ "Attacco: " + carteNelCampo[giocatore].get(j).attaccoAtt + "\n");
 			}
 		}
 		
@@ -258,8 +274,8 @@ public class Partita
 			{
 				System.out.println("Carta " + j + "\n"
 						+ "Nome: " + mano[giocatore].get(j).nome + "\n"
-						+ "Salute: " + mano[giocatore].get(j).salute + "\n"
-						+ "Attacco: " + mano[giocatore].get(j).attacco + "\n"
+						+ "Salute: " + mano[giocatore].get(j).saluteAtt + "\n"
+						+ "Attacco: " + mano[giocatore].get(j).attaccoAtt + "\n"
 						+ "Costo mana: " + mano[giocatore].get(j).costoMana + "\n");
 			}
 		}
@@ -281,8 +297,8 @@ public class Partita
 			{
 				riepilogo += "Carta " + j + "\n"
 						+ "Nome: " + carteNelCampo[i].get(j).nome + "\n"
-						+ "Salute: " + carteNelCampo[i].get(j).salute + "\n"
-						+ "Attacco: " + carteNelCampo[i].get(j).attacco + "\n";
+						+ "Salute: " + carteNelCampo[i].get(j).saluteAtt + "\n"
+						+ "Attacco: " + carteNelCampo[i].get(j).attaccoAtt + "\n";
 			}
 			
 			riepilogo += "\n";
@@ -293,12 +309,20 @@ public class Partita
 	
 	public void copiaEMescolaDeck(int giocatore)
 	{
-		for (int j = 0; j < giocatori[giocatore].deck.length; j++)
+		for (int i = 0; i < giocatori[giocatore].deck.length; i++)
 		{
-			deck[giocatore].add(giocatori[giocatore].deck[j]);
+			deck[giocatore].add(giocatori[giocatore].deck[i]);
 		}
 		
 		Collections.shuffle(deck[giocatore]);
+	}
+	
+	public void ripristinaGiocateCarte(int giocatore)
+	{
+		for (int i = 0; i < carteNelCampo[giocatore].size(); i++)
+		{
+			carteNelCampo[giocatore].get(i).giocatePerTurnoAtt = carteNelCampo[giocatore].get(i).giocatePerTurnoMax;
+		}
 	}
 	
 	public void notificaClient()
