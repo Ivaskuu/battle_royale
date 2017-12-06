@@ -1,4 +1,4 @@
-package battleroyale;
+package battleroyale.ClientServer;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,7 +11,7 @@ public class HandleClient extends Thread
 {
 	private Socket clientSocket;
 	
-	private BufferedReader input;
+	private Scanner input;
 	private PrintWriter output;
 	
 	public HandleClient(Socket socket) throws IOException
@@ -19,7 +19,7 @@ public class HandleClient extends Thread
 		clientSocket = socket;
 
 		// Inizializzare i canali di i/o per communicare
-		input = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+		input = new Scanner(clientSocket.getInputStream());
 		output = new PrintWriter(clientSocket.getOutputStream(), true);
 		
 		System.out.println("Il client " + clientSocket.getInetAddress().toString() + " si 'e collegato.");
@@ -35,11 +35,15 @@ public class HandleClient extends Thread
 			System.out.println("\nSto ascoltando il client\n");
 			
 			while(true)
-			{				
-				String msg = input.readLine();
-				System.out.println("Il client ha detto: " + msg);
+			{
+				// Aspettare input
+				String msgIn = input.nextLine();
+				System.out.println("Il client ha detto: \"" + msgIn + "\"");
 				
-				output.println("Ho ricevuto il tuo messaggio");
+				// Rispondere
+				String msgOut = "Ho ricevuto: " + msgIn;
+				System.out.println("Ho risposto: \"" + msgOut + "\"");				
+				output.println(msgOut);
 			}
 		}
 		catch (Exception e)

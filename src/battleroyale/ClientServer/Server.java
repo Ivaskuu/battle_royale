@@ -1,4 +1,4 @@
-package battleroyale;
+package battleroyale.ClientServer;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

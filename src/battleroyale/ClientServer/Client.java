@@ -1,10 +1,6 @@
-package battleroyale;
+package battleroyale.ClientServer;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
 import java.io.PrintWriter;
-import java.net.InetAddress;
 import java.net.Socket;
 import java.util.Scanner;
 
@@ -32,6 +28,8 @@ public class Client
 			{
 				System.out.print("\nScrivi qualcosa da inviare al server: ");
 				output.println(tast.nextLine());
+				
+				System.out.println("Il server ha risposto: \"" + input.nextLine() + "\"");
 			}
 		}
 		catch(Exception e)
