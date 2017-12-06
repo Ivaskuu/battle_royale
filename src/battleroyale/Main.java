@@ -1,7 +1,6 @@
 package battleroyale;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class Main
@@ -10,43 +9,14 @@ public class Main
     {
         System.out.println("Ciao");
         
-        //Giocatore gg1 = new Giocatore("Adrian", 50, null, CollezioneCarte.collezioneCarte);
-        //Giocatore gg2 = new Giocatore("Scino", 50, null, CollezioneCarte.collezioneCarte);
+        Giocatore gg1 = new Giocatore("Adrian", 50, null, CollezioneCarte.collezioneCarte);
+        Giocatore gg2 = new Giocatore("Scino", 50, null, CollezioneCarte.collezioneCarte);
         
-        //Partita partita = new Partita(new Giocatore[] {gg1, gg2});
+        Partita partita = new Partita(new Giocatore[] {gg1, gg2});
         
         BufferedReader tast = new BufferedReader(new InputStreamReader(System.in));
-        String scelta;
+        char scelta;
         
-		try
-		{
-	        System.out.println("[1] Server\n[2] Client");
-			scelta = tast.readLine();
-			
-			if(scelta.equals("1"))
-			{
-		        Server server = new Server();
-		        System.out.println("Benvenuto, server");
-			}
-			else
-			{
-		        Client client = new Client();
-		        System.out.println("Benvenuto, client");
-
-		        System.out.print("Scrivi un messaggio: ");
-		        client.inviaMsgAlServer(tast.readLine());
-			}
-			
-			tast.readLine();
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-        
-		
-		
-		/*
         do
         {
         	try
@@ -89,7 +59,7 @@ public class Main
             					
             					if(partita.carteNelCampo[partita.turno].get(Integer.parseInt("" + scelta)).giocatePerTurnoAtt <= 0)
             					{
-            						System.out.println("Hai già usato questa carta durante questo turno\n");
+            						System.out.println("Hai gia' usato questa carta durante questo turno\n");
             					}
         					}
         					while(partita.carteNelCampo[partita.turno].get(Integer.parseInt("" + scelta)).giocatePerTurnoAtt <= 0);
@@ -159,6 +129,6 @@ public class Main
         		System.out.println(e);
         	}
         }
-        while(true);*/
+        while(true);
     }
 }

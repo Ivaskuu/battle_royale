@@ -3,57 +3,42 @@ package battleroyale;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.Scanner;
 
-public class Client extends Thread
+public class Client
 {
-	private Socket socket;
+	private static Scanner tast;
 	
-	private BufferedReader input;
-	private PrintStream output;
+	private static Socket socket;
+	private static Scanner input;
+	private static PrintWriter output;
 	
-	public Client()
-	{
+	public static void main(String[] args)
+    {
 		try
 		{
 			socket = new Socket("127.0.0.1", 59168);
-			input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			output = new PrintStream(socket.getOutputStream());
+			input = new Scanner(socket.getInputStream());
+			output = new PrintWriter(socket.getOutputStream(), true);
+
+			System.out.println("Connessione eseguita");
 			
-			start();
+			tast = new Scanner(System.in);
 			
-			output.print("Ciao server, piacere");
-		}
-		catch(Exception e)
-		{
-			System.out.println(e.toString());
-		}
-	}
-	
-	public void inviaMsgAlServer(String msg)
-	{
-		output.print(msg);
-	}
-	
-	@Override
-	public void run()
-	{
-		try
-		{
 			while(true)
 			{
-				//System.out.println("Sto ascoltando il server");
-				if(input.ready())
-				{
-					String msg = input.readLine();
-					System.out.println("Il server ha detto: " + msg);
-				}
+				System.out.print("\nScrivi qualcosa da inviare al server: ");
+				output.println(tast.nextLine());
 			}
 		}
 		catch(Exception e)
 		{
 			System.out.println(e.toString());
 		}
+
+		tast.nextLine();
 	}
 }

@@ -6,54 +6,23 @@ import java.io.PrintStream;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Scanner;
 
 public class Server extends Thread
 {
-	private final int PORTA = 59168;
+	private static final int PORTA = 59168;
 	
-	private ServerSocket serverSocket;
-	private Socket clientSocket;
+	private static ServerSocket serverSocket;
+	private static Socket clientSocket;
 	
-	private BufferedReader input;
-	private PrintStream output;
-	
-	public Server()
-	{
+	public static void main(String[] args)
+    {
 		try
 		{
 			serverSocket = new ServerSocket(PORTA);
-			start();
-		}
-		catch (Exception e)
-		{
-			System.out.println(e.toString());
-		}
-	}
-	
-	// La faccio su un'altro thread per non bloccare il programma
-	@Override
-	public void run()
-	{
-		try
-		{
-			// Parte collegamento
-			clientSocket = serverSocket.accept(); // Aspetta che il client si connetti
-			System.out.println("Il client " + clientSocket.getInetAddress().toString() + " si e collegato.");
+			System.out.println("Il server 'e pronto e sta aspettando una connessione su " + serverSocket.getLocalSocketAddress());
 			
-			// Inizializzare i canali di i/o per communicare
-			input = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-			output = new PrintStream(clientSocket.getOutputStream());
-			
-			// Parte ascolto
-			while(true)
-			{
-				//System.out.println("Sto ascoltando il client");
-				if(input.ready()) // Il client ci ha trasmesso un messaggio
-				{
-					String msg = input.readLine();
-					System.out.println("Il client ha detto: " + msg);
-				}
-			}
+			HandleClient client = new HandleClient(serverSocket.accept());
 		}
 		catch (Exception e)
 		{
