@@ -6,17 +6,17 @@ import java.util.Scanner;
 
 public class Client
 {
-	private static Scanner tast;
-	
 	private static Socket socket;
 	private static Scanner input;
 	private static PrintWriter output;
+
+	private static Scanner tast;
 	
 	public static void main(String[] args)
     {
 		try
 		{
-			socket = new Socket("127.0.0.1", 59168);
+			socket = new Socket("127.0.0.1", Server.PORTA);
 			input = new Scanner(socket.getInputStream());
 			output = new PrintWriter(socket.getOutputStream(), true);
 
@@ -36,7 +36,5 @@ public class Client
 		{
 			System.out.println(e.toString());
 		}
-
-		tast.nextLine();
 	}
 }

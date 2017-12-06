@@ -10,7 +10,7 @@ import java.util.Scanner;
 
 public class Server extends Thread
 {
-	private static final int PORTA = 59168;
+	public static final int PORTA = 59168;
 	
 	private static ServerSocket serverSocket;
 	private static Socket clientSocket;
