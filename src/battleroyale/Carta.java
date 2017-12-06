@@ -20,8 +20,8 @@ public class Carta
     public AbilitaCarta[] abilitaCarta;
     
 	public BufferedImage immagine;
-    public String effetto;
-    
+    public String strEffetto;
+    public EffettoCarta effetto;
     // Attributi necessari durante la partita
     public int saluteAtt;
     public int attaccoAtt;
@@ -50,7 +50,17 @@ public class Carta
 	// Eventuali abilita del personaggio
     public enum AbilitaCarta
     {
-    	PROVOCAZIONE, RUBAVITA, FURTIVO, CARICA, FURIA, IMMUNE, SCUDO, RANTOLO, GRIDO, EFFETTO, VELENO
+    	PROVOCAZIONE,    //L'avversario deve per forza attaccare i personaggi con PROVOCAZIONE prima di attaccare l'avversario    MAIN
+    	RUBAVITA,        //Quando il personaggio attacca ti cura per i danni inflitti                                             MAIN
+    	FURTIVO,         //Non può essere scelto come bersaglio finchè non attacca                                                MAIN
+    	CARICA,          //Può attaccare nello stesso turno in cui è stata messa                                                  MAIN
+    	FURIA,           //Può attaccare 2 volte in un turno                                                                      MAIN
+    	IMMUNE,			 //Non può essere scelto come bersaglio di carte magie o effetti                                          MAIN
+    	SCUDO,           //Ignora il primo danno che riceve                                                                       MAIN
+    	RANTOLO,         //Indica un effetto che si attiva quando il personaggio viene distrutto                                  MAIN
+    	GRIDO, 			 //Indica un effetto che si attiva quando il personaggio viene messo nel campo di battaglia               MAIN
+    	EFFETTO,		 //Indica un effetto che si attiva in determinate situazioni  -- Es. quando peschi una carta o quando un personaggio muore   CLASSE
+    	VELENO           //Distrugge immediatamente il bersaglio che attacca                                                      MAIN
     }
     
     //
@@ -58,14 +68,15 @@ public class Carta
     //
    
     // Carta magia
-    public Carta(BufferedImage img,String n, int costo_m, RaritaCarta rar, String eff)
+    public Carta(BufferedImage img,String n, int costo_m, RaritaCarta rar, EffettoCarta eff,String seff)
     {
     	immagine = img;
         costoMana = costo_m;
         nome = n;
         tipoCarta = TipoCarta.MAGIA;
         raritaCarta = rar;
-        effetto = eff;
+        effetto=eff;
+        strEffetto = seff;
     }
 
     /*// Carta magia durante la partita
@@ -80,7 +91,7 @@ public class Carta
     }*/
     
     // Carta personaggio
-    public Carta(BufferedImage img, String n, int costo_m, RaritaCarta rar, ClasseCarta cls, AbilitaCarta[] abilita, int atk, int sal, String eff)
+    public Carta(BufferedImage img, String n, int costo_m, RaritaCarta rar, ClasseCarta cls, AbilitaCarta[] abilita, int atk, int sal,EffettoCarta eff, String seff)
     {
     	immagine = img;
         costoMana = costo_m;
@@ -91,7 +102,8 @@ public class Carta
         abilitaCarta = abilita; //Un giocatore puo avere una o piu abilita
         tipoCarta = TipoCarta.PERSONAGGIO;
         raritaCarta = rar;
-        effetto = eff;
+        effetto=eff;
+        strEffetto = seff;
     }
     
     // Carta personaggio durante la partita

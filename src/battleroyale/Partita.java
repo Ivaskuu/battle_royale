@@ -17,6 +17,10 @@ public class Partita
 	public final int PRIMO_GG; // Soluzione temporanea (pigra) per manaMax TODO
 	public final Giocatore[] giocatori;
 	
+	//Salute del giocatore
+	public int saluteMax=30;
+	public int saluteAtt=30;
+	
 	// Il mana dei 2 o piu giocatori
 	public int manaMax;
 	public int manaAtt;
@@ -52,7 +56,7 @@ public class Partita
 		manaAtt = manaMax;
 
 		System.out.println("\nE' cominciata una nuova partita.");
-		System.out.println("Gioca per primo " + giocatori[turno].nomeGiocatore + ", cioè il giocatore numero " + turno + "\n");
+		System.out.println("Gioca per primo " + giocatori[turno].nomeGiocatore + ", cioï¿½ il giocatore numero " + turno + "\n");
 		
 		// Inizializza i giocatori
 		for(int i = 0; i < NUM_GG; i++)
@@ -127,8 +131,16 @@ public class Partita
 			
 			notificaClient();
 			
-			System.out.println(giocatori[turno].nomeGiocatore + " (" + turno + "), ha aggiunto una nuova carta sul campo, cioè "
+			System.out.println(giocatori[turno].nomeGiocatore + " (" + turno + "), ha aggiunto una nuova carta sul campo, cioï¿½ "
 					+ carta.nome);
+			
+			for (int i = 0; i < carta.abilitaCarta.length; i++) 
+			{
+				if(carta.abilitaCarta[i] == Carta.AbilitaCarta.GRIDO)
+				{
+					
+				}
+			}
 			
 			mostraCampoBattaglia(-1);
 		}
@@ -159,7 +171,7 @@ public class Partita
 				else
 				{
 					carteNelCampo[avversario].remove(idCartaAvv);
-					System.out.println("\nLa carta dell'avversario è stata distrutta\n");
+					System.out.println("\nLa carta dell'avversario ï¿½ stata distrutta\n");
 				}
 
 				// Rimuovi la vita della carta dell'attaccante
@@ -168,7 +180,7 @@ public class Partita
 				else
 				{
 					carteNelCampo[turno].remove(idCartaAtt);
-					System.out.println("\nLa carta dell'attaccante è stata distrutta\n");
+					System.out.println("\nLa carta dell'attaccante ï¿½ stata distrutta\n");
 				}
 				
 				notificaClient();
@@ -207,7 +219,7 @@ public class Partita
 			else
 			{
 				System.out.println("Il giocatore " + giocatore + " (" + giocatori[giocatore].nomeGiocatore + ") "
-						+ "non ha più carte nel deck.");
+						+ "non ha piï¿½ carte nel deck.");
 			}
 		}
 		
@@ -240,7 +252,7 @@ public class Partita
 						if(giocatore == turno)
 						{
 							if(carteNelCampo[turno].get(j).giocatePerTurnoAtt > 0) System.out.println("Carta giocabile\n");
-							else System.out.println("Carta già giocata questo turno\n");
+							else System.out.println("Carta giï¿½ giocata questo turno\n");
 						}
 					}
 				}
