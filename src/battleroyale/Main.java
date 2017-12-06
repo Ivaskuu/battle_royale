@@ -59,7 +59,7 @@ public class Main
             					
             					if(partita.carteNelCampo[partita.turno].get(Integer.parseInt("" + scelta)).giocatePerTurnoAtt <= 0)
             					{
-            						System.out.println("Hai già usato questa carta durante questo turno\n");
+            						System.out.println("Hai gia' usato questa carta durante questo turno\n");
             					}
         					}
         					while(partita.carteNelCampo[partita.turno].get(Integer.parseInt("" + scelta)).giocatePerTurnoAtt <= 0);
