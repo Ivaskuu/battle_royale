@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 
 import battleroyale.Partita.AggiornamentoPartita;
 import battleroyale.Partita.GiocatoreSlim;
+import battleroyale.Partita.Partita;
 import battleroyale.Partita.AggiornamentoPartita.AzionePartita;
 import battleroyale.Giocatore;
 
@@ -20,8 +21,10 @@ public class Client
 
 	private BufferedReader tast;
 	private int turno;
+
+	public Partita partita;
 	
-	public Client(String ip, Giocatore gg/*, Partita*/)
+	public Client(String ip, GiocatoreSlim gg2, Partita partita)
     {
 		try
 		{
@@ -29,12 +32,11 @@ public class Client
 			input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			output = new PrintWriter(socket.getOutputStream(), true);
 			tast = new BufferedReader(new InputStreamReader(System.in));
-
-			System.out.println("Connessione eseguita, inviamogli le info su di noi");
-			output.println(new Gson().toJson(GiocatoreSlim.fromGiocatore(gg)));
 			
-			System.out.println("Adesso dimmi chi comincia per primo, server");
-			System.out.println("Comincia per primo: " + input.readLine());
+			// 3 way handshake
+			GiocatoreSlim avversario = new Gson().fromJson(input.readLine(), GiocatoreSlim.class);
+			output.println(new Gson().toJson(gg2));
+			turno = Integer.parseInt(input.readLine());
 
 			do
 			{
@@ -47,12 +49,11 @@ public class Client
 					else System.out.println("Non ha nessun parametro");
 				}
 				
-				/*do
+				while(true);
 				{
 					AggiornamentoPartita agg = new Gson().fromJson(input.readLine(), AggiornamentoPartita.class);
 					if(agg.azione == AzionePartita.CambiaTurno) break;
 				}
-				while(true);*/
 			}
 			while(true);
 		}

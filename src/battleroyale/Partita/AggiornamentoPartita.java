@@ -26,7 +26,9 @@ public class AggiornamentoPartita
 	{
 		AggiungiCartaSulCampo, // La pos della carta nella classe CollezioneCarte
 		Attacco, // La pos nel carteSulCampo[] dell'attaccante e dell'avversario
-		Pesca, // La pos della carta nella classe CollezioneCarte
-		CambiaTurno // Nessun parametro
+		Pesca, // Le pos delle carta nella classe CollezioneCarte
+		CambiaTurno, // Nessun parametro
+		GameOver, // Il giocatore ha perso la partita
+		GameWin // Il giocatore ha vinto la partita
 	};
 }

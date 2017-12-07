@@ -55,7 +55,7 @@ public class MenuPrincipale
         				break;
         			case 1:
         				System.out.print("Per favore inserisca l'indirizzo IP: ");
-        				client = new Client(tast2.readLine(), gg);
+        				client = new Client(tast2.readLine(), GiocatoreSlim.fromGiocatore(gg));
         				break;
         			default:
         				System.out.println("\nCoes ?\n");

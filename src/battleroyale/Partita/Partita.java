@@ -1,11 +1,15 @@
 package battleroyale.Partita;
 
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
 import battleroyale.Carta;
 import battleroyale.CollezioneCarte;
+import battleroyale.ClientServer.Client;
+import battleroyale.ClientServer.Server;
+import battleroyale.Partita.AggiornamentoPartita.AzionePartita;
 import battleroyale.Carta.TipoCarta;
 
 public class Partita
@@ -17,58 +21,57 @@ public class Partita
 	
 	public final int NUM_GG;
 	public final int PRIMO_GG; // Soluzione temporanea (pigra) per manaMax TODO
-	public final GiocatoreSlim[] giocatori;
+
+	public final Combattente[] combattenti;
+	public int turno;
 	
-	// Il mana dei 2 o piu giocatori
-	public int manaMax;
-	public int manaAtt;
+	private Client client;
+	private Server server;
 	
-	// Le carte piazzate dai giocatori nel campo di battaglia
-	public ArrayList<Carta>[] carteNelCampo; // Array di ArrayList
-	
-	// Le carte che il giocatore ha pescato ma non aggiunto nel campo di battaglia
-	public ArrayList<Carta>[] mano; // Array di ArrayList
-	
-	// Il deck del giocatore
-	public ArrayList<Carta>[] deck; // Array di ArrayList
-	
-	// Le carte piazzate dai giocatori nel campo di battaglia
-	// public ArrayList<Carta> carteDistrutte; // Serve davvero ??
-	
-	// Quale giocatore sta giocando adesso
-	public int turno = 0;
-	
-	public Partita(GiocatoreSlim[] giocatori)
+	public Partita(GiocatoreSlim[] giocatori, Client client)
 	{
-		NUM_GG = giocatori.length;
-		this.giocatori = giocatori;
+		//this.client = client;
+		this.NUM_GG = giocatori.length;
 		
-		carteNelCampo = new ArrayList[NUM_GG];
-		mano = new ArrayList[NUM_GG];
-		deck = new ArrayList[NUM_GG];
-
-		PRIMO_GG = new Random().nextInt(NUM_GG);
-		turno = PRIMO_GG;
+		this.PRIMO_GG = new Random().nextInt(2);
+		this.turno = PRIMO_GG;
 		
-		manaMax = 1;
-		manaAtt = manaMax;
-
 		System.out.println("\nE' cominciata una nuova partita.");
 		System.out.println("Gioca per primo " + giocatori[turno].nome + ", cioè il giocatore numero " + turno + "\n");
 		
 		// Inizializza i giocatori
 		for(int i = 0; i < NUM_GG; i++)
 		{
-			carteNelCampo[i] = new ArrayList<Carta>();
-			mano[i] = new ArrayList<Carta>();
-			deck[i] = new ArrayList<Carta>();
-			
-			copiaEMescolaDeck(i);
-			
+			combattenti[i] = new Combattente(giocatori[i].nome, i == PRIMO_GG ? 1 : 0, getRandomDeck(giocatori[i].deck));
 			pescaCarta(i, 3);
 		}
 		
 		riepilogoPartita();
+
+		initPartita();
+		initClient(client, PRIMO_GG, deck[1]);
+	}
+	
+	public void initClient()
+	{
+		
+	}
+	
+	public Partita(GiocatoreSlim[] giocatori, int primoGG, Server server, ArrayList<Carta>[] deck)
+	{
+		this.client = client;
+		this.PRIMO_GG = primoGG;
+		this.turno = PRIMO_GG;
+
+		this.giocatori = giocatori;
+		this.NUM_GG = giocatori.length;
+		
+		initPartita();
+	}
+	
+	private void initPartita()
+	{
+		
 	}
 	
 	public void cambiaTurno()
@@ -189,16 +192,17 @@ public class Partita
 	{
 		for (int i = 0; i < nCarte; i++)
 		{
-			if(deck[giocatore].size() > 0)
+			if(combattenti[giocatore].deck.size() > 0)
 			{
-				if(mano[giocatore].size() < MAX_CARTE_MANO)
+				if(combattenti[giocatore].mano.size() < MAX_CARTE_MANO)
 				{
-					Carta cartaPescata = Carta.cartaToCartaPartita(deck[giocatore].get(0));
-					deck[giocatore].remove(0);
-					mano[giocatore].add(cartaPescata);
+					Carta cartaPescata = Carta.cartaToCartaPartita(combattenti[giocatore].deck.get(0));
+					combattenti[giocatore].deck.remove(0);
+					combattenti[giocatore].mano.add(cartaPescata);
 					
 					System.out.println("Il giocatore " + giocatore + " (" + giocatori[giocatore].nome + ") "
 							+ "ha pescato " + cartaPescata.nome + " (ATT: " + cartaPescata.attaccoAtt + " / HP: " + cartaPescata.saluteAtt + ").");
+					aggiornaAltroGiocatore(new AggiornamentoPartita(AzionePartita.Pesca)); // No param. perche tanto si pesca sempre la prima carta
 				}
 				else
 				{
@@ -309,14 +313,16 @@ public class Partita
 		System.out.println(riepilogo);
 	}
 	
-	public void copiaEMescolaDeck(int giocatore)
+	public ArrayList<Carta> getRandomDeck(int[] deck)
 	{
-		for (int i = 0; i < giocatori[giocatore].deck.length; i++)
+		ArrayList<Carta> randomDeck = new ArrayList<Carta>();
+		for (int i = 0; i < deck.length; i++)
 		{
-			deck[giocatore].add(CollezioneCarte.collezioneCarte[giocatori[giocatore].deck[i]]);
+			randomDeck.add(CollezioneCarte.collezioneCarte[deck[i]]);
 		}
 		
-		Collections.shuffle(deck[giocatore]);
+		Collections.shuffle(randomDeck);
+		return randomDeck;
 	}
 	
 	public void ripristinaGiocateCarte(int giocatore)
@@ -327,8 +333,15 @@ public class Partita
 		}
 	}
 	
-	public void notificaClient()
+	public void aggiornaAltroGiocatore(AggiornamentoPartita agg)
 	{
-		// TODO: Notifica i client
+		if(server != null) // Siamo il Server
+		{
+			
+		}
+		else // Siamo il Client
+		{
+			
+		}
 	}
 }
