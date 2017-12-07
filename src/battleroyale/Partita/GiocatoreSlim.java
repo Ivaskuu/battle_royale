@@ -1,4 +1,7 @@
-package battleroyale;
+package battleroyale.Partita;
+
+import battleroyale.CollezioneCarte;
+import battleroyale.Giocatore;
 
 // Versione meno pesante della classe Giocatore
 public class GiocatoreSlim

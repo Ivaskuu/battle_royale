@@ -9,8 +9,10 @@ import java.net.URL;
 
 import com.google.gson.Gson;
 
-import battleroyale.GiocatoreSlim;
-import battleroyale.Partita;
+import battleroyale.Partita.AggiornamentoPartita;
+import battleroyale.Partita.AggiornamentoPartita.AzionePartita;
+import battleroyale.Partita.GiocatoreSlim;
+import battleroyale.Partita.Partita;
 
 public class Server extends Thread
 {
@@ -39,13 +41,18 @@ public class Server extends Thread
 			
 			System.out.println("Il client " + clientSocket.getInetAddress().toString() + " si 'e collegato.");
 			
+			// Inizializzare la partita
 			GiocatoreSlim gg2 = new Gson().fromJson(input.readLine(), GiocatoreSlim.class);
+			System.out.println("\nDiamo il benvenuto ad " + gg2.nome);
 			
-			System.out.println("\nInfo sul nuovo gg: " + new Gson().toJson(gg2));
 			partita = new Partita(new GiocatoreSlim[] {gg1, gg2});
+			output.println(partita.PRIMO_GG);
 			
-			System.out.println(new Gson().toJson(partita));
-			output.println(new Gson().toJson(partita));
+			output.println(new Gson().toJson(new AggiornamentoPartita(AzionePartita.Attacco, new Object[]{0, 2})));
+			output.println(new Gson().toJson(new AggiornamentoPartita(AzionePartita.AggiungiCartaSulCampo, 13)));
+			output.println(new Gson().toJson(new AggiornamentoPartita(AzionePartita.Pesca, 21)));
+
+			output.println(new Gson().toJson(new AggiornamentoPartita(AzionePartita.CambiaTurno)));
 		}
 		catch(Exception e)
 		{

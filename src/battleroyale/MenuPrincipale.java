@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 import com.google.gson.Gson;
 
+import battleroyale.Partita.GiocatoreSlim;
 import battleroyale.ClientServer.Client;
 import battleroyale.ClientServer.Server;
 

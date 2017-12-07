@@ -1,9 +1,11 @@
-package battleroyale;
+package battleroyale.Partita;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
+import battleroyale.Carta;
+import battleroyale.CollezioneCarte;
 import battleroyale.Carta.TipoCarta;
 
 public class Partita
