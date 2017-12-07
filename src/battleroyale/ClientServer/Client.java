@@ -1,40 +1,45 @@
 package battleroyale.ClientServer;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.Scanner;
+
+import com.google.gson.Gson;
+
+import battleroyale.Giocatore;
+import battleroyale.GiocatoreSlim;
 
 public class Client
 {
 	private static Socket socket;
-	private static Scanner input;
+	private static BufferedReader input;
 	private static PrintWriter output;
 
-	private static Scanner tast;
+	private static BufferedReader tast;
 	
-	public static void main(String[] args)
+	public Client(String ip, Giocatore gg)
     {
 		try
 		{
-			socket = new Socket("127.0.0.1", Server.PORTA);
-			input = new Scanner(socket.getInputStream());
+			System.out.println("ip : " + ip);
+			
+			socket = new Socket(ip, Server.PORTA);
+			input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			output = new PrintWriter(socket.getOutputStream(), true);
 
-			System.out.println("Connessione eseguita");
+			System.out.println("Connessione eseguita, inviamogli le info sul giocatore");
+			output.println(new Gson().toJson(GiocatoreSlim.fromGiocatore(gg)));
 			
-			tast = new Scanner(System.in);
+			System.out.println("Adesso mandami le info sulla partita, tipo chi comincia per primo, server");
+			System.out.println("Ho ricevuto le info sulla partita: " + input.readLine());
 			
-			while(true)
-			{
-				System.out.print("\nScrivi qualcosa da inviare al server: ");
-				output.println(tast.nextLine());
-				
-				System.out.println("Il server ha risposto: \"" + input.nextLine() + "\"");
-			}
+			tast = new BufferedReader(new InputStreamReader(System.in));
+			while(true) tast.readLine();
 		}
 		catch(Exception e)
 		{
-			System.out.println(e.toString());
+			e.printStackTrace();
 		}
 	}
 }

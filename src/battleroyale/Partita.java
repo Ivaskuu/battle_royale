@@ -15,7 +15,7 @@ public class Partita
 	
 	public final int NUM_GG;
 	public final int PRIMO_GG; // Soluzione temporanea (pigra) per manaMax TODO
-	public final Giocatore[] giocatori;
+	public final GiocatoreSlim[] giocatori;
 	
 	// Il mana dei 2 o piu giocatori
 	public int manaMax;
@@ -36,7 +36,7 @@ public class Partita
 	// Quale giocatore sta giocando adesso
 	public int turno = 0;
 	
-	public Partita(Giocatore[] giocatori)
+	public Partita(GiocatoreSlim[] giocatori)
 	{
 		NUM_GG = giocatori.length;
 		this.giocatori = giocatori;
@@ -52,7 +52,7 @@ public class Partita
 		manaAtt = manaMax;
 
 		System.out.println("\nE' cominciata una nuova partita.");
-		System.out.println("Gioca per primo " + giocatori[turno].nomeGiocatore + ", cioè il giocatore numero " + turno + "\n");
+		System.out.println("Gioca per primo " + giocatori[turno].nome + ", cioè il giocatore numero " + turno + "\n");
 		
 		// Inizializza i giocatori
 		for(int i = 0; i < NUM_GG; i++)
@@ -82,7 +82,7 @@ public class Partita
 		
 		notificaClient();
 		System.out.println("\n-- Turno cambiato --");
-		System.out.println("Tocca giocare a " + giocatori[turno].nomeGiocatore);
+		System.out.println("Tocca giocare a " + giocatori[turno].nome);
 		
 		pescaCarta(turno, 1);
 		
@@ -109,7 +109,7 @@ public class Partita
 	{
 		if(carteNelCampo[turno].size() >= MAX_CARTE_CAMPO) // Se ci sono troppe carte sul campo
 		{
-			System.out.println(giocatori[turno].nomeGiocatore + " ha raggiunto il numero max di carte sul campo (" + MAX_CARTE_CAMPO + ")");
+			System.out.println(giocatori[turno].nome + " ha raggiunto il numero max di carte sul campo (" + MAX_CARTE_CAMPO + ")");
 			return;
 		}
 
@@ -117,7 +117,7 @@ public class Partita
 		
 		if(carta.costoMana > manaAtt) // Se il giocatore non ha abbastanza mana
 		{
-			System.out.println(giocatori[turno].nomeGiocatore + " non ha abbastanza mana per aggiungere " + carta.nome + " (costa " + carta.costoMana + " e hai " + manaAtt + ")");
+			System.out.println(giocatori[turno].nome + " non ha abbastanza mana per aggiungere " + carta.nome + " (costa " + carta.costoMana + " e hai " + manaAtt + ")");
 		}
 		else
 		{
@@ -127,7 +127,7 @@ public class Partita
 			
 			notificaClient();
 			
-			System.out.println(giocatori[turno].nomeGiocatore + " (" + turno + "), ha aggiunto una nuova carta sul campo, cioè "
+			System.out.println(giocatori[turno].nome + " (" + turno + "), ha aggiunto una nuova carta sul campo, cioè "
 					+ carta.nome);
 			
 			mostraCampoBattaglia(-1);
@@ -151,7 +151,7 @@ public class Partita
 				Carta avv = carteNelCampo[avversario].get(idCartaAvv);
 				
 				carteNelCampo[turno].get(idCartaAtt).giocatePerTurnoAtt--;
-				System.out.println(giocatori[turno].nomeGiocatore + " (" + att.nome + ") sta attcando " + giocatori[avversario].nomeGiocatore + " (" + avv.nome + ")");
+				System.out.println(giocatori[turno].nome + " (" + att.nome + ") sta attcando " + giocatori[avversario].nome + " (" + avv.nome + ")");
 				
 				// Rimuovi la vita della carta dell'avversario
 				avv.saluteAtt -= att.attaccoAtt;
@@ -195,18 +195,18 @@ public class Partita
 					deck[giocatore].remove(0);
 					mano[giocatore].add(cartaPescata);
 					
-					System.out.println("Il giocatore " + giocatore + " (" + giocatori[giocatore].nomeGiocatore + ") "
+					System.out.println("Il giocatore " + giocatore + " (" + giocatori[giocatore].nome + ") "
 							+ "ha pescato " + cartaPescata.nome + " (ATT: " + cartaPescata.attaccoAtt + " / HP: " + cartaPescata.saluteAtt + ").");
 				}
 				else
 				{
-					System.out.println(giocatori[turno].nomeGiocatore + " ha raggiunto il numero max di carte nella mano (" + MAX_CARTE_MANO + ")");
+					System.out.println(giocatori[turno].nome + " ha raggiunto il numero max di carte nella mano (" + MAX_CARTE_MANO + ")");
 					return;
 				}
 			}
 			else
 			{
-				System.out.println("Il giocatore " + giocatore + " (" + giocatori[giocatore].nomeGiocatore + ") "
+				System.out.println("Il giocatore " + giocatore + " (" + giocatori[giocatore].nome + ") "
 						+ "non ha più carte nel deck.");
 			}
 		}
@@ -224,11 +224,11 @@ public class Partita
 			{
 				if(carteNelCampo[i].size() == 0) // Se non ha nessuna carta, fai vedere un bel messaggio
 				{
-					System.out.println("Il giocatore " + i + " (" + giocatori[i].nomeGiocatore + "), non ha nessuna carta nel campo da battaglia");
+					System.out.println("Il giocatore " + i + " (" + giocatori[i].nome + "), non ha nessuna carta nel campo da battaglia");
 				}
 				else
 				{
-					System.out.println("\nGiocatore " + i + " (" + giocatori[i].nomeGiocatore + ")");
+					System.out.println("\nGiocatore " + i + " (" + giocatori[i].nome + ")");
 					
 					for (int j = 0; j < carteNelCampo[i].size(); j++)
 					{
@@ -248,7 +248,7 @@ public class Partita
 		}
 		else // Fai vedere le carte in campo di un determinato giocatore
 		{
-			System.out.println("\nGiocatore " + giocatore + " (" + giocatori[giocatore].nomeGiocatore + ")");
+			System.out.println("\nGiocatore " + giocatore + " (" + giocatori[giocatore].nome + ")");
 			
 			for (int j = 0; j < carteNelCampo[giocatore].size(); j++)
 			{
@@ -289,7 +289,7 @@ public class Partita
 		
 		for (int i = 0; i < NUM_GG; i++)
 		{
-			riepilogo += "Giocatore " + i + ", " + giocatori[i].nomeGiocatore + ":\n";
+			riepilogo += "Giocatore " + i + ", " + giocatori[i].nome + ":\n";
 			riepilogo += "Ha " + manaAtt + " mana\n";
 			
 			riepilogo += "Ha " + carteNelCampo[i].size() + " carte nel campo da battaglia:\n";
@@ -311,7 +311,7 @@ public class Partita
 	{
 		for (int i = 0; i < giocatori[giocatore].deck.length; i++)
 		{
-			deck[giocatore].add(giocatori[giocatore].deck[i]);
+			deck[giocatore].add(CollezioneCarte.collezioneCarte[giocatori[giocatore].deck[i]]);
 		}
 		
 		Collections.shuffle(deck[giocatore]);
