@@ -1,5 +1,6 @@
 package battleroyale.Partita;
 
+import java.io.BufferedReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,8 +29,9 @@ public class Partita
 	
 	public ArrayList<Carta>[] campo;
 	public int turno;
-	
-	private PrintWriter altroGG;
+
+	private BufferedReader input;
+	private PrintWriter output;
 	
 
 	//
@@ -38,9 +40,11 @@ public class Partita
 	
 	// Chiamata dal server
 	// gg1=questo giocatore (server), gg2=l'altro giocatore (client)
-	public Partita(GiocatoreSlim gg1, GiocatoreSlim gg2, PrintWriter altroGG)
+	public Partita(GiocatoreSlim gg1, GiocatoreSlim gg2, BufferedReader input, PrintWriter output)
 	{
-		this.altroGG = altroGG;
+		this.input = input;
+		this.output = output;
+		
 		this.NUM_GG = 2;
 		
 		this.turno = 0;
@@ -68,20 +72,21 @@ public class Partita
 		pescaCarta(); pescaCarta(); pescaCarta(); if(THIS_GG == 1) pescaCarta();
 		riepilogoPartita();
 		
-		menuPartita = new MenuPartita(this, THIS_GG);
+		menuPartita = new MenuPartita(this, THIS_GG, input);
 	}
 	
 	public void initClient(GiocatoreSlim gg1)
 	{
-		altroGG.println(new Gson().toJson(gg1));
-		altroGG.println(contrario(THIS_GG));
+		output.println(new Gson().toJson(gg1));
+		output.println(contrario(THIS_GG));
 	}
 	
 	// Chiamata dal client dopo la rispostadel server
 	// gg1=questo giocatore (client), gg2=l'altro giocatore (server)
-	public Partita(GiocatoreSlim gg1, GiocatoreSlim gg2, int posThisGG, PrintWriter altroGG)
+	public Partita(GiocatoreSlim gg1, GiocatoreSlim gg2, int posThisGG, BufferedReader input, PrintWriter output)
 	{		
-		this.altroGG = altroGG;
+		this.input = input;
+		this.output = output;
 		
 		this.NUM_GG = 2;
 		this.THIS_GG = posThisGG;
@@ -108,7 +113,7 @@ public class Partita
 		pescaCarta(); pescaCarta(); pescaCarta(); if(THIS_GG == 1) pescaCarta();
 		riepilogoPartita();
 		
-		menuPartita = new MenuPartita(this, THIS_GG);
+		menuPartita = new MenuPartita(this, THIS_GG, input);
 	}
 	
 
@@ -131,9 +136,6 @@ public class Partita
 		
 		pescaCarta();
 		riepilogoPartita();
-		
-		menuPartita = null;
-		menuPartita = new MenuPartita(this, 0);
 	}
 	
 	public void toccaTe()
@@ -405,7 +407,7 @@ public class Partita
 	
 	public void aggiornaAltroGiocatore(AggiornamentoPartita agg)
 	{
-		altroGG.println(new Gson().toJson(agg));
+		output.println(new Gson().toJson(agg));
 	}
 	
 	public void riceviAggiornamento(AggiornamentoPartita agg)
@@ -419,6 +421,7 @@ public class Partita
 				farsiAttacare(new Gson().fromJson(agg.payload[0], int.class), new Gson().fromJson(agg.payload[1], int.class));
 				break;
 			case CambiaTurno:
+				System.out.println("Tocca Me");
 				toccaMe();
 				break;
 			case GameOver:

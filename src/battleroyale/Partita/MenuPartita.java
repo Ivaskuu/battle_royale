@@ -4,16 +4,22 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class MenuPartita extends Thread
+import com.google.gson.Gson;
+
+import battleroyale.Partita.AggiornamentoPartita.AzionePartita;
+
+public class MenuPartita
 {
 	private Partita partita;
+	private BufferedReader input;
 	
-	public MenuPartita(Partita partita, int thisGG)
+	public MenuPartita(Partita partita, int thisGG, BufferedReader input)
 	{
 		this.partita = partita;
+		this.input = input;
 		
 		if(thisGG == 0) turnoMio();
-		else start();
+		else aspettaCambioTurno();
 	}
 	
 	public void turnoMio()
@@ -111,7 +117,7 @@ public class MenuPartita extends Thread
         				break;
         			case '6':
         				partita.toccaTe();
-        				start();
+        				aspettaCambioTurno();
         				return;
         			default:
         				System.out.println("\nCoes ?\n");
@@ -126,22 +132,29 @@ public class MenuPartita extends Thread
         while(true);
 	}
 	
-	@Override
-	public void run()
+	public void aspettaCambioTurno()
 	{
-		BufferedReader tast = new BufferedReader(new InputStreamReader(System.in));
-		
 		try
 		{
+			System.out.println("Sta giocando l'altro giocatore...");
 			while(partita.turno == partita.contrario(partita.THIS_GG))
 			{
-				System.out.println("Sta giocando l'avversario ...");
-				tast.readLine();
+				String msgIn = input.readLine();
+				System.out.println("MsgIn : " + msgIn);
+				
+				// Error maybe because input.readLine() is not ready ?
+				
+				AggiornamentoPartita agg = new Gson().fromJson(msgIn, AggiornamentoPartita.class);
+				partita.riceviAggiornamento(agg);
+				
+				System.out.println("Ciao");
+				
+				if(agg.azione == AzionePartita.CambiaTurno) return;
 			}
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
-			System.out.println(e);
+			e.printStackTrace();
 		}
 	}
 }

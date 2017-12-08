@@ -15,7 +15,7 @@ import battleroyale.Partita.AggiornamentoPartita.AzionePartita;
 import battleroyale.Partita.GiocatoreSlim;
 import battleroyale.Partita.Partita;
 
-public class Server extends Thread
+public class Server
 {
 	public static final int PORTA = 59168;
 	
@@ -43,9 +43,7 @@ public class Server extends Thread
 			System.out.println("Il client " + clientSocket.getInetAddress().toString() + " si 'e collegato.");
 			
 			GiocatoreSlim gg2 = new Gson().fromJson(input.readLine(), GiocatoreSlim.class);
-			partita = new Partita(gg1, gg2, output);
-			
-			start();
+			partita = new Partita(gg1, gg2, input, output);
 		}
 		catch(Exception e)
 		{
@@ -67,25 +65,6 @@ public class Server extends Thread
 		{
 			e.printStackTrace();
 			return null;
-		}
-	}
-	
-	@Override
-	public void run()
-	{
-		System.out.println("Thread");
-		try
-		{
-			//while(partita.turno == partita.contrario(partita.THIS_GG))
-			while(true)
-			{
-				AggiornamentoPartita agg = new Gson().fromJson(input.readLine(), AggiornamentoPartita.class);
-				partita.riceviAggiornamento(agg);
-			}
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
 		}
 	}
 }
