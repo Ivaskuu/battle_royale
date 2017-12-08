@@ -19,7 +19,7 @@ public class MenuPartita
 		this.input = input;
 		
 		if(thisGG == 0) turnoMio();
-		else aspettaCambioTurno();
+		else aspettaCambioTurno(true);
 	}
 	
 	public void turnoMio()
@@ -116,9 +116,8 @@ public class MenuPartita
         				}
         				break;
         			case '6':
-        				partita.toccaTe();
-        				aspettaCambioTurno();
-        				return;
+        				aspettaCambioTurno(false);
+        				break;
         			default:
         				System.out.println("\nCoes ?\n");
         				break;
@@ -132,25 +131,23 @@ public class MenuPartita
         while(true);
 	}
 	
-	public void aspettaCambioTurno()
+	public void aspettaCambioTurno(boolean primaVolta)
 	{
 		try
 		{
+			if(!primaVolta) partita.toccaTe();
 			System.out.println("Sta giocando l'altro giocatore...");
-			while(partita.turno == partita.contrario(partita.THIS_GG))
+			
+			while(true)
 			{
 				String msgIn = input.readLine();
-				System.out.println("MsgIn : " + msgIn);
-				
-				// Error maybe because input.readLine() is not ready ?
-				
 				AggiornamentoPartita agg = new Gson().fromJson(msgIn, AggiornamentoPartita.class);
 				partita.riceviAggiornamento(agg);
 				
-				System.out.println("Ciao");
-				
-				if(agg.azione == AzionePartita.CambiaTurno) return;
+				if(agg.azione == AzionePartita.CambiaTurno) break;
 			}
+			
+			if(primaVolta) turnoMio();
 		}
 		catch (Exception e)
 		{

@@ -30,7 +30,6 @@ public class Partita
 	public ArrayList<Carta>[] campo;
 	public int turno;
 
-	private BufferedReader input;
 	private PrintWriter output;
 	
 
@@ -42,7 +41,6 @@ public class Partita
 	// gg1=questo giocatore (server), gg2=l'altro giocatore (client)
 	public Partita(GiocatoreSlim gg1, GiocatoreSlim gg2, BufferedReader input, PrintWriter output)
 	{
-		this.input = input;
 		this.output = output;
 		
 		this.NUM_GG = 2;
@@ -84,8 +82,7 @@ public class Partita
 	// Chiamata dal client dopo la rispostadel server
 	// gg1=questo giocatore (client), gg2=l'altro giocatore (server)
 	public Partita(GiocatoreSlim gg1, GiocatoreSlim gg2, int posThisGG, BufferedReader input, PrintWriter output)
-	{		
-		this.input = input;
+	{
 		this.output = output;
 		
 		this.NUM_GG = 2;
