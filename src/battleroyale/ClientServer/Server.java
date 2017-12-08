@@ -41,19 +41,16 @@ public class Server extends Thread
 			
 			System.out.println("Il client " + clientSocket.getInetAddress().toString() + " si 'e collegato.");
 			
-			// 3 way handshake
-			/* [1] */output.println(new Gson().toJson(gg1));
-			/* [2] */partita = new Partita(new GiocatoreSlim[] {gg1, new Gson().fromJson(input.readLine(), GiocatoreSlim.class)});
-			/* [3] */output.println(partita.PRIMO_GG);
+			GiocatoreSlim gg2 = new Gson().fromJson(input.readLine(), GiocatoreSlim.class);
+			partita = new Partita(new GiocatoreSlim[] {gg1, gg2}, output);
 			
-			System.out.println("\nDiamo il benvenuto ad " + partita.giocatori[1]);
-			System.out.println("\nGioca per primo " + partita.giocatori[partita.PRIMO_GG]);
+			System.out.println("\nDiamo il benvenuto al giocatore " + gg2.nome);
 			
-			output.println(new Gson().toJson(new AggiornamentoPartita(AzionePartita.Attacco, new Object[]{0, 2})));
-			output.println(new Gson().toJson(new AggiornamentoPartita(AzionePartita.AggiungiCartaSulCampo, 13)));
-			output.println(new Gson().toJson(new AggiornamentoPartita(AzionePartita.Pesca, 21)));
+			//output.println(new Gson().toJson(new AggiornamentoPartita(AzionePartita.Attacco, new Object[]{0, 2})));
+			//output.println(new Gson().toJson(new AggiornamentoPartita(AzionePartita.AggiungiCartaSulCampo, 13)));
+			//output.println(new Gson().toJson(new AggiornamentoPartita(AzionePartita.Pesca, 21)));
 
-			output.println(new Gson().toJson(new AggiornamentoPartita(AzionePartita.CambiaTurno)));
+			//output.println(new Gson().toJson(new AggiornamentoPartita(AzionePartita.CambiaTurno)));
 		}
 		catch(Exception e)
 		{

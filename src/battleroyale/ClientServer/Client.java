@@ -11,6 +11,7 @@ import battleroyale.Partita.AggiornamentoPartita;
 import battleroyale.Partita.GiocatoreSlim;
 import battleroyale.Partita.Partita;
 import battleroyale.Partita.AggiornamentoPartita.AzionePartita;
+import battleroyale.Partita.Combattente;
 import battleroyale.Giocatore;
 
 public class Client
@@ -24,7 +25,7 @@ public class Client
 
 	public Partita partita;
 	
-	public Client(String ip, GiocatoreSlim gg2, Partita partita)
+	public Client(String ip, GiocatoreSlim gg, Partita partita)
     {
 		try
 		{
@@ -33,11 +34,11 @@ public class Client
 			output = new PrintWriter(socket.getOutputStream(), true);
 			tast = new BufferedReader(new InputStreamReader(System.in));
 			
-			// 3 way handshake
-			GiocatoreSlim avversario = new Gson().fromJson(input.readLine(), GiocatoreSlim.class);
-			output.println(new Gson().toJson(gg2));
-			turno = Integer.parseInt(input.readLine());
-
+			output.println(new Gson().toJson(gg));
+			Combattente primoGG = new Gson().fromJson(input.readLine(), Combattente.class);
+			Combattente secondoGG = new Gson().fromJson(input.readLine(), Combattente.class);
+			int THIS_GG = Integer.parseInt(input.readLine());
+			
 			do
 			{
 				while(true)

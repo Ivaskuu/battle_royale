@@ -13,7 +13,6 @@ public class Combattente//SenzaPatente <= fa rima (iury)
 	
 	public ArrayList<Carta> deck;
 	public ArrayList<Carta> mano;
-	public ArrayList<Carta> campo;
 	
 	public Combattente(String nome, int manaMax, ArrayList<Carta> deck)
 	{
@@ -23,6 +22,5 @@ public class Combattente//SenzaPatente <= fa rima (iury)
 		
 		this.deck = deck;
 		this.mano = new ArrayList<Carta>();
-		this.campo = new ArrayList<Carta>();
 	}
 }
