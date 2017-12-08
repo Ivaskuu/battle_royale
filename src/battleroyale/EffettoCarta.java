@@ -1,16 +1,38 @@
 package battleroyale;
 
+import java.util.Random;
+
 public class EffettoCarta {
 	
 	public TriggerEffetto triggerEffetto;
-	public TipoEffetto tipoEffetto;
+	public Effetto effetto;
+	public Object[] payload;
 
-	public EffettoCarta(TriggerEffetto triggerEffetto, TipoEffetto tipoEffetto) 
+
+	public EffettoCarta(TriggerEffetto triggerEffetto, Effetto effetto) 
 	{
 		this.triggerEffetto = triggerEffetto;
-		this.tipoEffetto = tipoEffetto;
-	}
+		this.effetto= effetto;
 
+	}
+	
+	public EffettoCarta(TriggerEffetto triggerEffetto, Effetto effetto, Object payload) 
+	{
+		this.triggerEffetto = triggerEffetto;
+		this.effetto= effetto;
+		this.payload=new Object[]{payload}; 
+
+	}
+	
+	public EffettoCarta(TriggerEffetto triggerEffetto, Effetto effetto, Object[] payload) 
+	{
+		this.triggerEffetto = triggerEffetto;
+		this.effetto= effetto;
+		this.payload = payload;
+
+	}
+	
+	
 
 	public static enum TriggerEffetto
 	{
@@ -20,17 +42,16 @@ public class EffettoCarta {
 		OnDistruggi,
 		OnSubisciDanno,
 		OnEvoca,
-						//TODO
+						//TODO Aggiungere altri trigger
 	}
 	
-	public static enum TipoEffetto
+	public static enum Effetto
 	{
-		EvocaCarta,
+		PescaCarta, 
+		CopiaCarta,
 		DistruggiCarta, 
-		SilenziaCarta,
-		Converti,
-		Pesca,
-		
+		DaiVita,
+						//TODO Aggiungere altri Tipoeffetto
 	}
 	
 	

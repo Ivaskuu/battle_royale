@@ -68,13 +68,12 @@ public class Carta
     //
    
     // Carta magia
-    public Carta(BufferedImage img,String n, int costo_m, RaritaCarta rar, EffettoCarta eff,String seff)
+    public Carta(BufferedImage img,String n, int costo_m, RaritaCarta rar,EffettoCarta eff,String seff)
     {
     	immagine = img;
         costoMana = costo_m;
         nome = n;
         tipoCarta = TipoCarta.MAGIA;
-        raritaCarta = rar;
         effetto=eff;
         strEffetto = seff;
     }
