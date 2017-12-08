@@ -4,9 +4,19 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class MenuPartita
+public class MenuPartita extends Thread
 {
-	public static void turnoMio(Partita partita)
+	private Partita partita;
+	
+	public MenuPartita(Partita partita, int thisGG)
+	{
+		this.partita = partita;
+		
+		if(thisGG == 0) turnoMio();
+		else start();
+	}
+	
+	public void turnoMio()
 	{
 		BufferedReader tast = new BufferedReader(new InputStreamReader(System.in));
         
@@ -101,6 +111,7 @@ public class MenuPartita
         				break;
         			case '6':
         				partita.toccaTe();
+        				start();
         				return;
         			default:
         				System.out.println("\nCoes ?\n");
@@ -115,7 +126,8 @@ public class MenuPartita
         while(true);
 	}
 	
-	public static void turnoSuo(Partita partita)
+	@Override
+	public void run()
 	{
 		BufferedReader tast = new BufferedReader(new InputStreamReader(System.in));
 		
@@ -126,8 +138,6 @@ public class MenuPartita
 				System.out.println("Sta giocando l'avversario ...");
 				tast.readLine();
 			}
-			
-			turnoMio(partita);
 		}
 		catch(Exception e)
 		{

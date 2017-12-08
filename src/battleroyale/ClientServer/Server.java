@@ -45,8 +45,6 @@ public class Server extends Thread
 			GiocatoreSlim gg2 = new Gson().fromJson(input.readLine(), GiocatoreSlim.class);
 			partita = new Partita(gg1, gg2, output);
 			
-			System.out.println("\nDiamo il benvenuto al giocatore " + gg2.nome);
-			
 			start();
 		}
 		catch(Exception e)
@@ -75,9 +73,11 @@ public class Server extends Thread
 	@Override
 	public void run()
 	{
+		System.out.println("Thread");
 		try
 		{
-			while(partita.turno == partita.contrario(partita.THIS_GG))
+			//while(partita.turno == partita.contrario(partita.THIS_GG))
+			while(true)
 			{
 				AggiornamentoPartita agg = new Gson().fromJson(input.readLine(), AggiornamentoPartita.class);
 				partita.riceviAggiornamento(agg);

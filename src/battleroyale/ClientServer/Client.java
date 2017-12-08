@@ -39,6 +39,7 @@ public class Client extends Thread
 			int THIS_GG = Integer.parseInt(input.readLine());
 			
 			partita = new Partita(gg1, gg2, THIS_GG, output);
+
 			start();
 		}
 		catch(Exception e)
@@ -53,7 +54,8 @@ public class Client extends Thread
 		try
 		{
 			// Ascoltare l'altro giocatore
-			while(partita.turno == partita.contrario(partita.THIS_GG))
+			//while(partita.turno == partita.contrario(partita.THIS_GG))
+			while(true)
 			{
 				AggiornamentoPartita agg = new Gson().fromJson(input.readLine(), AggiornamentoPartita.class);
 				partita.riceviAggiornamento(agg);

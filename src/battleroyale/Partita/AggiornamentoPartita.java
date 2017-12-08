@@ -3,23 +3,23 @@ package battleroyale.Partita;
 public class AggiornamentoPartita
 {
 	public AzionePartita azione;
-	public Object[] parametri;
+	public String[] payload;
 	
 	public AggiornamentoPartita(AzionePartita azione)
 	{
 		this.azione = azione;
 	}
 	
-	public AggiornamentoPartita(AzionePartita azione, Object parametro)
+	public AggiornamentoPartita(AzionePartita azione, String payload)
 	{
 		this.azione = azione;
-		this.parametri = new Object[] {parametro};
+		this.payload = new String[] {payload};
 	}
 	
-	public AggiornamentoPartita(AzionePartita azione, Object[] parametri)
+	public AggiornamentoPartita(AzionePartita azione, String[] payload)
 	{
 		this.azione = azione;
-		this.parametri = parametri;
+		this.payload = payload;
 	}
 	
 	public enum AzionePartita

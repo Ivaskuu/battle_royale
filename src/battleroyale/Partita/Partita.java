@@ -59,16 +59,16 @@ public class Partita
 		if(THIS_GG == 0)
 		{
 			System.out.println("Giochi tu per primo\n");
-			MenuPartita.turnoMio(this);
 		}
 		else
 		{
 			System.out.println("Inizia l'altro giocatore\n");
-			MenuPartita.turnoSuo(this);
 		}
 		
 		pescaCarta(); pescaCarta(); pescaCarta(); if(THIS_GG == 1) pescaCarta();
 		riepilogoPartita();
+		
+		menuPartita = new MenuPartita(this, THIS_GG);
 	}
 	
 	public void initClient(GiocatoreSlim gg1)
@@ -99,18 +99,16 @@ public class Partita
 		if(THIS_GG == 0)
 		{
 			System.out.println("Giochi tu per primo\n");
-			MenuPartita.turnoMio(this);
 		}
 		else
 		{
 			System.out.println("Inizia l'altro giocatore\n");
-			MenuPartita.turnoSuo(this);
 		}
 		
 		pescaCarta(); pescaCarta(); pescaCarta(); if(THIS_GG == 1) pescaCarta();
 		riepilogoPartita();
 		
-		//menuPartita = new MenuPartita(this);
+		menuPartita = new MenuPartita(this, THIS_GG);
 	}
 	
 
@@ -133,15 +131,15 @@ public class Partita
 		
 		pescaCarta();
 		riepilogoPartita();
+		
+		menuPartita = null;
+		menuPartita = new MenuPartita(this, 0);
 	}
 	
 	public void toccaTe()
 	{
 		turno = contrario(turno);
 		aggiornaAltroGiocatore(new AggiornamentoPartita(AzionePartita.CambiaTurno));
-		
-
-		MenuPartita.turnoSuo(this);
 	}
 	
 	public void controllaEffettiCarte()
@@ -165,6 +163,7 @@ public class Partita
 		}
 
 		Carta carta = combattente.mano.get(posMazzo);
+		//carta.giocatePerTurnoAtt = 0;
 		if(carta.costoMana > combattente.manaAtt) // Se il giocatore non ha abbastanza mana
 		{
 			System.out.println("Non hai abbastanza mana per aggiungere " + carta.nome + " (costa " + carta.costoMana + " ma hai " + combattente.manaAtt + ")");
@@ -175,7 +174,7 @@ public class Partita
 			campo[THIS_GG].add(carta);
 			combattente.mano.remove(posMazzo);
 
-			aggiornaAltroGiocatore(new AggiornamentoPartita(AzionePartita.AggiungiCartaSulCampo, carta));
+			aggiornaAltroGiocatore(new AggiornamentoPartita(AzionePartita.AggiungiCartaSulCampo, new Gson().toJson(carta)));
 			
 			System.out.println(carta.nome + " � stato/a aggiunto/a sul campo");			
 			mostraCampoBattaglia(-1);
@@ -220,7 +219,7 @@ public class Partita
 					System.out.println("\nLa tua carta � stata distrutta\n");
 				}
 				
-				aggiornaAltroGiocatore(new AggiornamentoPartita(AzionePartita.Attacco, new int[] {idCartaAtt, idCartaAvv}));
+				aggiornaAltroGiocatore(new AggiornamentoPartita(AzionePartita.Attacco, new String[] {new Gson().toJson(idCartaAtt), new Gson().toJson(idCartaAvv)}));
 			}
 			else
 			{
@@ -327,8 +326,8 @@ public class Partita
 			{
 				System.out.println("Carta " + j + "\n"
 						+ "Nome: " + campo[giocatore].get(j).nome + "\n"
-						+ "Salute: " + campo[giocatore].get(j).saluteAtt + "\n"
 						+ "Attacco: " + campo[giocatore].get(j).attaccoAtt + "\n"
+						+ "Salute: " + campo[giocatore].get(j).saluteAtt + "\n"
 						+ "Effetto: " + "\n");
 				
 				if(campo[THIS_GG].get(j).giocatePerTurnoAtt > 0) System.out.println("Carta giocabile\n");
@@ -351,9 +350,9 @@ public class Partita
 			{
 				System.out.println("Carta " + j + "\n"
 						+ "Nome: " + combattente.mano.get(j).nome + "\n"
-						+ "Salute: " + combattente.mano.get(j).saluteAtt + "\n"
-						+ "Attacco: " + combattente.mano.get(j).attaccoAtt + "\n"
-						+ "Costo mana: " + combattente.mano.get(j).costoMana + "\n");
+							+ "Attacco: " + combattente.mano.get(j).attaccoAtt + "\n"
+								+ "Salute: " + combattente.mano.get(j).saluteAtt + "\n"
+									+ "Costo mana: " + combattente.mano.get(j).costoMana + "\n");
 			}
 		}
 	}
@@ -411,15 +410,13 @@ public class Partita
 	
 	public void riceviAggiornamento(AggiornamentoPartita agg)
 	{
-		System.out.println("Agg");
-		
 		switch(agg.azione)
 		{
 			case AggiungiCartaSulCampo:
-				haAggiuntoCartaSulCampo((Carta)agg.parametri[0]);
+				haAggiuntoCartaSulCampo(new Gson().fromJson(agg.payload[0], Carta.class));
 				break;
 			case Attacco:
-				farsiAttacare((int)agg.parametri[0], (int)agg.parametri[1]);
+				farsiAttacare(new Gson().fromJson(agg.payload[0], int.class), new Gson().fromJson(agg.payload[1], int.class));
 				break;
 			case CambiaTurno:
 				toccaMe();
