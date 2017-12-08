@@ -14,14 +14,13 @@ import battleroyale.Partita.AggiornamentoPartita.AzionePartita;
 import battleroyale.Partita.Combattente;
 import battleroyale.Giocatore;
 
-public class Client
+public class Client extends Thread
 {
 	private Socket socket;
 	private BufferedReader input;
 	private PrintWriter output;
 
 	private BufferedReader tast;
-	private int turno;
 
 	public Partita partita;
 	
@@ -40,27 +39,27 @@ public class Client
 			int THIS_GG = Integer.parseInt(input.readLine());
 			
 			partita = new Partita(gg1, gg2, THIS_GG, output);
-			
-			/*do
-			{
-				while(true)
-				{
-					AggiornamentoPartita agg = new Gson().fromJson(input.readLine(), AggiornamentoPartita.class);
-					
-					System.out.println("\nAggiornamento partita:\n" + agg.azione);
-					if(agg.parametri != null) for (int i = 0; i < agg.parametri.length; i++) System.out.println(agg.parametri[i]);
-					else System.out.println("Non ha nessun parametro");
-				}
-				
-				while(true);
-				{
-					AggiornamentoPartita agg = new Gson().fromJson(input.readLine(), AggiornamentoPartita.class);
-					if(agg.azione == AzionePartita.CambiaTurno) break;
-				}
-			}
-			while(true);*/
+			start();
 		}
 		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	@Override
+	public void run()
+	{
+		try
+		{
+			// Ascoltare l'altro giocatore
+			while(partita.turno == partita.contrario(partita.THIS_GG))
+			{
+				AggiornamentoPartita agg = new Gson().fromJson(input.readLine(), AggiornamentoPartita.class);
+				partita.riceviAggiornamento(agg);
+			}
+		}
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}

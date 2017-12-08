@@ -1,6 +1,7 @@
 package battleroyale.ClientServer;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
@@ -45,6 +46,8 @@ public class Server extends Thread
 			partita = new Partita(gg1, gg2, output);
 			
 			System.out.println("\nDiamo il benvenuto al giocatore " + gg2.nome);
+			
+			start();
 		}
 		catch(Exception e)
 		{
@@ -66,6 +69,23 @@ public class Server extends Thread
 		{
 			e.printStackTrace();
 			return null;
+		}
+	}
+	
+	@Override
+	public void run()
+	{
+		try
+		{
+			while(partita.turno == partita.contrario(partita.THIS_GG))
+			{
+				AggiornamentoPartita agg = new Gson().fromJson(input.readLine(), AggiornamentoPartita.class);
+				partita.riceviAggiornamento(agg);
+			}
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
 		}
 	}
 }

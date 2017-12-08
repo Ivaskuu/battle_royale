@@ -15,6 +15,8 @@ public class MenuPrincipale
 	private static Server server;
 	private static Client client;
 	
+	private static boolean partitaIniziata = false;
+	
 	public static void main(String[] args)
 	{
 		String[] scelteMenu =
@@ -51,10 +53,12 @@ public class MenuPrincipale
         		{
         			case 0:
         				server = new Server(GiocatoreSlim.fromGiocatore(gg));
+        				partitaIniziata = true;
         				break;
         			case 1:
         				System.out.print("Per favore inserisca l'indirizzo IP: ");
         				client = new Client(tast2.readLine(), GiocatoreSlim.fromGiocatore(gg));
+        				partitaIniziata = true;
         				break;
         			default:
         				System.out.println("\nCoes ?\n");
@@ -66,6 +70,6 @@ public class MenuPrincipale
         		System.out.println(e);
         	}
         }
-        while(true);
+        while(!partitaIniziata);
 	}
 }

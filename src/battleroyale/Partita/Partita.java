@@ -56,13 +56,19 @@ public class Partita
 		initClient(gg1);
 		
 		System.out.println("\nE' cominciata una nuova partita.");
-		if(THIS_GG == 0) System.out.println("Giochi tu per primo\n");
-		else System.out.println("Inizia l'altro giocatore\n");
+		if(THIS_GG == 0)
+		{
+			System.out.println("Giochi tu per primo\n");
+			MenuPartita.turnoMio(this);
+		}
+		else
+		{
+			System.out.println("Inizia l'altro giocatore\n");
+			MenuPartita.turnoSuo(this);
+		}
 		
 		pescaCarta(); pescaCarta(); pescaCarta(); if(THIS_GG == 1) pescaCarta();
 		riepilogoPartita();
-		
-		//menuPartita = new MenuPartita(this);
 	}
 	
 	public void initClient(GiocatoreSlim gg1)
@@ -90,8 +96,16 @@ public class Partita
 		nomeAltroGG = gg2.nome;
 		
 		System.out.println("\nE' cominciata una nuova partita.");
-		if(THIS_GG == 0) System.out.println("Giochi tu per primo\n");
-		else System.out.println("Inizia l'altro giocatore\n");
+		if(THIS_GG == 0)
+		{
+			System.out.println("Giochi tu per primo\n");
+			MenuPartita.turnoMio(this);
+		}
+		else
+		{
+			System.out.println("Inizia l'altro giocatore\n");
+			MenuPartita.turnoSuo(this);
+		}
 		
 		pescaCarta(); pescaCarta(); pescaCarta(); if(THIS_GG == 1) pescaCarta();
 		riepilogoPartita();
@@ -125,6 +139,9 @@ public class Partita
 	{
 		turno = contrario(turno);
 		aggiornaAltroGiocatore(new AggiornamentoPartita(AzionePartita.CambiaTurno));
+		
+
+		MenuPartita.turnoSuo(this);
 	}
 	
 	public void controllaEffettiCarte()
@@ -394,6 +411,8 @@ public class Partita
 	
 	public void riceviAggiornamento(AggiornamentoPartita agg)
 	{
+		System.out.println("Agg");
+		
 		switch(agg.azione)
 		{
 			case AggiungiCartaSulCampo:

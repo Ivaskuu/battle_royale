@@ -1,101 +1,96 @@
 package battleroyale.Partita;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class MenuPartita
 {
-	public MenuPartita(Partita partita)
+	public static void turnoMio(Partita partita)
 	{
-        BufferedReader tast = new BufferedReader(new InputStreamReader(System.in));
+		BufferedReader tast = new BufferedReader(new InputStreamReader(System.in));
         
         do
         {
         	try
         	{
         		System.out.print("-- Menu --\n"
-        				+ "[2] Riepilogo\n"
-        				+ "[1] Cambia turno\n"
-        				+ "[5] Mostra mano\n"
-        				+ "[3] Attacca\n"
-        				+ "[6] Mostra campo battaglia\n"
-        				+ "[4] Aggiungi carta nel campo da battaglia\n"
+        				+ "[1] Riepilogo\n"
+        				+ "[2] Mostra mano\n"
+        				+ "[3] Mostra campo battaglia\n"
+        				+ "[4] Attacca\n"
+        				+ "[5] Aggiungi carta sul campo\n"
+        				+ "[6] Finire il turno\n"
         				+ "\nScelta: ");
         		
         		switch(tast.readLine().charAt(0))
         		{
-        			case '1':
-        				partita.cambiaTurno();
-        				break;
-        			case '2':
+        			case '1': // Riepilogo partita
         				partita.riepilogoPartita();
         				break;
-        			case '3':
-						int avversario = partita.turno + 1 == partita.NUM_GG ? 0 : partita.turno + 1;
-        				if(partita.carteNelCampo[partita.turno].size() > 0 && partita.carteNelCampo[avversario].size() > 0)
+        			case '2': // Mostra mano
+        				partita.mostraMano();
+        				break;
+        			case '3': // Mostra campo battaglia
+        				partita.mostraCampoBattaglia(-1);
+        				break;
+        			case '4': // Attaccare
+						int avversario = partita.contrario(partita.THIS_GG);
+        				if(partita.campo[partita.THIS_GG].size() > 0 && partita.campo[avversario].size() > 0)
         				{
-        					partita.mostraCampoBattaglia(partita.turno);
+        					int cartaMia = -1;
+        					int cartaSua = -1;
+        					partita.mostraCampoBattaglia(partita.THIS_GG);
         					
         					do
         					{
         						System.out.print("Scegli la tua carta (-1 per annullare attacco)"
             	        				+ "\nScelta: ");
-            					scelta = tast.readLine().charAt(0);
+            					String scelta = tast.readLine();
             					
-            					if(scelta == '-')
-            					{
-            						scelta = '3'; // Per ritornare al menu di prima
-            						break;
-            					}
+            					if(scelta.charAt(0) == '-') break;
             					
-            					if(partita.carteNelCampo[partita.turno].get(Integer.parseInt("" + scelta)).giocatePerTurnoAtt <= 0)
-            					{
-            						System.out.println("Hai gia' usato questa carta durante questo turno\n");
-            					}
+            					cartaMia = Integer.parseInt(scelta);
+            					if(partita.campo[partita.THIS_GG].size()-1 < cartaMia) System.out.println("Carta inesistente");
+            					else if(partita.campo[partita.THIS_GG].get(cartaMia).giocatePerTurnoAtt <= 0) System.out.println("Hai gia' usato questa carta durante questo turno\n");
         					}
-        					while(partita.carteNelCampo[partita.turno].get(Integer.parseInt("" + scelta)).giocatePerTurnoAtt <= 0);
+        					while(partita.campo[partita.THIS_GG].get(cartaMia).giocatePerTurnoAtt <= 0);
         					
-        					int cartaAtt = Integer.parseInt("" + scelta);
-        					partita.mostraCampoBattaglia(avversario);
-        					
-        					System.out.print("Scegli la carta da attaccare (-1 per annullare attacco)"
-        	        				+ "\nScelta: ");
-        					scelta = tast.readLine().charAt(0);
-        					
-        					if(scelta == '-')
+        					do
         					{
-        						scelta = '3'; // Per ritornare al menu di prima
-        						break;
+        						partita.mostraCampoBattaglia(partita.contrario(partita.THIS_GG));
+        						System.out.print("Scegli la sua carta da attaccare (-1 per annullare attacco)"
+            	        				+ "\nScelta: ");
+        						
+            					String scelta = tast.readLine();
+            					if(scelta.charAt(0) == '-') break;
+            					
+            					cartaSua = Integer.parseInt(scelta);
+            					if(partita.campo[partita.contrario(partita.THIS_GG)].size()-1 < cartaSua) System.out.println("Carta inesistente");
         					}
-        					else
-        					{
-        						int cartaAvv = Integer.parseInt("" + scelta);
-        						partita.attacca(cartaAtt, cartaAvv);
-        					}
+        					while(partita.campo[partita.contrario(partita.THIS_GG)].get(cartaMia).giocatePerTurnoAtt <= 0);
+        					
+        					partita.attacca(cartaMia, cartaSua);
         				}
         				else
         				{
         					System.out.println("Ogni giocatore deve avere almeno una carta nel campo di battaglia\n");
         				}
         				break;
-        			case '4':
-        				if(partita.mano[partita.turno].size() > 0)
+        			case '5': // Aggiungi carta sul campo
+        				if(partita.combattente.mano.size() > 0)
         				{
-        					partita.mostraMano(partita.turno);
-        					
-        					System.out.print("Hai " + partita.manaAtt + " mana.\n"
-        							+ "Scegli la carta da aggiungere nel campo di battaglia\n(-1 per annullare attacco)\n\n"
+        					partita.mostraMano();
+        					System.out.print("Hai " + partita.combattente.manaAtt + " di mana.\n"
+        							+ "Scegli la carta da mettere nel campo di battaglia (-1 per annullare)\n"
         	        				+ "Scelta: ");
-        					scelta = tast.readLine().charAt(0);
         					
-        					if(scelta == '-')
-        					{
-        						scelta = '3'; // Per ritornare al menu di prima
-        						break;
-        					}
+        					String scelta = tast.readLine();
+        					
+        					if(scelta.charAt(0) == '-') break;
         					else
         					{
-        						int posCarta = Integer.parseInt("" + scelta);
+        						int posCarta = Integer.parseInt(scelta);
         						partita.aggiungiCartaSulCampo(posCarta);
         					}
         				}
@@ -104,12 +99,9 @@ public class MenuPartita
         					System.out.println("Non hai nessuna carta nella mano\n");
         				}
         				break;
-        			case '5':
-        				partita.mostraMano(partita.turno);
-        				break;
         			case '6':
-        				partita.mostraCampoBattaglia(-1);
-        				break;
+        				partita.toccaTe();
+        				return;
         			default:
         				System.out.println("\nCoes ?\n");
         				break;
@@ -121,5 +113,25 @@ public class MenuPartita
         	}
         }
         while(true);
+	}
+	
+	public static void turnoSuo(Partita partita)
+	{
+		BufferedReader tast = new BufferedReader(new InputStreamReader(System.in));
+		
+		try
+		{
+			while(partita.turno == partita.contrario(partita.THIS_GG))
+			{
+				System.out.println("Sta giocando l'avversario ...");
+				tast.readLine();
+			}
+			
+			turnoMio(partita);
+		}
+		catch(Exception e)
+		{
+			System.out.println(e);
+		}
 	}
 }
