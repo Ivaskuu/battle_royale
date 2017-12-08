@@ -21,7 +21,7 @@ public class CollezioneCarte
 		 new Carta(null,"Casiraghi", 4, RaritaCarta.COMUNE, ClasseCarta.DROGATO, null,4,4,null, " "),
 		 new Carta(null,"Fumagalli", 4, RaritaCarta.RARA, null, new AbilitaCarta[] {AbilitaCarta.RUBAVITA},3,4,null," "),
 		 new Carta(null,"Steve", 2, RaritaCarta.COMUNE, null, new AbilitaCarta[] {AbilitaCarta.SCUDO},2,2,null," "),
-		 new Carta(null,"Adrian",4,RaritaCarta.LEGGENDARIA,ClasseCarta.SVILUPPATORE, new AbilitaCarta[] {AbilitaCarta.GRIDO},3,4,"Quando giochi questa carta evoca sul terreno 'Simone' dal tuo mazzo"),
+		 new Carta(null,"Adrian",4,RaritaCarta.LEGGENDARIA,ClasseCarta.SVILUPPATORE, new AbilitaCarta[] {AbilitaCarta.GRIDO},3,4,null,"Quando giochi questa carta evoca sul terreno 'Simone' dal tuo mazzo"),
 		 new Carta(null,"Fabio",5,RaritaCarta.EPICA,ClasseCarta.COMUNISTA, new AbilitaCarta[] {AbilitaCarta.FURIA,AbilitaCarta.GRIDO},4,4,null,"Quando giochi questa carta silenzia TUTTI i personaggi sul terreno"),
 		 new Carta(null,"Mande",3,RaritaCarta.RARA,ClasseCarta.SECCHIONE,new AbilitaCarta[] {AbilitaCarta.FURTIVO, AbilitaCarta.SCUDO, AbilitaCarta.GRIDO},1,1,null,"Se è presente Michel nel tuo campo di battaglia aumenta le sue statistiche +1/+1"),
 		 new Carta(null,"Mustafa",4,RaritaCarta.RARA,null,new AbilitaCarta[] {AbilitaCarta.GRIDO},3,4,null,"Quando giochi questa carta prendi il controllo di un nemico casuale"),
@@ -31,7 +31,7 @@ public class CollezioneCarte
 		 new Carta(null,"Stephen",6,RaritaCarta.RARA,ClasseCarta.AESTHETICS,new AbilitaCarta[] {AbilitaCarta.CARICA},5,4,null," "),
 		 new Carta(null,"Riccardi",7,RaritaCarta.EPICA,ClasseCarta.SECCHIONE,new AbilitaCarta[] {AbilitaCarta.GRIDO, AbilitaCarta.IMMUNE},4,6,null,"Quando giochi questa carta diminuisce le statistiche di TUTTI personaggi di -1/-1"),
 		 new Carta(null,"Rossi",5,RaritaCarta.RARA,ClasseCarta.AESTHETICS,new AbilitaCarta[] {AbilitaCarta.CARICA},4,3,null," "),
-		 new Carta(null,"Yuri pizzaiolo",3,RaritaCarta.EPICA,null,new AbilitaCarta[] {AbilitaCarta.VELENO},3,1,null," "), 
+		 new Carta(null,"Yuri pizzaiolo",3,RaritaCarta.EPICA,null,new AbilitaCarta[] {AbilitaCarta.VELENO},1,3,null," "), 
 		 new Carta(null,"Simone",3,RaritaCarta.LEGGENDARIA,ClasseCarta.SVILUPPATORE,new AbilitaCarta[] {AbilitaCarta.GRIDO,AbilitaCarta.CARICA,AbilitaCarta.FURIA},2,2,null,"Quando giochi questa carta evoca sul terreno 'Adrian' dal tuo mazzo"),
 		 
 		
@@ -52,8 +52,8 @@ public class CollezioneCarte
 		 new Carta(null,"Mister X",3,RaritaCarta.EPICA,ClasseCarta.HACKERINO,new AbilitaCarta[] {AbilitaCarta.FURTIVO},3,2,null," "),
 		 new Carta(null,"Vice Preside",6,RaritaCarta.EPICA,ClasseCarta.PERSONALESC,new AbilitaCarta[] {AbilitaCarta.GRIDO},4,4,null,"Quando giochi questa carta fornisce +1/+1 a TUTTI i personaggi di tipo 'PERSONALE SCOLASTICO'"),
 		 new Carta(null,"Prof. Catalano",4,RaritaCarta.RARA,ClasseCarta.PERSONALESC,new AbilitaCarta[] {AbilitaCarta.PROVOCAZIONE},4,4,null," "),
-		 
-		 
+		 new Carta(null,"Prof. Fea",5,RaritaCarta.RARA,ClasseCarta.PERSONALESC, new AbilitaCarta[] {AbilitaCarta.GRIDO},3,3,null,"Quando giochi questa carta fai tornare un personaggio in mano all'avversario"),
+		 new Carta(null,"Prof. Pelli",3,RaritaCarta.RARA,ClasseCarta.PERSONALESC, null, 3,3,null," "),
 		 
 		 
 	
@@ -76,6 +76,8 @@ public class CollezioneCarte
 		 new Carta(null,"Alla ricerca della F*ga!",8,RaritaCarta.EPICA,null,"Se controlli 'Podz','Pegs','Rossi' e 'Stephen' sul campo di battaglia aumenta loro i parametri +3/+3 e gli fornisce PROVOCAZIONE"),
          new Carta(null,"Uguaglianza",4,RaritaCarta.RARA,null,"Scegli un bersaglio sul terreno, TUTTI i personaggi sul campo di battaglia copiano il suo attacco e la sua difesa"),	
          new Carta(null,"Croccantelle",2,RaritaCarta.COMUNE,null,"Aumenta di +1/+1 un bersaglio che NON appartiene alla classe 'PERSONALE SCOLASTICO"),
+         new Carta(null,"Fumo nei bagni",3,RaritaCarta.RARA,null,"Fornisce furtività a tutti i tuoi personaggi, se appartengono alla classe 'DROGATO' gli fornisce +1/+1"),
+         new Carta(null,"Interrogazione",4,RaritaCarta.RARA,null,"Fai tornare i personaggi nemici che NON appartengono alla classe 'PERSONALE SCOLASTICO' nel mazzo dell'avversario"),
 	 };
 	
 	
@@ -90,6 +92,7 @@ public class CollezioneCarte
 		}
 		
 		System.out.println("Errore, carta not found");
+		return null;
 	}
 		
 	// Restituisce una carta a caso

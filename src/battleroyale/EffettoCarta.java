@@ -18,6 +18,8 @@ public class EffettoCarta {
 		OnFineTurno, 
 		OnPesca,
 		OnDistruggi,
+		OnSubisciDanno,
+		OnEvoca,
 						//TODO
 	}
 	
@@ -26,7 +28,9 @@ public class EffettoCarta {
 		EvocaCarta,
 		DistruggiCarta, 
 		SilenziaCarta,
-		Converti, 
+		Converti,
+		Pesca,
+		
 	}
 	
 	
