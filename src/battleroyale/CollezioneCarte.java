@@ -1,5 +1,6 @@
 package battleroyale;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import battleroyale.Carta.AbilitaCarta;
@@ -102,4 +103,35 @@ public class CollezioneCarte
 	{
 		return collezioneCarte[new Random().nextInt(collezioneCarte.length)];
 	}
+	
+	public static int[] cartaArrayToPosArray(Carta[] carte)
+	{
+		int[] arrayCarte = new int[carte.length];
+		
+		for (int i = 0; i < carte.length; i++)
+		{
+			for (int j = 0; j < collezioneCarte.length; j++)
+			{
+				if(carte[i].nome.equals(collezioneCarte[j].nome))
+				{
+					arrayCarte[i] = j;
+					break;
+				}
+			}
+		}
+		
+		return arrayCarte;
+	}
+	
+	/*public static Carta[] posArrayToCartaArray(int[] carte)
+	{
+		Carta[] arrayCarte = new Carta[carte.length];
+		
+		for (int i = 0; i < carte.length; i++)
+		{
+			arrayCarte[i] = collezioneCarte[i];
+		}
+		
+		return arrayCarte;
+	}*/
 }

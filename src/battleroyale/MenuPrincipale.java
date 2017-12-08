@@ -4,8 +4,19 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Scanner;
 
+import com.google.gson.Gson;
+
+import battleroyale.Partita.GiocatoreSlim;
+import battleroyale.ClientServer.Client;
+import battleroyale.ClientServer.Server;
+
 public class MenuPrincipale
 {
+	private static Server server;
+	private static Client client;
+	
+	private static boolean partitaIniziata = false;
+	
 	public static void main(String[] args)
 	{
 		String[] scelteMenu =
@@ -18,7 +29,12 @@ public class MenuPrincipale
 		};
 		
 		Scanner tast = new Scanner(System.in);
+		BufferedReader tast2 = new BufferedReader(new InputStreamReader(System.in));
+		
         int scelta;
+        
+        System.out.print("Benvenuto, corragioso avventuriero. Come ti chiami ?\nNome: ");
+        Giocatore gg = new Giocatore(tast.nextLine(), 50, null, CollezioneCarte.collezioneCarte);
         
         do
         {
@@ -35,11 +51,14 @@ public class MenuPrincipale
         		
         		switch(scelta)
         		{
-        			case 1:
-        				// Creare un nuovo Server e printare l'indirizzo IP globale
+        			case 0:
+        				server = new Server(GiocatoreSlim.fromGiocatore(gg));
+        				partitaIniziata = true;
         				break;
-        			case 2:
-        				// Chiedere l'indirizzo IP del server e creare una classe Client(ip)
+        			case 1:
+        				System.out.print("Per favore inserisca l'indirizzo IP: ");
+        				client = new Client(tast2.readLine(), GiocatoreSlim.fromGiocatore(gg));
+        				partitaIniziata = true;
         				break;
         			default:
         				System.out.println("\nCoes ?\n");
@@ -51,6 +70,6 @@ public class MenuPrincipale
         		System.out.println(e);
         	}
         }
-        while(true);
+        while(!partitaIniziata);
 	}
 }

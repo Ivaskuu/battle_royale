@@ -1,32 +1,70 @@
 package battleroyale.ClientServer;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintStream;
-import java.net.InetAddress;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Scanner;
+import java.net.URL;
 
-public class Server extends Thread
+import com.google.gson.Gson;
+
+import battleroyale.Partita.AggiornamentoPartita;
+import battleroyale.Partita.AggiornamentoPartita.AzionePartita;
+import battleroyale.Partita.GiocatoreSlim;
+import battleroyale.Partita.Partita;
+
+public class Server
 {
 	public static final int PORTA = 59168;
 	
-	private static ServerSocket serverSocket;
-	private static Socket clientSocket;
+	private static ServerSocket serverSocket;	
+	private Socket clientSocket;
 	
-	public static void main(String[] args)
+	private BufferedReader input;
+	private PrintWriter output;
+	
+	public Partita partita;
+	
+	public Server(GiocatoreSlim gg1)
     {
 		try
 		{
 			serverSocket = new ServerSocket(PORTA);
-			System.out.println("Il server 'e pronto e sta aspettando una connessione su " + serverSocket.getLocalSocketAddress());
+			System.out.println("In attesa di un avversario all'indirizzo: " + getPublicIp());
 			
-			HandleClient client = new HandleClient(serverSocket.accept());
+			clientSocket = serverSocket.accept();
+			
+			// Inizializzare i canali di i/o per communicare
+			input = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+			output = new PrintWriter(clientSocket.getOutputStream(), true);
+			
+			System.out.println("Il client " + clientSocket.getInetAddress().toString() + " si 'e collegato.");
+			
+			GiocatoreSlim gg2 = new Gson().fromJson(input.readLine(), GiocatoreSlim.class);
+			partita = new Partita(gg1, gg2, input, output);
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	public String getPublicIp()
+	{
+		try
+		{
+			URL whatismyip;
+			whatismyip = new URL("http://checkip.amazonaws.com");
+			
+			BufferedReader in = new BufferedReader(new InputStreamReader(whatismyip.openStream()));
+			return in.readLine();
 		}
 		catch (Exception e)
 		{
-			System.out.println(e.toString());
+			e.printStackTrace();
+			return null;
 		}
 	}
 }
