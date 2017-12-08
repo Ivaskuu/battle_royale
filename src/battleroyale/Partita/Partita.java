@@ -53,7 +53,7 @@ public class Partita
 		combattente = new Combattente(gg1.nome, 1, getShuffledDeck(gg1.deck));
 		nomeAltroGG = gg2.nome;
 		
-		initClient();
+		initClient(gg1);
 		
 		System.out.println("\nE' cominciata una nuova partita.");
 		if(THIS_GG == 0) System.out.println("Giochi tu per primo\n");
@@ -62,11 +62,12 @@ public class Partita
 		pescaCarta(); pescaCarta(); pescaCarta(); if(THIS_GG == 1) pescaCarta();
 		riepilogoPartita();
 		
-		menuPartita = new MenuPartita(this);
+		//menuPartita = new MenuPartita(this);
 	}
 	
-	public void initClient()
+	public void initClient(GiocatoreSlim gg1)
 	{
+		altroGG.println(new Gson().toJson(gg1));
 		altroGG.println(contrario(THIS_GG));
 	}
 	
@@ -95,7 +96,7 @@ public class Partita
 		pescaCarta(); pescaCarta(); pescaCarta(); if(THIS_GG == 1) pescaCarta();
 		riepilogoPartita();
 		
-		menuPartita = new MenuPartita(this);
+		//menuPartita = new MenuPartita(this);
 	}
 	
 
@@ -393,9 +394,28 @@ public class Partita
 	
 	public void riceviAggiornamento(AggiornamentoPartita agg)
 	{
-		if(agg.azione == AzionePartita.Pesca)
+		switch(agg.azione)
 		{
-			System.out.println("L'altro giocatore ha pescato una carta");
+			case AggiungiCartaSulCampo:
+				haAggiuntoCartaSulCampo((Carta)agg.parametri[0]);
+				break;
+			case Attacco:
+				farsiAttacare((int)agg.parametri[0], (int)agg.parametri[1]);
+				break;
+			case CambiaTurno:
+				toccaMe();
+				break;
+			case GameOver:
+				System.out.println("gAmE oVeR");
+				break;
+			case GameWin:
+				System.out.println("gAmE oVeR");
+				break;
+			case Pesca:
+				System.out.println("L'altro giocatore ha pescato una carta");
+				break;
+			default:
+				break;
 		}
 	}
 }

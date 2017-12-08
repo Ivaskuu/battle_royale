@@ -38,7 +38,6 @@ public class MenuPrincipale
         {
         	try
         	{
-        		// Mostrare il menù
         		System.out.println("-- Menu --");
         		for (int i = 0; i < scelteMenu.length; i++)
         		{

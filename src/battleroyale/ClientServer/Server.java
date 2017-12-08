@@ -42,47 +42,13 @@ public class Server extends Thread
 			System.out.println("Il client " + clientSocket.getInetAddress().toString() + " si 'e collegato.");
 			
 			GiocatoreSlim gg2 = new Gson().fromJson(input.readLine(), GiocatoreSlim.class);
-			partita = new Partita(new GiocatoreSlim[] {gg1, gg2}, output);
+			partita = new Partita(gg1, gg2, output);
 			
 			System.out.println("\nDiamo il benvenuto al giocatore " + gg2.nome);
-			
-			//output.println(new Gson().toJson(new AggiornamentoPartita(AzionePartita.Attacco, new Object[]{0, 2})));
-			//output.println(new Gson().toJson(new AggiornamentoPartita(AzionePartita.AggiungiCartaSulCampo, 13)));
-			//output.println(new Gson().toJson(new AggiornamentoPartita(AzionePartita.Pesca, 21)));
-
-			//output.println(new Gson().toJson(new AggiornamentoPartita(AzionePartita.CambiaTurno)));
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
-		}
-		
-		start();
-	}
-	
-	@Override
-	public void run()
-	{
-		try
-		{
-			// Ascoltare il client
-			System.out.println("\nSto ascoltando il client\n");
-			
-			while(true)
-			{
-				// Aspettare input
-				String msgIn = input.readLine();
-				System.out.println("Il client ha detto: \"" + msgIn + "\"");
-				
-				// Rispondere
-				String msgOut = "Ho ricevuto: " + msgIn;
-				System.out.println("Ho risposto: \"" + msgOut + "\"");				
-				output.println(msgOut);
-			}
-		}
-		catch (Exception e)
-		{
-			System.out.println(e.toString());
 		}
 	}
 	

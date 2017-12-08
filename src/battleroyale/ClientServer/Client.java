@@ -25,7 +25,7 @@ public class Client
 
 	public Partita partita;
 	
-	public Client(String ip, GiocatoreSlim gg, Partita partita)
+	public Client(String ip, GiocatoreSlim gg1)
     {
 		try
 		{
@@ -34,12 +34,14 @@ public class Client
 			output = new PrintWriter(socket.getOutputStream(), true);
 			tast = new BufferedReader(new InputStreamReader(System.in));
 			
-			output.println(new Gson().toJson(gg));
-			Combattente primoGG = new Gson().fromJson(input.readLine(), Combattente.class);
-			Combattente secondoGG = new Gson().fromJson(input.readLine(), Combattente.class);
+			output.println(new Gson().toJson(gg1));
+			
+			GiocatoreSlim gg2 = new Gson().fromJson(input.readLine(), GiocatoreSlim.class);
 			int THIS_GG = Integer.parseInt(input.readLine());
 			
-			do
+			partita = new Partita(gg1, gg2, THIS_GG, output);
+			
+			/*do
 			{
 				while(true)
 				{
@@ -56,7 +58,7 @@ public class Client
 					if(agg.azione == AzionePartita.CambiaTurno) break;
 				}
 			}
-			while(true);
+			while(true);*/
 		}
 		catch(Exception e)
 		{
