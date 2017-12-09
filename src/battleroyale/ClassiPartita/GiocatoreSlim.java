@@ -1,4 +1,4 @@
-package battleroyale.Partita;
+package battleroyale.ClassiPartita;
 
 import battleroyale.CollezioneCarte;
 import battleroyale.Giocatore;

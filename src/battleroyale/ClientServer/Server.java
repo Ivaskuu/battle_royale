@@ -10,10 +10,10 @@ import java.net.URL;
 
 import com.google.gson.Gson;
 
-import battleroyale.Partita.AggiornamentoPartita;
-import battleroyale.Partita.AggiornamentoPartita.AzionePartita;
-import battleroyale.Partita.GiocatoreSlim;
-import battleroyale.Partita.Partita;
+import battleroyale.ClassiPartita.AggiornamentoPartita;
+import battleroyale.ClassiPartita.GiocatoreSlim;
+import battleroyale.ClassiPartita.Partita;
+import battleroyale.ClassiPartita.AggiornamentoPartita.AzionePartita;
 
 public class Server
 {

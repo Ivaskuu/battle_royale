@@ -1,4 +1,4 @@
-package battleroyale.Partita;
+package battleroyale.ClassiPartita;
 
 import java.io.BufferedReader;
 import java.io.PrintWriter;
@@ -10,7 +10,7 @@ import com.google.gson.Gson;
 
 import battleroyale.Carta;
 import battleroyale.CollezioneCarte;
-import battleroyale.Partita.AggiornamentoPartita.AzionePartita;
+import battleroyale.ClassiPartita.AggiornamentoPartita.AzionePartita;
 
 public class Partita
 {

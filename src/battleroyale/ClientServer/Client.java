@@ -7,12 +7,12 @@ import java.net.Socket;
 
 import com.google.gson.Gson;
 
-import battleroyale.Partita.AggiornamentoPartita;
-import battleroyale.Partita.GiocatoreSlim;
-import battleroyale.Partita.Partita;
-import battleroyale.Partita.AggiornamentoPartita.AzionePartita;
-import battleroyale.Partita.Combattente;
 import battleroyale.Giocatore;
+import battleroyale.ClassiPartita.AggiornamentoPartita;
+import battleroyale.ClassiPartita.Combattente;
+import battleroyale.ClassiPartita.GiocatoreSlim;
+import battleroyale.ClassiPartita.Partita;
+import battleroyale.ClassiPartita.AggiornamentoPartita.AzionePartita;
 
 public class Client extends Thread
 {
