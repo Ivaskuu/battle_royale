@@ -327,9 +327,9 @@ public class Partita
 						+ "Nome: " + campo[giocatore].get(j).nome + "\n"
 						+ "Attacco: " + campo[giocatore].get(j).attaccoAtt + "\n"
 						+ "Salute: " + campo[giocatore].get(j).saluteAtt + "\n"
-						+ "Effetto: " + "\n");
+						+ "Effetto: " + campo[giocatore].get(j).effetto != null ? campo[giocatore].get(j).effetto : "Nessun effetto");
 				
-				if(campo[THIS_GG].get(j).giocatePerTurnoAtt > 0) System.out.println("Carta giocabile\n");
+				if(campo[giocatore].get(j).giocatePerTurnoAtt > 0) System.out.println("Carta giocabile\n");
 				else System.out.println("Carta gi� giocata questo turno\n");
 			}
 		}

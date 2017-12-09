@@ -58,6 +58,7 @@ public class MenuPartita
         					int cartaSua = -1;
         					partita.mostraCampoBattaglia(partita.THIS_GG);
         					
+        					System.out.print("Le tue carte sul campo");
         					do
         					{
         						System.out.print("Scegli la tua carta (-1 per annullare attacco)"
@@ -72,6 +73,7 @@ public class MenuPartita
         					}
         					while(partita.campo[partita.THIS_GG].get(cartaMia).giocatePerTurnoAtt <= 0);
         					
+        					System.out.print("Le carte dell'avversario sul campo");
         					do
         					{
         						partita.mostraCampoBattaglia(partita.contrario(partita.THIS_GG));
