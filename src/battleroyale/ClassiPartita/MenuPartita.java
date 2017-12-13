@@ -45,22 +45,33 @@ public class MenuPartita
         				partita.riepilogoPartita();
         				break;
         			case '2': // Mostra mano
-        				partita.mostraMano();
+        				partita.mostraManoTabella();
         				break;
         			case '3': // Mostra campo battaglia
-        				partita.mostraCampoBattaglia(-1);
+        				partita.mostraCampoTabella(-1);
         				break;
         			case '4': // Attaccare
 						int avversario = partita.contrario(partita.THIS_GG);
-        				if(partita.campo[partita.THIS_GG].size() > 0 && partita.campo[avversario].size() > 0)
+        				if(partita.campo[partita.THIS_GG].size() > 0)
         				{
+        					// Non farlo attaccare 
+        					boolean puoAttaccare = false;
+        					for (int i = 0; i < partita.campo[partita.THIS_GG].size(); i++)
+        					{
+								if(partita.campo[partita.THIS_GG].get(i).giocatePerTurnoAtt > 0) puoAttaccare = true;
+							}
+        					if(!puoAttaccare)
+    						{
+        						System.out.println("Nessuna delle tue carte puo' attaccare perche' sono esauste\n");
+        						break;
+    						}
+        					
         					int cartaMia = -1;
         					int cartaSua = -1;
-        					partita.mostraCampoBattaglia(partita.THIS_GG);
         					
-        					System.out.print("Le tue carte sul campo");
         					do
         					{
+            					partita.mostraCampoTabella(partita.THIS_GG);
         						System.out.print("Scegli la tua carta (-1 per annullare attacco)"
             	        				+ "\nScelta: ");
             					String scelta = tast.readLine();
@@ -73,10 +84,9 @@ public class MenuPartita
         					}
         					while(partita.campo[partita.THIS_GG].get(cartaMia).giocatePerTurnoAtt <= 0);
         					
-        					System.out.print("Le carte dell'avversario sul campo");
         					do
         					{
-        						partita.mostraCampoBattaglia(partita.contrario(partita.THIS_GG));
+        						partita.mostraCampoTabella(partita.contrario(partita.THIS_GG));
         						System.out.print("Scegli la sua carta da attaccare (-1 per annullare attacco)"
             	        				+ "\nScelta: ");
         						
@@ -92,13 +102,13 @@ public class MenuPartita
         				}
         				else
         				{
-        					System.out.println("Ogni giocatore deve avere almeno una carta nel campo di battaglia\n");
+        					System.out.println("Devi avere almeno una carta nel campo di battaglia\n");
         				}
         				break;
         			case '5': // Aggiungi carta sul campo
         				if(partita.combattente.mano.size() > 0)
         				{
-        					partita.mostraMano();
+        					partita.mostraManoTabella();
         					System.out.print("Hai " + partita.combattente.manaAtt + " di mana.\n"
         							+ "Scegli la carta da mettere nel campo di battaglia (-1 per annullare)\n"
         	        				+ "Scelta: ");

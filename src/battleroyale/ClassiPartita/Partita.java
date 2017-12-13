@@ -23,9 +23,11 @@ public class Partita
 	
 	public final int NUM_GG;
 	public final int THIS_GG;
+	
+	public final GiocatoreSlim ggIo;
+	public final GiocatoreSlim ggAvversario;
 
 	public final Combattente combattente;
-	public final String nomeAltroGG;
 	
 	public ArrayList<Carta>[] campo;
 	public int turno;
@@ -44,6 +46,8 @@ public class Partita
 		this.output = output;
 		
 		this.NUM_GG = 2;
+		this.ggIo = gg1;
+		this.ggAvversario = gg2;
 		
 		this.turno = 0;
 		this.THIS_GG = new Random().nextInt(2); // Se 0 inizio per primo
@@ -53,7 +57,6 @@ public class Partita
 		campo[1] = new ArrayList<Carta>();
 		
 		combattente = new Combattente(gg1.nome, 1, getShuffledDeck(gg1.deck));
-		nomeAltroGG = gg2.nome;
 		
 		initClient(gg1);
 		
@@ -87,6 +90,9 @@ public class Partita
 		
 		this.NUM_GG = 2;
 		this.THIS_GG = posThisGG;
+		
+		this.ggIo = gg1;
+		this.ggAvversario = gg2;
 
 		this.turno = 0;
 		
@@ -95,7 +101,6 @@ public class Partita
 		campo[1] = new ArrayList<Carta>();
 		
 		combattente = new Combattente(gg1.nome, 1, getShuffledDeck(gg1.deck));
-		nomeAltroGG = gg2.nome;
 		
 		System.out.println("\nE' cominciata una nuova partita.");
 		if(THIS_GG == 0)
@@ -175,8 +180,8 @@ public class Partita
 
 			aggiornaAltroGiocatore(new AggiornamentoPartita(AzionePartita.AggiungiCartaSulCampo, new Gson().toJson(carta)));
 			
-			System.out.println(carta.nome + " � stato/a aggiunto/a sul campo");			
-			mostraCampoBattaglia(-1);
+			System.out.println(carta.nome + " e' stato/a aggiunto/a sul campo");
+			mostraCampoTabella(THIS_GG);
 		}
 	}
 	
@@ -206,7 +211,7 @@ public class Partita
 				else
 				{
 					campo[contrario(THIS_GG)].remove(idCartaAvv);
-					System.out.println("\nLa carta dell'avversario � stata distrutta\n");
+					System.out.println("\nLa carta dell'avversario e' stata distrutta\n");
 				}
 
 				// Rimuovi la vita della carta dell'attaccante
@@ -227,7 +232,7 @@ public class Partita
 		}
 		else System.out.println("Le carte non esistono sul campo da battaglia.");
 		
-		mostraCampoBattaglia(-1);
+		mostraCampoTabella(-1);
 	}
 	
 	// Quando sta giocando l'altro e ci attacca
@@ -285,87 +290,6 @@ public class Partita
 		System.out.println("Sono rimaste " + combattente.deck.size() + " carte nel tuo deck.\n");
 	}
 	
-	
-	//
-    // FUNZIONI INFORMAZIONI
-    //
-	
-	public void mostraCampoBattaglia(int giocatore)
-	{
-		if(giocatore == -1) // Fai vedere le carte nel campo di entrambi i giocatori
-		{
-			System.out.println("\n-- Lista carte nel campo di battaglia --\n");
-			
-			for (int i = 0; i < NUM_GG; i++)
-			{
-				if(campo[i].size() == 0) // Se non ha nessuna carta, fai vedere un bel messaggio
-				{
-					if(i == THIS_GG) System.out.println("Non hai nessuna carta nel campo");
-					else System.out.println("L'avversario non ha nessuna carta sul campo");
-				}
-				else
-				{
-					if(i == THIS_GG) System.out.println("\nLe mie carte sul campo");
-					else System.out.println("\nLe carte dell'avversario sul campo");
-					
-					for (int j = 0; j < campo[i].size(); j++)
-					{
-						System.out.println("Carta " + j + "\n"
-								+ "Nome: " + campo[i].get(j).nome + "\n"
-								+ "Salute: " + campo[i].get(j).saluteAtt + "\n"
-								+ "Attacco: " + campo[i].get(j).attaccoAtt + "\n"
-								+ "Effetto: " + "\n");
-					}
-				}
-			}
-		}
-		else // Fai vedere le carte in campo di un determinato giocatore
-		{
-			for (int j = 0; j < campo[giocatore].size(); j++)
-			{
-				System.out.println("Carta " + j + "\n"
-						+ "Nome: " + campo[giocatore].get(j).nome + "\n"
-						+ "Attacco: " + campo[giocatore].get(j).attaccoAtt + "\n"
-						+ "Salute: " + campo[giocatore].get(j).saluteAtt + "\n"
-						+ "Effetto: " + campo[giocatore].get(j).effetto != null ? campo[giocatore].get(j).effetto : "Nessun effetto");
-				
-				if(campo[giocatore].get(j).giocatePerTurnoAtt > 0) System.out.println("Carta giocabile\n");
-				else System.out.println("Carta gi� giocata questo turno\n");
-			}
-		}
-		
-		System.out.println("\n");
-	}
-	
-	public void mostraMano()
-	{
-		if(combattente.mano.size() == 0)
-		{
-			System.out.println("Non hai nessuna carta nella mano");
-		}
-		else
-		{
-			for (int j = 0; j < combattente.mano.size(); j++)
-			{
-				System.out.println("Carta " + j + "\n"
-						+ "Nome: " + combattente.mano.get(j).nome + "\n"
-							+ "Attacco: " + combattente.mano.get(j).attaccoAtt + "\n"
-								+ "Salute: " + combattente.mano.get(j).saluteAtt + "\n"
-									+ "Costo mana: " + combattente.mano.get(j).costoMana + "\n");
-			}
-		}
-	}
-	
-	public void riepilogoPartita()
-	{
-		System.out.println("\n-- Riepilogo partita --\n");
-		System.out.println("Giocatore " + combattente.nome + "\n"
-				+ "Hai " + combattente.manaAtt + " di mana\n"
-					+ "Hai " + combattente.deck.size() + " carte nel deck\n"
-						+ "Hai " + combattente.mano.size() + " carte nella mano\n"
-							+ "Hai " + campo[THIS_GG].size() + " carte sul campo\n");
-	}
-	
 
 	//
     // FUNZIONI UTILITA
@@ -395,6 +319,118 @@ public class Partita
 	{
 		if(num != 0 && num != 1) return -1; 
 		return num == 1 ? 0 : 1;
+	}
+	
+	public void riepilogoPartita()
+	{
+		System.out.println("------------------------------------------------");
+		System.out.println("--[ Riepilogo partita ]--");
+		System.out.println
+		(
+			"Giocatore " + combattente.nome + "\n"
+			+ "Hai " + combattente.manaAtt + " di mana\n"
+			+ "Hai " + combattente.deck.size() + " carte nel deck\n"
+			+ "Hai " + combattente.mano.size() + " carte nella mano\n"
+			+ "Hai " + campo[THIS_GG].size() + " carte sul campo"
+		);
+		System.out.println("------------------------------------------------\n");
+	}
+	
+	public void mostraCampoTabella(int giocatore)
+	{
+		if(giocatore == -1)
+		{
+			for(int j = 0; j < 2; j++)
+			{
+				if(campo[j].size() == 0) // Se non ha nessuna carta, fai vedere un bel messaggio
+				{
+					if(j == THIS_GG) System.out.println("Non hai nessuna carta nel campo");
+					else System.out.println("L'avversario non ha nessuna carta sul campo");
+				}
+				else if(j == THIS_GG)
+				{
+					System.out.println(" > Le tue carte nel campo");
+					System.out.println("|-------------------------------------------|");
+					System.out.println("| N | Nome | Attacco | Salute | Stato carta |");
+					System.out.println("|-------------------------------------------|");
+					for (int i = 0; i < campo[j].size(); i++)
+					{
+						System.out.print("| " + i + " | " + campo[j].get(i).nome + " | " + campo[j].get(i).attaccoAtt + " | " + campo[j].get(i).saluteAtt + " | ");
+						System.out.println(campo[j].get(i).giocatePerTurnoAtt == 0 ? "E' esausto" : "Puo attaccare");
+					}
+					System.out.println("|-------------------------------------------|\n");
+				}
+				else
+				{
+					System.out.println(" > Le carte dell'avversario nel campo");
+					System.out.println("|-----------------------------|");
+					System.out.println("| N | Nome | Attacco | Salute |");
+					System.out.println("|-----------------------------|");
+					for (int i = 0; i < campo[j].size(); i++)
+					{
+						System.out.println("| " + i + " | " + campo[j].get(i).nome + " | " + campo[j].get(i).attaccoAtt + " | " + campo[j].get(i).saluteAtt + " |");
+					}
+					System.out.println("|-----------------------------|\n");
+				}
+			}
+		}
+		else
+		{
+			if(campo[giocatore].size() == 0) // Se non ha nessuna carta, fai vedere un bel messaggio
+			{
+				if(giocatore == THIS_GG) System.out.println("Non hai nessuna carta nel campo");
+				else System.out.println("L'avversario non ha nessuna carta sul campo");
+			}
+			else
+			{
+				if(giocatore == THIS_GG)
+				{
+					System.out.println(" > Le tue carte nel campo");
+					System.out.println("|-------------------------------------------|");
+					System.out.println("| N | Nome | Attacco | Salute | Stato carta |");
+					System.out.println("|-------------------------------------------|");
+					for (int i = 0; i < campo[giocatore].size(); i++)
+					{
+						System.out.print("| " + i + " | " + campo[giocatore].get(i).nome + " | " + campo[giocatore].get(i).attaccoAtt + " | " + campo[giocatore].get(i).saluteAtt + " | ");
+						System.out.println(campo[giocatore].get(i).giocatePerTurnoAtt == 0 ? "E' esausto" : "Puo attaccare");
+					}
+					System.out.println("|-------------------------------------------|\n");
+				}
+				else
+				{
+					System.out.println(" > Le carte dell'avversario nel campo");
+					System.out.println("|-----------------------------|");
+					System.out.println("| N | Nome | Attacco | Salute |");
+					System.out.println("|-----------------------------|");
+					for (int i = 0; i < campo[giocatore].size(); i++)
+					{
+						System.out.println("| " + i + " | " + campo[giocatore].get(i).nome + " | " + campo[giocatore].get(i).attaccoAtt + " | " + campo[giocatore].get(i).saluteAtt + " |");
+					}
+					System.out.println("|-----------------------------|\n");
+				}
+			}
+		}
+	}
+	
+	public void mostraManoTabella()
+	{
+		if(combattente.mano.size() == 0)
+		{
+			System.out.println("|----------------------------------|");
+			System.out.println("| Non hai nessuna carta nella mano |");
+			System.out.println("|----------------------------------|\n");
+		}
+		else
+		{
+			System.out.println("|------------------------------------------|");
+			System.out.println("| N | Nome | Attacco | Salute | Costo mana |");
+			System.out.println("|------------------------------------------|");
+			for (int i = 0; i < combattente.mano.size(); i++)
+			{
+				System.out.println("| " + i + " | " + combattente.mano.get(i).nome + " | " + combattente.mano.get(i).attaccoAtt + " | " + combattente.mano.get(i).saluteAtt + " | " + combattente.mano.get(i).costoMana + " |");
+			}
+			System.out.println("|------------------------------------------|\n");
+		}
 	}
 	
 

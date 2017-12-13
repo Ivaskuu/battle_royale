@@ -6,13 +6,17 @@ import battleroyale.Giocatore;
 // Versione meno pesante della classe Giocatore
 public class GiocatoreSlim
 {
-	public String nome;
-	public int[] deck;
+	public static final int SALUTE_MAX = 30;
+	
+	public final String nome;
+	public final int[] deck;
+	public int salute;
 	
 	public GiocatoreSlim(String nome, int[] deck)
 	{
 		this.nome = nome;
 		this.deck = deck;
+		this.salute = SALUTE_MAX;
 	}
 	
 	public static GiocatoreSlim fromGiocatore(Giocatore gg)

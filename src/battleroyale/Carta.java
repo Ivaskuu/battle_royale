@@ -76,6 +76,8 @@ public class Carta
         tipoCarta = TipoCarta.MAGIA;
         effetto=eff;
         strEffetto = seff;
+    	giocatePerTurnoMax = 1;
+    	giocatePerTurnoAtt = 0;
     }
 
     /*// Carta magia durante la partita
@@ -103,6 +105,8 @@ public class Carta
         raritaCarta = rar;
         effetto=eff;
         strEffetto = seff;
+    	giocatePerTurnoMax = 1;
+    	giocatePerTurnoAtt = 0;
     }
     
     // Carta personaggio durante la partita
@@ -110,8 +114,8 @@ public class Carta
     {
     	carta.saluteAtt = carta.saluteMax;
     	carta.attaccoAtt = carta.attaccoMax;
-    	carta.giocatePerTurnoMax = 1; // TODO: Se effetto allora incrementalo
-    	carta.giocatePerTurnoAtt = carta.giocatePerTurnoMax;
+    	carta.giocatePerTurnoMax = 1;
+    	carta.giocatePerTurnoAtt = 0;
     	
     	return carta;
     }
