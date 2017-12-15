@@ -181,7 +181,7 @@ public class Partita
 			aggiornaAltroGiocatore(new AggiornamentoPartita(AzionePartita.AggiungiCartaSulCampo, new Gson().toJson(carta)));
 			
 			System.out.println(carta.nome + " e' stato/a aggiunto/a sul campo");
-			mostraCampoTabella(THIS_GG);
+			mostraCampoGg(THIS_GG);
 		}
 	}
 	
@@ -192,17 +192,40 @@ public class Partita
 	}
 	
 	// Quando il giocatore attacca una carta dell'avversario
-	public void attacca(int idCartaAtt, int idCartaAvv)
+	public void attacca(int posCartaAtt, int posCartaAvv)
 	{
-		if(campo[THIS_GG].get(idCartaAtt) != null && campo[contrario(THIS_GG)].get(idCartaAvv) != null) // Se le carte esistono veramente
+		if(posCartaAvv == -1) // Il giocatore vuole attacare l'erore dell'avversario
 		{
-			Carta att = campo[THIS_GG].get(idCartaAtt);
+			Carta att = campo[THIS_GG].get(posCartaAtt);
 			
 			if(att.giocatePerTurnoAtt > 0)
 			{
-				Carta avv = campo[contrario(THIS_GG)].get(idCartaAvv);
+				att.giocatePerTurnoAtt--;
+				ggAvversario.salute -= att.attaccoAtt;
 				
-				campo[THIS_GG].get(idCartaAtt).giocatePerTurnoAtt--;
+				System.out.println("\nL'eroe dell'avversario ha perso " + att.attaccoAtt + " HP (rimasti " + ggAvversario.salute + " HP)");
+				aggiornaAltroGiocatore(new AggiornamentoPartita(AzionePartita.Attacco, new String[] {new Gson().toJson(posCartaAtt), new Gson().toJson(posCartaAvv)}));
+				
+				if(ggAvversario.salute <= 0)
+				{
+					System.out.println("\nL'eroe dell'avversario e' stato distrutto.\nHai vinto la partita!\n");
+					aggiornaAltroGiocatore(new AggiornamentoPartita(AzionePartita.GameWin));
+				}
+			}
+			else
+			{
+				System.out.println("Hai gia usato questa carta durante questo turno");
+			}
+		}
+		else if(campo[THIS_GG].get(posCartaAtt) != null && campo[contrario(THIS_GG)].get(posCartaAvv) != null) // Se le carte esistono veramente
+		{
+			Carta att = campo[THIS_GG].get(posCartaAtt);
+			
+			if(att.giocatePerTurnoAtt > 0)
+			{
+				Carta avv = campo[contrario(THIS_GG)].get(posCartaAvv);
+				
+				campo[THIS_GG].get(posCartaAtt).giocatePerTurnoAtt--;
 				System.out.println("Il tuo " + att.nome + " (" + att.attaccoAtt + "/" + att.saluteAtt + ") sta attcando " + avv.nome + " (" + avv.attaccoAtt + "/" + avv.saluteAtt + ")");
 				
 				// Rimuovi la vita della carta dell'avversario
@@ -210,7 +233,7 @@ public class Partita
 				if(avv.saluteAtt > 0) System.out.println("\nLa carta dell'avversario ha perso " + att.attaccoAtt + " HP (rimasti " + avv.saluteAtt + " HP)\n");
 				else
 				{
-					campo[contrario(THIS_GG)].remove(idCartaAvv);
+					campo[contrario(THIS_GG)].remove(posCartaAvv);
 					System.out.println("\nLa carta dell'avversario e' stata distrutta\n");
 				}
 
@@ -219,11 +242,11 @@ public class Partita
 				if(att.saluteAtt > 0) System.out.println("\nLa tua carta ha perso " + avv.attaccoAtt + " HP (rimasti " + att.saluteAtt + " HP)\n");
 				else
 				{
-					campo[THIS_GG].remove(idCartaAtt);
-					System.out.println("\nLa tua carta � stata distrutta\n");
+					campo[THIS_GG].remove(posCartaAtt);
+					System.out.println("\nLa tua carta e' stata distrutta\n");
 				}
 				
-				aggiornaAltroGiocatore(new AggiornamentoPartita(AzionePartita.Attacco, new String[] {new Gson().toJson(idCartaAtt), new Gson().toJson(idCartaAvv)}));
+				aggiornaAltroGiocatore(new AggiornamentoPartita(AzionePartita.Attacco, new String[] {new Gson().toJson(posCartaAtt), new Gson().toJson(posCartaAvv)}));
 			}
 			else
 			{
@@ -232,34 +255,48 @@ public class Partita
 		}
 		else System.out.println("Le carte non esistono sul campo da battaglia.");
 		
-		mostraCampoTabella(-1);
+		mostraCampoTabellaTuttiGg();
 	}
 	
 	// Quando sta giocando l'altro e ci attacca
 	public void farsiAttacare(int posCartaSua, int posCartaMia)
 	{
-		Carta cartaMia = campo[THIS_GG].get(posCartaMia);
 		Carta cartaSua = campo[contrario(THIS_GG)].get(posCartaSua);
 		
-		cartaSua.giocatePerTurnoAtt--;
-		System.out.println("Il tuo " + cartaMia.nome + " (" + cartaMia.attaccoAtt + "/" + cartaMia.saluteAtt + ") si sta facendo attcare da " + cartaSua.nome + " (" + cartaSua.attaccoAtt + "/" + cartaSua.saluteAtt + ")");
-		
-		// Rimuovi la vita della carta dell'avversario cioe io
-		cartaMia.saluteAtt -= cartaSua.attaccoAtt;
-		if(cartaMia.saluteAtt > 0) System.out.println("\nLa tua carta ha perso " + cartaSua.attaccoAtt + " HP (rimasti " + cartaMia.saluteAtt + " HP)\n");
-		else
+		if(posCartaMia == -1) // Sta attacando l'eroe
 		{
-			campo[THIS_GG].remove(posCartaMia);
-			System.out.println("\nLa tua carta � stata distrutta\n");
+			cartaSua.giocatePerTurnoAtt--;
+			System.out.println("Il tuo eroe si sta facendo attaccare da " + cartaSua.nome + " (" + cartaSua.attaccoAtt + "/" + cartaSua.saluteAtt + ")");
+			
+			ggIo.salute -= cartaSua.attaccoAtt;
+			System.out.println("Il tuo eroe ha perso " + cartaSua.attaccoAtt + " HP (rimasti " + ggIo.salute + ")");
+			
+			if(ggIo.salute <= 0) System.out.println("Il tuo eroe si e' fatto distruggere, e hai perso la partita.");
 		}
-
-		// Rimuovi la vita della carta dell'attaccante cioe lui
-		cartaSua.saluteAtt -= cartaMia.attaccoAtt;
-		if(cartaSua.saluteAtt > 0) System.out.println("\nLa sua carta ha perso " + cartaMia.attaccoAtt + " HP (rimasti " + cartaSua.saluteAtt + " HP)\n");
 		else
 		{
-			campo[contrario(THIS_GG)].remove(posCartaSua);
-			System.out.println("\nLa sua carta � stata distrutta\n");
+			Carta cartaMia = campo[THIS_GG].get(posCartaMia);
+			
+			cartaSua.giocatePerTurnoAtt--;
+			System.out.println("La tua carta " + cartaMia.nome + " (" + cartaMia.attaccoAtt + "/" + cartaMia.saluteAtt + ") si sta facendo attcare da " + cartaSua.nome + " (" + cartaSua.attaccoAtt + "/" + cartaSua.saluteAtt + ")");
+			
+			// Rimuovi la vita della carta dell'avversario cioe io
+			cartaMia.saluteAtt -= cartaSua.attaccoAtt;
+			if(cartaMia.saluteAtt > 0) System.out.println("La tua carta ha perso " + cartaSua.attaccoAtt + " HP (rimasti " + cartaMia.saluteAtt + " HP)\n");
+			else
+			{
+				campo[THIS_GG].remove(posCartaMia);
+				System.out.println("La tua carta e' stata distrutta\n");
+			}
+	
+			// Rimuovi la vita della carta dell'attaccante cioe lui
+			cartaSua.saluteAtt -= cartaMia.attaccoAtt;
+			if(cartaSua.saluteAtt > 0) System.out.println("\nLa sua carta ha perso " + cartaMia.attaccoAtt + " HP (rimasti " + cartaSua.saluteAtt + " HP)\n");
+			else
+			{
+				campo[contrario(THIS_GG)].remove(posCartaSua);
+				System.out.println("\nLa sua carta e' stata distrutta\n");
+			}
 		}
 	}
 	
@@ -267,7 +304,7 @@ public class Partita
 	{
 		if(combattente.deck.size() > 0) // Se ci sono ancora carte nel deck
 		{
-			if(combattente.mano.size() < MAX_CARTE_MANO) // Se c'� ancora posto per una carta nella mano
+			if(combattente.mano.size() < MAX_CARTE_MANO) // Se c'e' ancora posto per una carta nella mano
 			{
 				Carta cartaPescata = Carta.cartaToCartaPartita(combattente.deck.get(0)); // Prendi la prima carta del deck
 				combattente.deck.remove(0); // Rimuovila daldeck
@@ -323,11 +360,12 @@ public class Partita
 	
 	public void riepilogoPartita()
 	{
-		System.out.println("------------------------------------------------");
-		System.out.println("--[ Riepilogo partita ]--");
+		System.out.println("--------------- Riepilogo partita ---------------");
 		System.out.println
 		(
 			"Giocatore " + combattente.nome + "\n"
+			+ "Il tuo eroe ha " + ggIo.salute + " di salute\n"
+			+ "L'eroe dell'avversario ha " + ggAvversario.salute + " di salute\n"
 			+ "Hai " + combattente.manaAtt + " di mana\n"
 			+ "Hai " + combattente.deck.size() + " carte nel deck\n"
 			+ "Hai " + combattente.mano.size() + " carte nella mano\n"
@@ -336,79 +374,69 @@ public class Partita
 		System.out.println("------------------------------------------------\n");
 	}
 	
-	public void mostraCampoTabella(int giocatore)
+	public void mostraCampoTabellaTuttiGg()
 	{
-		if(giocatore == -1)
+		for(int j = 0; j < 2; j++) // Per tutti e 2 giocatori
 		{
-			for(int j = 0; j < 2; j++)
+			if(j == THIS_GG)
 			{
-				if(campo[j].size() == 0) // Se non ha nessuna carta, fai vedere un bel messaggio
+				System.out.println(" > Le tue carte nel campo");
+				System.out.println("|---------------------------------------|");
+				System.out.println("| Nome | Attacco | Salute | Stato carta |");
+				System.out.println("|---------------------------------------|");
+				System.out.println("| Eroe " + ggIo.nome + " | 0 | " + ggIo.salute + " |");
+				
+				for (int i = 0; i < campo[j].size(); i++)
 				{
-					if(j == THIS_GG) System.out.println("Non hai nessuna carta nel campo");
-					else System.out.println("L'avversario non ha nessuna carta sul campo");
+					System.out.print("| " + campo[j].get(i).nome + " | " + campo[j].get(i).attaccoAtt + " | " + campo[j].get(i).saluteAtt + " | ");
+					System.out.println(campo[j].get(i).giocatePerTurnoAtt == 0 ? "E' esausto |" : "Puo attaccare |");
 				}
-				else if(j == THIS_GG)
-				{
-					System.out.println(" > Le tue carte nel campo");
-					System.out.println("|-------------------------------------------|");
-					System.out.println("| N | Nome | Attacco | Salute | Stato carta |");
-					System.out.println("|-------------------------------------------|");
-					for (int i = 0; i < campo[j].size(); i++)
-					{
-						System.out.print("| " + i + " | " + campo[j].get(i).nome + " | " + campo[j].get(i).attaccoAtt + " | " + campo[j].get(i).saluteAtt + " | ");
-						System.out.println(campo[j].get(i).giocatePerTurnoAtt == 0 ? "E' esausto" : "Puo attaccare");
-					}
-					System.out.println("|-------------------------------------------|\n");
-				}
-				else
-				{
-					System.out.println(" > Le carte dell'avversario nel campo");
-					System.out.println("|-----------------------------|");
-					System.out.println("| N | Nome | Attacco | Salute |");
-					System.out.println("|-----------------------------|");
-					for (int i = 0; i < campo[j].size(); i++)
-					{
-						System.out.println("| " + i + " | " + campo[j].get(i).nome + " | " + campo[j].get(i).attaccoAtt + " | " + campo[j].get(i).saluteAtt + " |");
-					}
-					System.out.println("|-----------------------------|\n");
-				}
-			}
-		}
-		else
-		{
-			if(campo[giocatore].size() == 0) // Se non ha nessuna carta, fai vedere un bel messaggio
-			{
-				if(giocatore == THIS_GG) System.out.println("Non hai nessuna carta nel campo");
-				else System.out.println("L'avversario non ha nessuna carta sul campo");
+				System.out.println("|---------------------------------------|\n");
 			}
 			else
 			{
-				if(giocatore == THIS_GG)
+				System.out.println(" > Le carte dell'avversario nel campo");
+				System.out.println("|-------------------------|");
+				System.out.println("| Nome | Attacco | Salute |");
+				System.out.println("|-------------------------|");
+				System.out.println("| Eroe " + ggAvversario.nome + " | 0 | " + ggAvversario.salute + " |");
+				
+				for (int i = 0; i < campo[j].size(); i++)
 				{
-					System.out.println(" > Le tue carte nel campo");
-					System.out.println("|-------------------------------------------|");
-					System.out.println("| N | Nome | Attacco | Salute | Stato carta |");
-					System.out.println("|-------------------------------------------|");
-					for (int i = 0; i < campo[giocatore].size(); i++)
-					{
-						System.out.print("| " + i + " | " + campo[giocatore].get(i).nome + " | " + campo[giocatore].get(i).attaccoAtt + " | " + campo[giocatore].get(i).saluteAtt + " | ");
-						System.out.println(campo[giocatore].get(i).giocatePerTurnoAtt == 0 ? "E' esausto" : "Puo attaccare");
-					}
-					System.out.println("|-------------------------------------------|\n");
+					System.out.println("| " + campo[j].get(i).nome + " | " + campo[j].get(i).attaccoAtt + " | " + campo[j].get(i).saluteAtt + " |");
 				}
-				else
-				{
-					System.out.println(" > Le carte dell'avversario nel campo");
-					System.out.println("|-----------------------------|");
-					System.out.println("| N | Nome | Attacco | Salute |");
-					System.out.println("|-----------------------------|");
-					for (int i = 0; i < campo[giocatore].size(); i++)
-					{
-						System.out.println("| " + i + " | " + campo[giocatore].get(i).nome + " | " + campo[giocatore].get(i).attaccoAtt + " | " + campo[giocatore].get(i).saluteAtt + " |");
-					}
-					System.out.println("|-----------------------------|\n");
-				}
+				System.out.println("|-------------------------|\n");
 			}
+		}
+	}
+	
+	public void mostraCampoGg(int giocatore)
+	{
+		if(giocatore == THIS_GG)
+		{
+			System.out.println(" > Le tue carte nel campo");
+			System.out.println("|-------------------------------------------|");
+			System.out.println("| N | Nome | Attacco | Salute | Stato carta |");
+			System.out.println("|-------------------------------------------|");
+			for (int i = 0; i < campo[giocatore].size(); i++)
+			{
+				System.out.print("| " + (i+1) + " | " + campo[giocatore].get(i).nome + " | " + campo[giocatore].get(i).attaccoAtt + " | " + campo[giocatore].get(i).saluteAtt + " | ");
+				System.out.println(campo[giocatore].get(i).giocatePerTurnoAtt == 0 ? "E' esausto |" : "Puo attaccare |");
+			}
+			System.out.println("|-------------------------------------------|\n");
+		}
+		else
+		{
+			System.out.println(" > Le carte dell'avversario nel campo");
+			System.out.println("|-----------------------------|");
+			System.out.println("| N | Nome | Attacco | Salute |");
+			System.out.println("|-----------------------------|");
+			System.out.println("| 0 | Eroe " + ggAvversario.nome + "| 0 |   " + ggAvversario.salute + " |");
+			for (int i = 0; i < campo[giocatore].size(); i++)
+			{
+				System.out.println("| " + (i+1) + " | " + campo[giocatore].get(i).nome + " | " + campo[giocatore].get(i).attaccoAtt + " | " + campo[giocatore].get(i).saluteAtt + " |");
+			}
+			System.out.println("|-----------------------------|\n");
 		}
 	}
 	
@@ -422,6 +450,7 @@ public class Partita
 		}
 		else
 		{
+			System.out.println("\n > Hai " + combattente.manaAtt + " mana\n");
 			System.out.println("|------------------------------------------|");
 			System.out.println("| N | Nome | Attacco | Salute | Costo mana |");
 			System.out.println("|------------------------------------------|");
@@ -454,7 +483,6 @@ public class Partita
 				farsiAttacare(new Gson().fromJson(agg.payload[0], int.class), new Gson().fromJson(agg.payload[1], int.class));
 				break;
 			case CambiaTurno:
-				System.out.println("Tocca Me");
 				toccaMe();
 				break;
 			case GameOver:

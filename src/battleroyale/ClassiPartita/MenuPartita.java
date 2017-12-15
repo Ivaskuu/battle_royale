@@ -39,7 +39,8 @@ public class MenuPartita
         				+ "[6] Finire il turno\n"
         				+ "\nScelta: ");
         		
-        		switch(tast.readLine().charAt(0))
+        		String sceltaMenu = tast.readLine(); // Evitare l'indexoutofbounds
+        		switch(sceltaMenu != null && sceltaMenu.length() > 0 ? sceltaMenu.charAt(0) : '-')
         		{
         			case '1': // Riepilogo partita
         				partita.riepilogoPartita();
@@ -48,69 +49,75 @@ public class MenuPartita
         				partita.mostraManoTabella();
         				break;
         			case '3': // Mostra campo battaglia
-        				partita.mostraCampoTabella(-1);
+        				partita.mostraCampoTabellaTuttiGg();
         				break;
         			case '4': // Attaccare
-						int avversario = partita.contrario(partita.THIS_GG);
-        				if(partita.campo[partita.THIS_GG].size() > 0)
+        				if(partita.campo[partita.THIS_GG].size() > 0) // Può attaccare solo se ha gia una carta sul campo
         				{
-        					// Non farlo attaccare 
-        					boolean puoAttaccare = false;
-        					for (int i = 0; i < partita.campo[partita.THIS_GG].size(); i++)
-        					{
+        					// Controlla che ci sia almeno una carta che possa attaccare (giocateAtt > 0) 
+							boolean puoAttaccare = false;
+							for (int i = 0; i < partita.campo[partita.THIS_GG].size(); i++)
+							{
 								if(partita.campo[partita.THIS_GG].get(i).giocatePerTurnoAtt > 0) puoAttaccare = true;
 							}
-        					if(!puoAttaccare)
-    						{
-        						System.out.println("Nessuna delle tue carte puo' attaccare perche' sono esauste\n");
-        						break;
-    						}
-        					
-        					int cartaMia = -1;
-        					int cartaSua = -1;
-        					
-        					do
-        					{
-            					partita.mostraCampoTabella(partita.THIS_GG);
-        						System.out.print("Scegli la tua carta (-1 per annullare attacco)"
-            	        				+ "\nScelta: ");
-            					String scelta = tast.readLine();
-            					
-            					if(scelta.charAt(0) == '-') break;
-            					
-            					cartaMia = Integer.parseInt(scelta);
-            					if(partita.campo[partita.THIS_GG].size()-1 < cartaMia) System.out.println("Carta inesistente");
-            					else if(partita.campo[partita.THIS_GG].get(cartaMia).giocatePerTurnoAtt <= 0) System.out.println("Hai gia' usato questa carta durante questo turno\n");
-        					}
-        					while(partita.campo[partita.THIS_GG].get(cartaMia).giocatePerTurnoAtt <= 0);
-        					
-        					do
-        					{
-        						partita.mostraCampoTabella(partita.contrario(partita.THIS_GG));
-        						System.out.print("Scegli la sua carta da attaccare (-1 per annullare attacco)"
-            	        				+ "\nScelta: ");
-        						
-            					String scelta = tast.readLine();
-            					if(scelta.charAt(0) == '-') break;
-            					
-            					cartaSua = Integer.parseInt(scelta);
-            					if(partita.campo[partita.contrario(partita.THIS_GG)].size()-1 < cartaSua) System.out.println("Carta inesistente");
-        					}
-        					while(partita.campo[partita.contrario(partita.THIS_GG)].get(cartaMia).giocatePerTurnoAtt <= 0);
-        					
-        					partita.attacca(cartaMia, cartaSua);
-        				}
-        				else
-        				{
-        					System.out.println("Devi avere almeno una carta nel campo di battaglia\n");
-        				}
+							if(!puoAttaccare)
+							{
+								System.out.println("Nessuna delle tue carte puo' attaccare perche' sono esauste\n");
+								break;
+							}
+							
+							int posAtt = -2; // Posizione della carta o eroe del gg attuale
+							int posAvv = -2; // Posizione della carta o eroe del gg avversario
+							
+							do
+							{
+		    					partita.mostraCampoGg(partita.THIS_GG);
+								System.out.print("Scegli la carta con cui attaccare (oppure -1 per annullare attacco)"
+		    	        				+ "\nScelta: ");
+		    					String scelta = tast.readLine();
+		    					
+		    					if(scelta.charAt(0) == '-') break;
+		    					
+		    					posAtt = Integer.parseInt(scelta) - 1;
+		    					if(posAtt >= partita.campo[partita.THIS_GG].size()) System.out.println("Per favore inserire una posizione valida");
+		    					else if(posAtt >= 0 && partita.campo[partita.THIS_GG].get(posAtt).giocatePerTurnoAtt <= 0) System.out.println("Hai gia' usato questa carta durante questo turno\n");
+							}
+							while
+							(
+								posAtt >= partita.campo[partita.THIS_GG].size()
+								|| posAtt >= 0 && partita.campo[partita.THIS_GG].get(posAtt).giocatePerTurnoAtt <= 0
+							);
+							
+							if(posAtt == -2) break; // Vuol dire che vuole annullare l'attacco
+							
+							do
+							{
+								partita.mostraCampoGg(partita.contrario(partita.THIS_GG));
+								System.out.print("Scegli cosa attaccare (oppure -1 per annullare attacco)"
+		    	        				+ "\nScelta: ");
+								
+		    					String scelta = tast.readLine();
+		    					if(scelta.charAt(0) == '-') break;
+		    					
+		    					posAvv = Integer.parseInt(scelta) - 1;
+		    					if(posAvv >= partita.campo[partita.contrario(partita.THIS_GG)].size()) System.out.println("Per favore inserire una posizione valida");
+							}
+							while(posAvv >= partita.campo[partita.contrario(partita.THIS_GG)].size());
+
+							if(posAvv == -2) break; // Vuol dire che vuole annullare l'attacco
+							
+							partita.attacca(posAtt, posAvv);
+		        		}
+		        		else
+		        		{
+		        			System.out.println("Devi avere almeno una carta sul campo per poter attaccare.");
+		        		}
         				break;
         			case '5': // Aggiungi carta sul campo
         				if(partita.combattente.mano.size() > 0)
         				{
         					partita.mostraManoTabella();
-        					System.out.print("Hai " + partita.combattente.manaAtt + " di mana.\n"
-        							+ "Scegli la carta da mettere nel campo di battaglia (-1 per annullare)\n"
+        					System.out.print("Scegli la carta da evocare (oppure -1 per annullare)\n"
         	        				+ "Scelta: ");
         					
         					String scelta = tast.readLine();
