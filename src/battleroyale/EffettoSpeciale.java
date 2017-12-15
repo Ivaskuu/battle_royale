@@ -2,38 +2,35 @@ package battleroyale;
 
 import java.util.Random;
 
-public class EffettoCarta {
+import battleroyale.ClassiPartita.Effetto;
+
+public class EffettoSpeciale {
 	
 	public TriggerEffetto triggerEffetto;
 	public Effetto effetto;
 	public Object[] payload;
 
-
-	public EffettoCarta(TriggerEffetto triggerEffetto, Effetto effetto) 
+	
+	public EffettoSpeciale(TriggerEffetto triggerEffetto, Effetto effetto) 
 	{
 		this.triggerEffetto = triggerEffetto;
 		this.effetto= effetto;
-
 	}
 	
-	public EffettoCarta(TriggerEffetto triggerEffetto, Effetto effetto, Object payload) 
+	public EffettoSpeciale(TriggerEffetto triggerEffetto, Effetto effetto, Object payload) 
 	{
 		this.triggerEffetto = triggerEffetto;
 		this.effetto= effetto;
 		this.payload=new Object[]{payload}; 
-
 	}
 	
-	public EffettoCarta(TriggerEffetto triggerEffetto, Effetto effetto, Object[] payload) 
+	public EffettoSpeciale(TriggerEffetto triggerEffetto, Effetto effetto, Object[] payload) 
 	{
 		this.triggerEffetto = triggerEffetto;
 		this.effetto= effetto;
 		this.payload = payload;
-
 	}
 	
-	
-
 	public static enum TriggerEffetto
 	{
 		OnInizioTurno, 
@@ -42,22 +39,7 @@ public class EffettoCarta {
 		OnDistruggi,
 		OnSubisciDanno,
 		OnEvoca,
-						//TODO Aggiungere altri trigger
+		         		//TODO Aggiungere altri trigger
 	}
-	
-	public static enum Effetto
-	{
-		PescaCarta, 
-		CopiaCarta,
-		DistruggiCarta, 
-		DaiVita,
-						//TODO Aggiungere altri Tipoeffetto
-	}
-	
-	
-
 }
-
-	
-
 	
