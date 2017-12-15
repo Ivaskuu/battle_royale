@@ -2,6 +2,8 @@ package battleroyale;
 
 import java.awt.image.BufferedImage;
 
+import battleroyale.ClassiPartita.Effetto;
+
 public class Carta 
 {
 	//
@@ -18,15 +20,16 @@ public class Carta
     public RaritaCarta raritaCarta;
     public ClasseCarta classeCarta;
     public AbilitaCarta[] abilitaCarta;
+    public Effetto effetto;
     
 	public BufferedImage immagine;
     public String strEffetto;
-    public EffettoCarta effetto;
+    public EffettoSpeciale effettoSp;
     // Attributi necessari durante la partita
     public int saluteAtt;
     public int attaccoAtt;
     public int giocatePerTurnoMax; // Quante volte la carta e stata giocata durante questo turno (di solito 1)
-    public int giocatePerTurnoAtt; // Quante volte la carta e stata giocata durante questo turno (di solito 1)
+    public int giocatePerTurnoAtt; // Quante volte la carta può attaccare (di solito 1)
     
     // Il tipo di carta
     public enum TipoCarta
@@ -68,7 +71,7 @@ public class Carta
     //
    
     // Carta magia
-    public Carta(BufferedImage img,String n, int costo_m, RaritaCarta rar,EffettoCarta eff,String seff)
+    public Carta(BufferedImage img,String n, int costo_m, RaritaCarta rar,Effetto eff,String seff)
     {
     	immagine = img;
         costoMana = costo_m;
@@ -92,7 +95,7 @@ public class Carta
     }*/
     
     // Carta personaggio
-    public Carta(BufferedImage img, String n, int costo_m, RaritaCarta rar, ClasseCarta cls, AbilitaCarta[] abilita, int atk, int sal,EffettoCarta eff, String seff)
+    public Carta(BufferedImage img, String n, int costo_m, RaritaCarta rar, ClasseCarta cls, AbilitaCarta[] abilita, int atk, int sal,Effetto eff, String seff)
     {
     	immagine = img;
         costoMana = costo_m;

@@ -9,7 +9,10 @@ import java.util.Random;
 import com.google.gson.Gson;
 
 import battleroyale.Carta;
+import battleroyale.ClassiPartita.Effetti;
+import battleroyale.Carta.AbilitaCarta;
 import battleroyale.CollezioneCarte;
+import battleroyale.EffettoSpeciale.TriggerEffetto;
 import battleroyale.ClassiPartita.AggiornamentoPartita.AzionePartita;
 
 public class Partita
@@ -172,7 +175,7 @@ public class Partita
 		{
 			System.out.println("Non hai abbastanza mana per aggiungere " + carta.nome + " (costa " + carta.costoMana + " ma hai " + combattente.manaAtt + ")");
 		}
-		else
+		else  //Aggiungi la carta sul campo
 		{
 			combattente.manaAtt -= carta.costoMana;
 			campo[THIS_GG].add(carta);
@@ -181,6 +184,28 @@ public class Partita
 			aggiornaAltroGiocatore(new AggiornamentoPartita(AzionePartita.AggiungiCartaSulCampo, new Gson().toJson(carta)));
 			
 			System.out.println(carta.nome + " e' stato/a aggiunto/a sul campo");
+			
+			//Controllo se ha carica o furia o un effetto con il grido di battaglia
+			for(int i=0;i<carta.abilitaCarta.length;i++)
+			{
+				if(carta.abilitaCarta[i]==AbilitaCarta.CARICA)
+				{
+					carta.giocatePerTurnoAtt=1;
+					System.out.println("Questa carta ha carica, può attaccare in questo turno!");
+				}
+				else if(carta.abilitaCarta[i]==AbilitaCarta.FURIA)
+				{
+					carta.giocatePerTurnoMax=2;
+					System.out.println("Questa carta ha furia, può attaccare 2 volte!");
+				}
+				else if(carta.abilitaCarta[i]==AbilitaCarta.GRIDO)
+				{
+					//Attivo l'effetto della carta con grido di battaglia 
+					//Effetti.eseguiEffetto(this, carta.effetto, payload);
+					
+				}
+			}
+			
 			mostraCampoGg(THIS_GG);
 		}
 	}
@@ -312,6 +337,10 @@ public class Partita
 				
 				System.out.println("Hai pescato " + cartaPescata.nome + " (ATT: " + cartaPescata.attaccoAtt + " / HP: " + cartaPescata.saluteAtt + ").");
 				aggiornaAltroGiocatore(new AggiornamentoPartita(AzionePartita.Pesca)); // No param. perche l'altro gg non deve sapere le tue carte
+				
+				//Controllo se ci sono delle carte con il trigger pesca carta TODO
+				
+				
 			}
 			else
 			{

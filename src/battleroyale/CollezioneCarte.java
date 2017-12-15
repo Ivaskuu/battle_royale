@@ -6,8 +6,7 @@ import java.util.Random;
 import battleroyale.Carta.AbilitaCarta;
 import battleroyale.Carta.ClasseCarta;
 import battleroyale.Carta.RaritaCarta;
-import battleroyale.EffettoCarta.Effetto;
-import battleroyale.EffettoCarta.TriggerEffetto;
+import battleroyale.EffettoSpeciale.TriggerEffetto;
 
 public class CollezioneCarte
 {
@@ -30,7 +29,7 @@ public class CollezioneCarte
 		 new Carta(null,"Mustafa",4,RaritaCarta.RARA,null,new AbilitaCarta[] {AbilitaCarta.GRIDO},3,4,null,"Quando giochi questa carta prendi il controllo di un nemico casuale"),
 		 new Carta(null,"Peg",3,RaritaCarta.COMUNE, ClasseCarta.AESTHETICS, new AbilitaCarta[] {AbilitaCarta.PROVOCAZIONE},3,3,null," "),
 		 new Carta(null,"Penatti", 5, RaritaCarta.RARA, null, new AbilitaCarta[] {AbilitaCarta.RUBAVITA},4,2,null," "),
-		 new Carta(null,"Puente",3,RaritaCarta.EPICA,null, new AbilitaCarta[] {AbilitaCarta.EFFETTO},2,1,new EffettoCarta(TriggerEffetto.OnPesca,Effetto.CopiaCarta),"Ogni volta che peschi una carta, ne aggiunge una copia nel tuo mazzo"), //Non può essere attaccata da tipi
+		 new Carta(null,"Puente",3,RaritaCarta.EPICA,null, new AbilitaCarta[] {AbilitaCarta.EFFETTO},2,1,null,"Ogni volta che peschi una carta, ne aggiunge una copia nel tuo mazzo"), //Non può essere attaccata da tipi
 		 new Carta(null,"Stephen",6,RaritaCarta.RARA,ClasseCarta.AESTHETICS,new AbilitaCarta[] {AbilitaCarta.CARICA},5,4,null," "),
 		 new Carta(null,"Riccardi",7,RaritaCarta.EPICA,ClasseCarta.SECCHIONE,new AbilitaCarta[] {AbilitaCarta.GRIDO, AbilitaCarta.IMMUNE},4,6,null,"Quando giochi questa carta diminuisce le statistiche di TUTTI personaggi di -1/-1"),
 		 new Carta(null,"Rossi",5,RaritaCarta.RARA,ClasseCarta.AESTHETICS,new AbilitaCarta[] {AbilitaCarta.CARICA},4,3,null," "),
@@ -46,7 +45,7 @@ public class CollezioneCarte
 		 new Carta(null,"Nick", 8, RaritaCarta.EPICA, ClasseCarta.HACKERINO, new AbilitaCarta[] {AbilitaCarta.PROVOCAZIONE, AbilitaCarta.CARICA},6,8,null," "),
 		 new Carta(null,"Pizio",3, RaritaCarta.RARA, ClasseCarta.HACKERINO, new AbilitaCarta[] {AbilitaCarta.FURTIVO},3,3,null," "),
 		 new Carta(null,"Luciano",5,RaritaCarta.RARA,ClasseCarta.PERSONALESC,new AbilitaCarta[] {AbilitaCarta.GRIDO},4,4,null,"Quando giochi questa carta distrugge TUTTI i personaggi che appartengono alla classe 'HACKERINO'"),
-		 new Carta(null,"Concettina",2,RaritaCarta.LEGGENDARIA,ClasseCarta.PERSONALESC, null,0,2,null," "),
+		 new Carta(null,"Angelina",2,RaritaCarta.LEGGENDARIA,ClasseCarta.PERSONALESC, null,0,2,null," "),
 		 new Carta(null,"Prof. Mariani",3,RaritaCarta.RARA,ClasseCarta.PERSONALESC,new AbilitaCarta[] {AbilitaCarta.GRIDO},3,3,null,"Quando giochi questa carta distrugge il personaggio 'Nick'"),
 		 new Carta(null,"Meani",4, RaritaCarta.RARA, ClasseCarta.COMUNISTA, new AbilitaCarta[] {AbilitaCarta.GRIDO},2,3,null,"Imposta l'attacco e la salute di TUTTI i personaggi a 2/2"),
 		 new Carta(null,"Prof. Giuimp",5, RaritaCarta.RARA, ClasseCarta.PERSONALESC, new AbilitaCarta[] {AbilitaCarta.GRIDO},4,4,null,"Quando giochi questa carta evoca 2 studenti generici 1/1"),
