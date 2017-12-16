@@ -4,9 +4,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.Inet4Address;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URL;
+import java.net.UnknownHostException;
 
 import com.google.gson.Gson;
 
@@ -32,7 +35,7 @@ public class Server
 		try
 		{
 			serverSocket = new ServerSocket(PORTA);
-			System.out.println("In attesa di un avversario all'indirizzo: " + getPublicIp());
+			getPublicIp();
 			
 			clientSocket = serverSocket.accept();
 			
@@ -51,7 +54,7 @@ public class Server
 		}
 	}
 	
-	public String getPublicIp()
+	public void getPublicIp()
 	{
 		try
 		{
@@ -59,12 +62,18 @@ public class Server
 			whatismyip = new URL("http://checkip.amazonaws.com");
 			
 			BufferedReader in = new BufferedReader(new InputStreamReader(whatismyip.openStream()));
-			return in.readLine();
+			System.out.println("In attesa di un avversario all'indirizzo: " + in.readLine() + " oppure " + InetAddress.getLocalHost());
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
-			return null;
+			try
+			{
+				System.out.println("In attesa di un avversario all'indirizzo: " + InetAddress.getLocalHost());
+			}
+			catch (UnknownHostException e1)
+			{
+				System.out.println("Assicurati di essere connesso a internet");
+			}
 		}
 	}
 }

@@ -1,7 +1,6 @@
 package battleroyale.ClassiPartita;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 
 import com.google.gson.Gson;
@@ -12,21 +11,20 @@ public class MenuPartita
 {
 	private Partita partita;
 	private BufferedReader input;
-	private BufferedReader tast;
 	
 	public MenuPartita(Partita partita, int thisGG, BufferedReader input)
 	{
 		this.partita = partita;
 		this.input = input;
 		
-		tast = new BufferedReader(new InputStreamReader(System.in));
-		
 		if(thisGG == 0) turnoMio();
 		else aspettaCambioTurno(true);
 	}
 	
 	public void turnoMio()
-	{        
+	{     
+		BufferedReader tast = new BufferedReader(new InputStreamReader(System.in));
+		
         do
         {
         	try
@@ -197,13 +195,12 @@ public class MenuPartita
 				if(agg.azione == AzionePartita.CambiaTurno) break;
 			}
 			
+			System.in.read(new byte[System.in.available()]);
 			if(primaVolta) turnoMio();
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
-		
-		tast = new BufferedReader(new InputStreamReader(System.in));
 	}
 }
