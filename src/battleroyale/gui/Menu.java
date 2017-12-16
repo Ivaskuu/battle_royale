@@ -44,7 +44,6 @@ public class Menu {
 	private void initialize()
 	{
 		p.setBackground(Color.ORANGE);
-		//Configurazione del frame
 		f.getContentPane().add(p);
 		p.setLayout(null);
 		
