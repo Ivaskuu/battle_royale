@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.2">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>320</x>
+      <y>110</y>
+      <w>200</w>
+      <h>290</h>
+    </coordinates>
+    <panel_attributes>
++ ListEffetti
+
+--
+
+&gt; Provocazione
+&gt; Grido di battaglia
+&gt; Carica
+&gt; Furia del vento
+&gt; Rantolo di morte
+&gt; Scudo Divino
+&gt; Inizio del turno
+&gt; Fine del turno
+&gt; Rabbia
+&gt; Cura
+&gt; Evocazione
+&gt; Miglioramento
+&gt; Altro</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>320</x>
+      <y>430</y>
+      <w>200</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>
++ Effetti Senza Payload
+
+--
+
+&gt; Provocazione
+&gt; Carica
+&gt; Furia del vento
+&gt; Scudo Divino</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>550</x>
+      <y>110</y>
+      <w>400</w>
+      <h>710</h>
+    </coordinates>
+    <panel_attributes>
++ Effetti Con Payload
+
+--
+
+&gt; Cura
+   &gt; int Cosa (0 per eroe oppure 1 per carte)
+   &gt; int Dove (0/1 oppure -1 per tutti e due i gg)
+   &gt; Cosa == 1 ? int[] QualeCarte (pos nell'array campo)
+   &gt; int DiQuanto (1 =&gt; ++)
+
+&gt; Attacca
+   &gt; int Cosa (0 per eroe oppure 1 per carte)
+   &gt; int Dove (0/1 oppure -1 per tutti e due i gg)
+   &gt; Cosa == 1 ? int[] QualeCarte (pos nell'array campo)
+   &gt; int Danni (1 =&gt; ++)
+
+&gt; Evocazione
+   &gt; int QualeCampo (0/1 oppure -1 per tutti e due)
+   &gt; boolean nelDeck (se la carta deve essere nel deck)
+   &gt; String[] QualeCarta (nella classe CollezioneCarte)
+   &gt; int[QualeCarta.length] Quante
+
+&gt; Miglioramento
+   &gt; int Cosa (0 per eroe oppure 1 per carte)
+   &gt; int Dove (0/1 oppure -1 per tutti e due i gg)
+   &gt; Cosa == 1 ? int[] QualeCarte (pos nell'array campo)
+   &gt; int DiQuanto (1 =&gt; ++)
+
+&gt; Grido di battaglia
+   &gt; Effetto
+
+&gt; Rabbia
+   &gt; LvlVita (il triggere dell'effetto rabbia)
+   &gt; Effetto
+
+&gt; Rantolo di morte
+   &gt; Effetto
+  
+&gt; Inizio del turno
+   &gt; Effetto
+
+&gt; Fine del turno
+   &gt; Effetto</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>980</x>
+      <y>110</y>
+      <w>210</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>
++ EffettoSpeciale
+
+--
+
++ Trigger
++ Effetto</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>980</x>
+      <y>290</y>
+      <w>210</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>
++ Altro
+
+--
+
+&gt; EffettoSpeciale[]</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>
