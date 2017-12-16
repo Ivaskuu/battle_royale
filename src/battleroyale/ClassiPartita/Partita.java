@@ -523,6 +523,9 @@ public class Partita
 			case Pesca:
 				System.out.println("L'altro giocatore ha pescato una carta");
 				break;
+			case Messaggio:
+				System.out.println("\nL'altro giocatore ha detto: \"" + agg.payload[0] + "\".\n");
+				break;
 			default:
 				break;
 		}

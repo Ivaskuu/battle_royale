@@ -12,20 +12,21 @@ public class MenuPartita
 {
 	private Partita partita;
 	private BufferedReader input;
+	private BufferedReader tast;
 	
 	public MenuPartita(Partita partita, int thisGG, BufferedReader input)
 	{
 		this.partita = partita;
 		this.input = input;
 		
+		tast = new BufferedReader(new InputStreamReader(System.in));
+		
 		if(thisGG == 0) turnoMio();
 		else aspettaCambioTurno(true);
 	}
 	
 	public void turnoMio()
-	{
-		BufferedReader tast = new BufferedReader(new InputStreamReader(System.in));
-        
+	{        
         do
         {
         	try
@@ -36,7 +37,8 @@ public class MenuPartita
         				+ "[3] Mostra campo battaglia\n"
         				+ "[4] Attacca\n"
         				+ "[5] Aggiungi carta sul campo\n"
-        				+ "[6] Finire il turno\n"
+        				+ "[6] Esprimiti\n"
+        				+ "[7] Finire il turno\n"
         				+ "\nScelta: ");
         		
         		String sceltaMenu = tast.readLine(); // Evitare l'indexoutofbounds
@@ -135,6 +137,35 @@ public class MenuPartita
         				}
         				break;
         			case '6':
+        				int msg = -1;
+    					String[] reactions = new String[]
+    					{
+    						"Salve!", "Buona fortuna!",
+    						"Bella giocata!", "Bella partita !",
+    						"Wow !", "Oops...", "Minaccia",
+    						"TUO PADRE FROCCIO"
+    					};
+    					
+    					do
+        				{
+    						System.out.println("\n > Seleziona il messaggio da inviare\n");
+        					for (int i = 0; i < reactions.length; i++)
+        					{
+        						System.out.println("[" + i + "] " + reactions[i]);
+							}
+        					System.out.print("\nScelta (oppure -1 per ritornare al menu) : ");
+        					
+        					String scelta = tast.readLine();
+        					if(scelta.charAt(0) == '-') break;
+        					else msg = Integer.parseInt(scelta);
+        				}
+        				while(msg < 0);
+        				
+    					if(msg == -1) break;
+        				partita.aggiornaAltroGiocatore(new AggiornamentoPartita(AzionePartita.Messaggio, reactions[msg]));
+        				System.out.println("Hai detto all'altro giocatore: \"" + reactions[msg] + "\".\n");
+        				break;
+        			case '7':
         				aspettaCambioTurno(false);
         				break;
         			default:
@@ -172,5 +203,7 @@ public class MenuPartita
 		{
 			e.printStackTrace();
 		}
+		
+		tast = new BufferedReader(new InputStreamReader(System.in));
 	}
 }

@@ -29,6 +29,7 @@ public class AggiornamentoPartita
 		Pesca, // Le pos delle carta nella classe CollezioneCarte
 		CambiaTurno, // Nessun parametro
 		GameOver, // Il giocatore ha perso la partita
-		GameWin // Il giocatore ha vinto la partita
+		GameWin, // Il giocatore ha vinto la partita
+		Messaggio
 	};
 }
