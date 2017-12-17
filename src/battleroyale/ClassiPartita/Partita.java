@@ -14,6 +14,7 @@ import battleroyale.Carta.AbilitaCarta;
 import battleroyale.CollezioneCarte;
 import battleroyale.EffettoSpeciale.TriggerEffetto;
 import battleroyale.ClassiPartita.AggiornamentoPartita.AzionePartita;
+import battleroyale.ClassiPartita.Effetto.TipoEffetto;
 
 public class Partita
 {
@@ -170,12 +171,11 @@ public class Partita
 		}
 
 		Carta carta = combattente.mano.get(posMazzo);
-		//carta.giocatePerTurnoAtt = 0;
 		if(carta.costoMana > combattente.manaAtt) // Se il giocatore non ha abbastanza mana
 		{
 			System.out.println("Non hai abbastanza mana per aggiungere " + carta.nome + " (costa " + carta.costoMana + " ma hai " + combattente.manaAtt + ")");
 		}
-		else  //Aggiungi la carta sul campo
+		else  // Aggiungi la carta sul campo
 		{
 			combattente.manaAtt -= carta.costoMana;
 			campo[THIS_GG].add(carta);
@@ -183,29 +183,7 @@ public class Partita
 
 			aggiornaAltroGiocatore(new AggiornamentoPartita(AzionePartita.AggiungiCartaSulCampo, new Gson().toJson(carta)));
 			
-			System.out.println(carta.nome + " e' stato/a aggiunto/a sul campo");
-			
-			//Controllo se ha carica o furia o un effetto con il grido di battaglia
-			for(int i=0;i<carta.abilitaCarta.length;i++)
-			{
-				if(carta.abilitaCarta[i]==AbilitaCarta.CARICA)
-				{
-					carta.giocatePerTurnoAtt=1;
-					System.out.println("Questa carta ha carica, può attaccare in questo turno!");
-				}
-				else if(carta.abilitaCarta[i]==AbilitaCarta.FURIA)
-				{
-					carta.giocatePerTurnoMax=2;
-					System.out.println("Questa carta ha furia, può attaccare 2 volte!");
-				}
-				else if(carta.abilitaCarta[i]==AbilitaCarta.GRIDO)
-				{
-					//Attivo l'effetto della carta con grido di battaglia 
-					//Effetti.eseguiEffetto(this, carta.effetto, payload);
-					
-				}
-			}
-			
+			System.out.println(carta.nome + " e' stato/a aggiunto/a sul campo");			
 			mostraCampoGg(THIS_GG);
 		}
 	}
@@ -217,70 +195,143 @@ public class Partita
 	}
 	
 	// Quando il giocatore attacca una carta dell'avversario
-	public void attacca(int posCartaAtt, int posCartaAvv)
+	public void attacca(int posCartaAtt, int posCartaAvv, boolean skipProvocazione) // skipProvocazione serve nel caso di una carta magia
 	{
-		if(posCartaAvv == -1) // Il giocatore vuole attacare l'erore dell'avversario
+		ArrayList<Integer> carteConProvocazione = new ArrayList<Integer>();
+		for(int i = 0; i < campo[contrario(THIS_GG)].size(); i++) // Per tutti i 2 gg
 		{
-			Carta att = campo[THIS_GG].get(posCartaAtt);
-			
-			if(att.giocatePerTurnoAtt > 0)
+			if(campo[contrario(THIS_GG)].get(i).getEffetto(TipoEffetto.Provocazione) != null)
 			{
-				att.giocatePerTurnoAtt--;
-				ggAvversario.salute -= att.attaccoAtt;
+				carteConProvocazione.add(i);
+			}
+		}
+		
+		if(posCartaAvv == -1) // Il giocatore vuole attacare l'eroe dell'avversario
+		{
+			if(carteConProvocazione.size() == 0 || skipProvocazione == true)
+			{
+				Carta cartaMia = campo[THIS_GG].get(posCartaAtt);
 				
-				System.out.println("\nL'eroe dell'avversario ha perso " + att.attaccoAtt + " HP (rimasti " + ggAvversario.salute + " HP)");
-				aggiornaAltroGiocatore(new AggiornamentoPartita(AzionePartita.Attacco, new String[] {new Gson().toJson(posCartaAtt), new Gson().toJson(posCartaAvv)}));
-				
-				if(ggAvversario.salute <= 0)
+				if(cartaMia.giocatePerTurnoAtt > 0)
+				{					
+					if(cartaMia.getEffetto(TipoEffetto.Furtivita) != null)
+					{
+						cartaMia.effetti[cartaMia.getEffetto(TipoEffetto.Furtivita)] = null;
+						System.out.println("La tua carta ha perso l'effetto 'Furtivita''");
+					}
+					
+					cartaMia.giocatePerTurnoAtt--;
+					ggAvversario.salute -= cartaMia.attaccoAtt;
+					
+					System.out.println("\nL'eroe dell'avversario ha perso " + cartaMia.attaccoAtt + " HP (rimasti " + ggAvversario.salute + " HP)");
+					aggiornaAltroGiocatore(new AggiornamentoPartita(AzionePartita.Attacco, new String[] {new Gson().toJson(posCartaAtt), new Gson().toJson(posCartaAvv)}));
+					
+					if(ggAvversario.salute <= 0)
+					{
+						System.out.println("\nL'eroe dell'avversario e' stato distrutto.\nHai vinto la partita!\n");
+						aggiornaAltroGiocatore(new AggiornamentoPartita(AzionePartita.GameWin));
+					}
+					
+					if(cartaMia.getEffetto(TipoEffetto.Rubavita) != null)
+					{
+						System.out.println("La tua carta ha l'effetto 'Ruba vita' quindi il tuo erore riceve +" + cartaMia.attaccoAtt + " HP");
+						ggIo.salute = Math.min(30, ggIo.salute + cartaMia.attaccoAtt);
+						
+						System.out.println("Adesso il tuo eroe ha " + ggIo.salute + " HP");
+					}
+					
+					mostraCampoTabellaTuttiGg();
+				}
+				else
 				{
-					System.out.println("\nL'eroe dell'avversario e' stato distrutto.\nHai vinto la partita!\n");
-					aggiornaAltroGiocatore(new AggiornamentoPartita(AzionePartita.GameWin));
+					System.out.println("Hai gia usato questa carta durante questo turno");
 				}
 			}
-			else
-			{
-				System.out.println("Hai gia usato questa carta durante questo turno");
-			}
+			else System.out.println("Devi prima attaccare i personnaggi con l'effetto PROVOCAZIONE");
 		}
 		else if(campo[THIS_GG].get(posCartaAtt) != null && campo[contrario(THIS_GG)].get(posCartaAvv) != null) // Se le carte esistono veramente
 		{
-			Carta att = campo[THIS_GG].get(posCartaAtt);
+			boolean staAttaccandoProvocazione = false;
+			for(int i = 0; i < carteConProvocazione.size(); i++)
+			{
+				if(posCartaAvv == carteConProvocazione.get(i)) staAttaccandoProvocazione = true;
+			}
 			
-			if(att.giocatePerTurnoAtt > 0)
+			if(carteConProvocazione.size() == 0 || staAttaccandoProvocazione == true)
 			{
-				Carta avv = campo[contrario(THIS_GG)].get(posCartaAvv);
+				Carta cartaMia = campo[THIS_GG].get(posCartaAtt);
 				
-				campo[THIS_GG].get(posCartaAtt).giocatePerTurnoAtt--;
-				System.out.println("Il tuo " + att.nome + " (" + att.attaccoAtt + "/" + att.saluteAtt + ") sta attcando " + avv.nome + " (" + avv.attaccoAtt + "/" + avv.saluteAtt + ")");
-				
-				// Rimuovi la vita della carta dell'avversario
-				avv.saluteAtt -= att.attaccoAtt;
-				if(avv.saluteAtt > 0) System.out.println("\nLa carta dell'avversario ha perso " + att.attaccoAtt + " HP (rimasti " + avv.saluteAtt + " HP)\n");
-				else
+				if(cartaMia.giocatePerTurnoAtt > 0)
 				{
-					campo[contrario(THIS_GG)].remove(posCartaAvv);
-					System.out.println("\nLa carta dell'avversario e' stata distrutta\n");
-				}
+					Carta cartaAvv = campo[contrario(THIS_GG)].get(posCartaAvv);
+					
+					if(cartaAvv.getEffetto(TipoEffetto.Furtivita) != null) // Controllo dell'effetto Furtivita
+					{
+						System.out.println("Non puoi attaccare questa carta perche' ha l'effetto 'Furtivita''");
+						return;
+					}
+					else
+					{
+						campo[THIS_GG].get(posCartaAtt).giocatePerTurnoAtt--;
+						System.out.println("Il tuo " + cartaMia.nome + " (" + cartaMia.attaccoAtt + "/" + cartaMia.saluteAtt + ") sta attcando " + cartaAvv.nome + " (" + cartaAvv.attaccoAtt + "/" + cartaAvv.saluteAtt + ")");
+						
+						if(cartaMia.getEffetto(TipoEffetto.Furtivita) != null)
+						{
+							cartaMia.effetti[cartaMia.getEffetto(TipoEffetto.Furtivita)] = null;
+							System.out.println("La tua carta ha perso l'effetto 'Furtivita''");
+						}
+						
+						// Rimuovi la vita della carta dell'avversario
+						if(cartaAvv.getEffetto(TipoEffetto.ScudoDivino) != null)
+						{
+							cartaAvv.effetti[cartaAvv.getEffetto(TipoEffetto.ScudoDivino)] = null;
+							System.out.println("La carta dell'avversario non ha subito danni ma ha perso l'effetto 'Scudo Divino'");
+						}
+						else
+						{
+							cartaAvv.saluteAtt -= cartaMia.attaccoAtt;
+							if(cartaAvv.saluteAtt > 0) System.out.println("\nLa carta dell'avversario ha perso " + cartaMia.attaccoAtt + " HP (rimasti " + cartaAvv.saluteAtt + " HP)\n");
+							else
+							{
+								campo[contrario(THIS_GG)].remove(posCartaAvv);
+								System.out.println("\nLa carta dell'avversario e' stata distrutta\n");
+							}
+						}
+		
+						// Rimuovi la vita della carta dell'attaccante (cioe io, cartaMia)
+						if(cartaMia.getEffetto(TipoEffetto.ScudoDivino) != null && cartaAvv.attaccoAtt > 0)
+						{
+							cartaMia.effetti[cartaMia.getEffetto(TipoEffetto.ScudoDivino)] = null;
+							System.out.println("La tua carta non ha subito danni ma ha perso l'effetto 'Scudo Divino'");
+						}
+						else
+						{
+							cartaMia.saluteAtt -= cartaMia.attaccoAtt;
+							if(cartaMia.saluteAtt > 0) System.out.println("\nLa tua carta ha perso " + cartaMia.attaccoAtt + " HP (rimasti " + cartaMia.saluteAtt + " HP)\n");
+							else
+							{
+								campo[THIS_GG].remove(posCartaAtt);
+								System.out.println("\nLa tua carta e' stata distrutta\n");
+							}
+						}
+						
+						if(cartaMia.getEffetto(TipoEffetto.Rubavita) != null)
+						{
+							System.out.println("La tua carta ha l'effetto 'Ruba vita' quindi il tuo erore riceve +" + cartaMia.attaccoAtt + " HP");
+							ggIo.salute = Math.min(30, ggIo.salute + cartaMia.attaccoAtt);
+							
+							System.out.println("Adesso il tuo eroe ha " + ggIo.salute + " HP");
+						}
 
-				// Rimuovi la vita della carta dell'attaccante
-				att.saluteAtt -= avv.attaccoAtt;
-				if(att.saluteAtt > 0) System.out.println("\nLa tua carta ha perso " + avv.attaccoAtt + " HP (rimasti " + att.saluteAtt + " HP)\n");
-				else
-				{
-					campo[THIS_GG].remove(posCartaAtt);
-					System.out.println("\nLa tua carta e' stata distrutta\n");
+						//mostraCampoTabellaTuttiGg();
+						aggiornaAltroGiocatore(new AggiornamentoPartita(AzionePartita.Attacco, new String[] {new Gson().toJson(posCartaAtt), new Gson().toJson(posCartaAvv)}));
+					}
 				}
-				
-				aggiornaAltroGiocatore(new AggiornamentoPartita(AzionePartita.Attacco, new String[] {new Gson().toJson(posCartaAtt), new Gson().toJson(posCartaAvv)}));
+				else System.out.println("Hai gia usato questa carta durante questo turno");
 			}
-			else
-			{
-				System.out.println("Hai gia usato questa carta durante questo turno");
-			}
+			else System.out.println("Devi prima attaccare i personnaggi con l'effetto PROVOCAZIONE");
 		}
 		else System.out.println("Le carte non esistono sul campo da battaglia.");
-		
-		mostraCampoTabellaTuttiGg();
 	}
 	
 	// Quando sta giocando l'altro e ci attacca
@@ -293,8 +344,22 @@ public class Partita
 			cartaSua.giocatePerTurnoAtt--;
 			System.out.println("Il tuo eroe si sta facendo attaccare da " + cartaSua.nome + " (" + cartaSua.attaccoAtt + "/" + cartaSua.saluteAtt + ")");
 			
+			if(cartaSua.getEffetto(TipoEffetto.Furtivita) != null)
+			{
+				cartaSua.effetti[cartaSua.getEffetto(TipoEffetto.Furtivita)] = null;
+				System.out.println("La sua carta ha perso l'effetto 'Furtivita''");
+			}
+			
 			ggIo.salute -= cartaSua.attaccoAtt;
 			System.out.println("Il tuo eroe ha perso " + cartaSua.attaccoAtt + " HP (rimasti " + ggIo.salute + ")");
+			
+			if(cartaSua.getEffetto(TipoEffetto.Rubavita) != null)
+			{
+				System.out.println("La sua carta ha l'effetto 'Ruba vita' quindi il suo erore riceve +" + cartaSua.attaccoAtt + " HP");
+				ggAvversario.salute = Math.min(30, ggAvversario.salute + cartaSua.attaccoAtt);
+				
+				System.out.println("Adesso il suo eroe ha " + ggAvversario.salute + " HP");
+			}
 			
 			if(ggIo.salute <= 0) System.out.println("Il tuo eroe si e' fatto distruggere, e hai perso la partita.");
 		}
@@ -304,23 +369,53 @@ public class Partita
 			
 			cartaSua.giocatePerTurnoAtt--;
 			System.out.println("La tua carta " + cartaMia.nome + " (" + cartaMia.attaccoAtt + "/" + cartaMia.saluteAtt + ") si sta facendo attcare da " + cartaSua.nome + " (" + cartaSua.attaccoAtt + "/" + cartaSua.saluteAtt + ")");
-			
-			// Rimuovi la vita della carta dell'avversario cioe io
-			cartaMia.saluteAtt -= cartaSua.attaccoAtt;
-			if(cartaMia.saluteAtt > 0) System.out.println("La tua carta ha perso " + cartaSua.attaccoAtt + " HP (rimasti " + cartaMia.saluteAtt + " HP)\n");
-			else
+
+			if(cartaSua.getEffetto(TipoEffetto.Furtivita) != null)
 			{
-				campo[THIS_GG].remove(posCartaMia);
-				System.out.println("La tua carta e' stata distrutta\n");
+				cartaSua.effetti[cartaSua.getEffetto(TipoEffetto.Furtivita)] = null;
+				System.out.println("La carta dell'avversario ha perso l'effetto 'Furtivita''");
 			}
-	
-			// Rimuovi la vita della carta dell'attaccante cioe lui
-			cartaSua.saluteAtt -= cartaMia.attaccoAtt;
-			if(cartaSua.saluteAtt > 0) System.out.println("\nLa sua carta ha perso " + cartaMia.attaccoAtt + " HP (rimasti " + cartaSua.saluteAtt + " HP)\n");
+			
+			// Rimuovi la vita della carta dell'avversario (cioe io)
+			if(cartaMia.getEffetto(TipoEffetto.ScudoDivino) != null)
+			{
+				cartaMia.effetti[cartaMia.getEffetto(TipoEffetto.ScudoDivino)] = null;
+				System.out.println("La tua carta non ha subito danni ma ha perso l'effetto 'Scudo Divino'");
+			}
 			else
 			{
-				campo[contrario(THIS_GG)].remove(posCartaSua);
-				System.out.println("\nLa sua carta e' stata distrutta\n");
+				cartaMia.saluteAtt -= cartaSua.attaccoAtt;
+				if(cartaMia.saluteAtt > 0) System.out.println("La tua carta ha perso " + cartaSua.attaccoAtt + " HP (rimasti " + cartaMia.saluteAtt + " HP)\n");
+				else
+				{
+					campo[THIS_GG].remove(posCartaMia);
+					System.out.println("La tua carta e' stata distrutta\n");
+				}
+			}
+		
+			// Rimuovi la vita della carta dell'attaccante cioe lui
+			if(cartaSua.getEffetto(TipoEffetto.ScudoDivino) != null)
+			{
+				cartaSua.effetti[cartaSua.getEffetto(TipoEffetto.ScudoDivino)] = null;
+				System.out.println("La sua carta non ha subito danni ma ha perso l'effetto 'Scudo Divino'");
+			}
+			else
+			{
+				cartaSua.saluteAtt -= cartaMia.attaccoAtt;
+				if(cartaSua.saluteAtt > 0) System.out.println("\nLa sua carta ha perso " + cartaMia.attaccoAtt + " HP (rimasti " + cartaSua.saluteAtt + " HP)\n");
+				else
+				{
+					campo[contrario(THIS_GG)].remove(posCartaSua);
+					System.out.println("\nLa sua carta e' stata distrutta\n");
+				}
+			}
+			
+			if(cartaSua.getEffetto(TipoEffetto.Rubavita) != null)
+			{
+				System.out.println("La sua carta ha l'effetto 'Ruba vita' quindi il suo erore riceve +" + cartaSua.attaccoAtt + " HP");
+				ggAvversario.salute = Math.min(30, ggAvversario.salute + cartaSua.attaccoAtt);
+				
+				System.out.println("Adesso il suo eroe ha " + ggAvversario + " HP");
 			}
 		}
 	}
@@ -339,7 +434,6 @@ public class Partita
 				aggiornaAltroGiocatore(new AggiornamentoPartita(AzionePartita.Pesca)); // No param. perche l'altro gg non deve sapere le tue carte
 				
 				//Controllo se ci sono delle carte con il trigger pesca carta TODO
-				
 				
 			}
 			else
@@ -410,31 +504,39 @@ public class Partita
 			if(j == THIS_GG)
 			{
 				System.out.println(" > Le tue carte nel campo");
-				System.out.println("|---------------------------------------|");
-				System.out.println("| Nome | Attacco | Salute | Stato carta |");
-				System.out.println("|---------------------------------------|");
+				System.out.println("|------------------------------------------------------|");
+				System.out.println("| Nome | Attacco | Salute | Stato carta | Provocazione |");
+				System.out.println("|------------------------------------------------------|");
 				System.out.println("| Eroe " + ggIo.nome + " | 0 | " + ggIo.salute + " |");
 				
 				for (int i = 0; i < campo[j].size(); i++)
 				{
 					System.out.print("| " + campo[j].get(i).nome + " | " + campo[j].get(i).attaccoAtt + " | " + campo[j].get(i).saluteAtt + " | ");
-					System.out.println(campo[j].get(i).giocatePerTurnoAtt == 0 ? "E' esausto |" : "Puo attaccare |");
+					System.out.print(campo[j].get(i).giocatePerTurnoAtt == 0 ? "E' esausto | " : "Puo attaccare | ");
+					
+					boolean haProvocazione = campo[j].get(i).getEffetto(TipoEffetto.Provocazione) != null;
+					if(haProvocazione) System.out.println("Si' |");
+					else System.out.println("No |");
 				}
-				System.out.println("|---------------------------------------|\n");
+				System.out.println("|------------------------------------------------------|\n");
 			}
 			else
 			{
 				System.out.println(" > Le carte dell'avversario nel campo");
-				System.out.println("|-------------------------|");
-				System.out.println("| Nome | Attacco | Salute |");
-				System.out.println("|-------------------------|");
+				System.out.println("|----------------------------------------|");
+				System.out.println("| Nome | Attacco | Salute | Provocazione |");
+				System.out.println("|----------------------------------------|");
 				System.out.println("| Eroe " + ggAvversario.nome + " | 0 | " + ggAvversario.salute + " |");
 				
 				for (int i = 0; i < campo[j].size(); i++)
 				{
-					System.out.println("| " + campo[j].get(i).nome + " | " + campo[j].get(i).attaccoAtt + " | " + campo[j].get(i).saluteAtt + " |");
+					System.out.print("| " + campo[j].get(i).nome + " | " + campo[j].get(i).attaccoAtt + " | " + campo[j].get(i).saluteAtt + " | ");
+					
+					boolean haProvocazione = campo[j].get(i).getEffetto(TipoEffetto.Provocazione) != null;
+					if(haProvocazione) System.out.println("Si' |");
+					else System.out.println("No |");
 				}
-				System.out.println("|-------------------------|\n");
+				System.out.println("|----------------------------------------|\n");
 			}
 		}
 	}
@@ -457,15 +559,20 @@ public class Partita
 		else
 		{
 			System.out.println(" > Le carte dell'avversario nel campo");
-			System.out.println("|-----------------------------|");
-			System.out.println("| N | Nome | Attacco | Salute |");
-			System.out.println("|-----------------------------|");
+			System.out.println("|--------------------------------------------|");
+			System.out.println("| N | Nome | Attacco | Salute | Provocazione |");
+			System.out.println("|--------------------------------------------|");
 			System.out.println("| 0 | Eroe " + ggAvversario.nome + "| 0 |   " + ggAvversario.salute + " |");
+			
 			for (int i = 0; i < campo[giocatore].size(); i++)
 			{
-				System.out.println("| " + (i+1) + " | " + campo[giocatore].get(i).nome + " | " + campo[giocatore].get(i).attaccoAtt + " | " + campo[giocatore].get(i).saluteAtt + " |");
+				System.out.print("| " + (i+1) + " | " + campo[giocatore].get(i).nome + " | " + campo[giocatore].get(i).attaccoAtt + " | " + campo[giocatore].get(i).saluteAtt + " | ");
+				
+				boolean haProvocazione = campo[giocatore].get(i).getEffetto(TipoEffetto.Provocazione) != null;
+				if(haProvocazione) System.out.println("Si' |");
+				else System.out.println("No |");
 			}
-			System.out.println("|-----------------------------|\n");
+			System.out.println("|--------------------------------------------|\n");
 		}
 	}
 	
@@ -481,7 +588,7 @@ public class Partita
 		{
 			System.out.println("\n > Hai " + combattente.manaAtt + " mana\n");
 			System.out.println("|------------------------------------------|");
-			System.out.println("| N | Nome | Attacco | Salute | Costo mana |");
+			System.out.println("| N | Nome | Attacco | Salute | Costo mana |"); // TODO: Tipo carta (pers, magia...)
 			System.out.println("|------------------------------------------|");
 			for (int i = 0; i < combattente.mano.size(); i++)
 			{

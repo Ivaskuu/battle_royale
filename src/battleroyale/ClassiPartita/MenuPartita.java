@@ -106,7 +106,7 @@ public class MenuPartita
 
 							if(posAvv == -2) break; // Vuol dire che vuole annullare l'attacco
 							
-							partita.attacca(posAtt, posAvv);
+							partita.attacca(posAtt, posAvv, false);
 		        		}
 		        		else
 		        		{
@@ -173,7 +173,7 @@ public class MenuPartita
         	}
         	catch(Exception e)
         	{
-        		System.out.println(e);
+    			e.printStackTrace();
         	}
         }
         while(true);

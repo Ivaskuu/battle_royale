@@ -3,6 +3,7 @@ package battleroyale;
 import java.awt.image.BufferedImage;
 
 import battleroyale.ClassiPartita.Effetto;
+import battleroyale.ClassiPartita.Effetto.TipoEffetto;
 
 public class Carta 
 {
@@ -19,12 +20,11 @@ public class Carta
     public TipoCarta tipoCarta;
     public RaritaCarta raritaCarta;
     public ClasseCarta classeCarta;
-    public AbilitaCarta[] abilitaCarta;
-    public Effetto effetto;
+    public Effetto[] effetti;
     
+    public String descrizione;
 	public BufferedImage immagine;
-    public String strEffetto;
-    public EffettoSpeciale effettoSp;
+
     // Attributi necessari durante la partita
     public int saluteAtt;
     public int attaccoAtt;
@@ -34,7 +34,7 @@ public class Carta
     // Il tipo di carta
     public enum TipoCarta
 	{
-	    PERSONAGGIO, MAGIA
+	    PERSONAGGIO, MAGIA, ARMA
 	}
     
     // La rarita della carta
@@ -71,16 +71,14 @@ public class Carta
     //
    
     // Carta magia
-    public Carta(BufferedImage img,String n, int costo_m, RaritaCarta rar,Effetto eff,String seff)
+    public Carta(BufferedImage img, String n, int costo_m, RaritaCarta rar, Effetto[] eff, String descrizione)
     {
     	immagine = img;
         costoMana = costo_m;
         nome = n;
         tipoCarta = TipoCarta.MAGIA;
-        effetto=eff;
-        strEffetto = seff;
-    	giocatePerTurnoMax = 1;
-    	giocatePerTurnoAtt = 0;
+        effetti = eff;
+        this.descrizione = descrizione;
     }
 
     /*// Carta magia durante la partita
@@ -95,21 +93,46 @@ public class Carta
     }*/
     
     // Carta personaggio
-    public Carta(BufferedImage img, String n, int costo_m, RaritaCarta rar, ClasseCarta cls, AbilitaCarta[] abilita, int atk, int sal,Effetto eff, String seff)
+    public Carta(BufferedImage img, String n, int costoM, RaritaCarta rar, ClasseCarta cls, int atk, int sal, String descrizione) // No effetto
     {
     	immagine = img;
-        costoMana = costo_m;
+        costoMana = costoM;
         nome = n;
         classeCarta = cls;
         saluteMax = sal;
         attaccoMax = atk;
-        abilitaCarta = abilita; //Un giocatore puo avere una o piu abilita
         tipoCarta = TipoCarta.PERSONAGGIO;
         raritaCarta = rar;
-        effetto=eff;
-        strEffetto = seff;
-    	giocatePerTurnoMax = 1;
-    	giocatePerTurnoAtt = 0;
+        this.effetti = null;
+    	this.descrizione = descrizione;
+    }
+    
+    public Carta(BufferedImage img, String n, int costoM, RaritaCarta rar, ClasseCarta cls, int atk, int sal, Effetto effetto, String descrizione) // 1 effetto
+    {
+    	immagine = img;
+        costoMana = costoM;
+        nome = n;
+        classeCarta = cls;
+        saluteMax = sal;
+        attaccoMax = atk;
+        tipoCarta = TipoCarta.PERSONAGGIO;
+        raritaCarta = rar;
+        this.effetti = new Effetto[] { effetto };
+    	this.descrizione = descrizione;
+    }
+    
+    public Carta(BufferedImage img, String n, int costoM, RaritaCarta rar, ClasseCarta cls, int atk, int sal, Effetto[] effetti, String descrizione) // Piu effetti
+    {
+    	immagine = img;
+        costoMana = costoM;
+        nome = n;
+        classeCarta = cls;
+        saluteMax = sal;
+        attaccoMax = atk;
+        tipoCarta = TipoCarta.PERSONAGGIO;
+        raritaCarta = rar;
+        this.effetti = effetti;
+    	this.descrizione = descrizione;
     }
     
     // Carta personaggio durante la partita
@@ -121,5 +144,18 @@ public class Carta
     	carta.giocatePerTurnoAtt = 0;
     	
     	return carta;
+    }
+    
+    public Integer getEffetto(TipoEffetto tipoEffetto)
+    {
+    	if(effetti != null)
+    	{
+    		for (int i = 0; i < effetti.length; i++)
+        	{
+    			if(effetti[i] != null && effetti[i].tipoEffetto == tipoEffetto) return i;
+    		}
+    	}
+    	
+    	return null;
     }
 }
