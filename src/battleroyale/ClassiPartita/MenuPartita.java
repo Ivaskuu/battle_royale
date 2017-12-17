@@ -173,7 +173,7 @@ public class MenuPartita
         	}
         	catch(Exception e)
         	{
-        		System.out.println(e);
+    			e.printStackTrace();
         	}
         }
         while(true);

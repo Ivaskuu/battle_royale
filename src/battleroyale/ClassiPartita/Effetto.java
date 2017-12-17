@@ -30,6 +30,10 @@ public class Effetto
 		Carica,
 		FuriaDelVento,
 		ScudoDivino,
+		Furtivita,
+		Veleno,
+		Rubavita,
+		Immune,
 		
 		// Con payload
 		Cura,

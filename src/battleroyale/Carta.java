@@ -3,6 +3,7 @@ package battleroyale;
 import java.awt.image.BufferedImage;
 
 import battleroyale.ClassiPartita.Effetto;
+import battleroyale.ClassiPartita.Effetto.TipoEffetto;
 
 public class Carta 
 {
@@ -143,5 +144,18 @@ public class Carta
     	carta.giocatePerTurnoAtt = 0;
     	
     	return carta;
+    }
+    
+    public Integer getEffetto(TipoEffetto tipoEffetto)
+    {
+    	if(effetti != null)
+    	{
+    		for (int i = 0; i < effetti.length; i++)
+        	{
+    			if(effetti[i] != null && effetti[i].tipoEffetto == tipoEffetto) return i;
+    		}
+    	}
+    	
+    	return null;
     }
 }

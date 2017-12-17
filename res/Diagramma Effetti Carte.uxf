@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="13.3">
-  <zoom_level>10</zoom_level>
+  <zoom_level>14</zoom_level>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>330</x>
+      <x>434</x>
       <y>0</y>
-      <w>200</w>
-      <h>310</h>
+      <w>280</w>
+      <h>560</h>
     </coordinates>
     <panel_attributes>
 + ListaEffetti
@@ -26,16 +26,23 @@
 &gt; Cura
 &gt; Evocazione
 &gt; Miglioramento
+&gt; Pesca
+
+&gt; Furtivita // Non puo essere attaccato finche non attacca
+&gt; Veleno // Distrugge il nemico
+&gt; Rubavita // Salute += Attacco -- ???
+&gt; Immune // Immune alle carte magia
+
 &gt; Altro</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>330</x>
-      <y>340</y>
-      <w>200</w>
-      <h>170</h>
+      <x>434</x>
+      <y>602</y>
+      <w>280</w>
+      <h>210</h>
     </coordinates>
     <panel_attributes>
 + Effetti Senza Payload
@@ -45,17 +52,16 @@
 &gt; Provocazione
 &gt; Carica
 &gt; Furia del vento
-&gt; Scudo Divino
-&gt; Pesca</panel_attributes>
+&gt; Scudo Divino</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>560</x>
+      <x>756</x>
       <y>0</y>
-      <w>540</w>
-      <h>1240</h>
+      <w>756</w>
+      <h>1736</h>
     </coordinates>
     <panel_attributes>
 + Effetti Con Payload
@@ -138,10 +144,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>330</x>
-      <y>540</y>
-      <w>200</w>
-      <h>150</h>
+      <x>434</x>
+      <y>854</y>
+      <w>280</w>
+      <h>210</h>
     </coordinates>
     <panel_attributes>
 + EffettoSpeciale

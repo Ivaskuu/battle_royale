@@ -23,19 +23,19 @@ public class CollezioneCarte
 	public static Carta[] collezioneCarte = 
 	{
 		 //------------------------------------------- [ Carte personaggi della nostra classe ] ---------------------------------------------------------------------
-		 new Carta(null, "Podz", 6, RaritaCarta.EPICA, ClasseCarta.AESTHETICS, 7, 7, new Effetto(TipoEffetto.Provocazione), "E così ciccione che gli altri personnaggi si nascondono dietro di lui"),
+		 new Carta(null, "Podz", 6, RaritaCarta.EPICA, ClasseCarta.AESTHETICS, 7, 7, new Effetto(TipoEffetto.Provocazione), "E cosi' ciccione che gli altri personnaggi si nascondono dietro di lui"),
 		 new Carta(null, "Michel", 3, RaritaCarta.RARA, ClasseCarta.SECCHIONE, 2, 3, " "), // new AbilitaCarta[] {AbilitaCarta.IMMUNE}
 		 new Carta(null, "Bertot", 4, RaritaCarta.RARA, ClasseCarta.DROGATO, 3, 4, new Effetto(TipoEffetto.Provocazione), " "),
 		 new Carta(null, "Casati", 4, RaritaCarta.COMUNE, null, 4, 5, " "),
 		 new Carta(null, "Casiraghi", 4, RaritaCarta.COMUNE, ClasseCarta.DROGATO, 4, 4, " "),
-		 new Carta(null, "Fumagalli", 4, RaritaCarta.RARA, null, 3, 4, " "), // TODO: new AbilitaCarta[] {AbilitaCarta.RUBAVITA}
+		 new Carta(null, "Fumagalli", 4, RaritaCarta.RARA, null, 3, 4, new Effetto(TipoEffetto.Rubavita), " "),
 		 new Carta(null, "Steve", 2, RaritaCarta.COMUNE, null, 2, 2, new Effetto(TipoEffetto.ScudoDivino), " "),
 		 new Carta(null, "Adrian", 4, RaritaCarta.LEGGENDARIA, ClasseCarta.SVILUPPATORE, 3, 4, new Effetto(TipoEffetto.GridoDiBattaglia, new Effetto(TipoEffetto.Evocazione, new Object[] { 0, false, "Simone" })), "Quando giochi questa carta evoca sul terreno 'Simone' dal tuo mazzo"),
 		 new Carta(null, "Fabio", 5, RaritaCarta.EPICA, ClasseCarta.COMUNISTA, 4, 4, new Effetto(TipoEffetto.FuriaDelVento), "Quando giochi questa carta silenzia TUTTI i personaggi sul terreno"), // TODO: AbilitaCarta.GRIDO
-		 new Carta(null, "Mande", 3, RaritaCarta.RARA, ClasseCarta.SECCHIONE, 1, 1, new Effetto[] { new Effetto(TipoEffetto.ScudoDivino), new Effetto(TipoEffetto.Miglioramento, new Object[] { 1, 0, "Michel", true, 1, true, 1 }) }, "Se e' presente 'Michel' nel tuo campo di battaglia aumenta le sue statistiche +1/+1"), // TODO: new AbilitaCarta(AbilitaCarta.FURTIVO)
+		 new Carta(null, "Mande", 3, RaritaCarta.RARA, ClasseCarta.SECCHIONE, 1, 1, new Effetto[] { new Effetto(TipoEffetto.ScudoDivino), new Effetto(TipoEffetto.Furtivita), new Effetto(TipoEffetto.Miglioramento, new Object[] { 1, 0, "Michel", true, 1, true, 1 }) }, "Se e' presente 'Michel' nel tuo campo di battaglia aumenta le sue statistiche +1/+1"),
 		 new Carta(null, "Mustafa", 4, RaritaCarta.RARA, null, 3, 4, "Quando giochi questa carta prendi il controllo di un nemico casuale"), // new AbilitaCarta[] {AbilitaCarta.GRIDO}
 		 new Carta(null, "Peg", 3, RaritaCarta.COMUNE, ClasseCarta.AESTHETICS, 3, 3, new Effetto(TipoEffetto.Provocazione), " "),
-		 new Carta(null, "Penatti", 5, RaritaCarta.RARA, null, 4, 2, " "), // new AbilitaCarta[] {AbilitaCarta.RUBAVITA}
+		 new Carta(null, "Penatti", 5, RaritaCarta.RARA, null, 4, 2, new Effetto(TipoEffetto.Rubavita), " "),
 		 new Carta(null, "Puente", 3, RaritaCarta.EPICA, null, 2, 1, new Effetto(TipoEffetto.Altro), "Ogni volta che peschi una carta, ne aggiunge una copia nel tuo mazzo"), // TODO: Non puo essere attaccata da tipi
 		 new Carta(null, "Stephen", 6, RaritaCarta.RARA, ClasseCarta.AESTHETICS, 5, 4, new Effetto(TipoEffetto.Carica), " "),
 		 new Carta(null, "Riccardi", 7, RaritaCarta.EPICA, ClasseCarta.SECCHIONE, 4, 6, new Effetto(TipoEffetto.Miglioramento, new Object[] { 1, -1, -1, true, -1, true, -1 }), "Quando giochi questa carta diminuisce le statistiche di TUTTI i personaggi di -1/-1"), // TODO: new AbilitaCarta(AbilitaCarta.IMMUNE)
@@ -49,7 +49,7 @@ public class CollezioneCarte
 		 //-------------------------------------------- [ Carte personaggi aggiuntivi ] -----------------------------------------------
 		 new Carta(null, "Naji il pescatore", 6, RaritaCarta.EPICA, ClasseCarta.DROGATO, 6, 5, new Effetto(TipoEffetto.Probabilita, new Object[] { 50, new Effetto(TipoEffetto.Pesca) }), "All'inizio di ogni tuo turno hai il 50% di possibilita' di pescare una carta aggiuntiva."), // TODO new AbilitaCarta[] {AbilitaCarta.EFFETTO},
 		 new Carta(null, "Nick", 8, RaritaCarta.EPICA, ClasseCarta.HACKERINO, 6, 8, new Effetto[] { new Effetto(TipoEffetto.Provocazione), new Effetto(TipoEffetto.Carica) }, " "),
-		 new Carta(null, "Pizio", 3, RaritaCarta.RARA, ClasseCarta.HACKERINO, 3, 3, "Solito easter egg"), // new AbilitaCarta[] {AbilitaCarta.FURTIVO},
+		 new Carta(null, "Pizio", 3, RaritaCarta.RARA, ClasseCarta.HACKERINO, 3, 3, new Effetto(TipoEffetto.Furtivita), "Solito easter egg"),
 		 new Carta(null, "Luciano", 5, RaritaCarta.RARA, ClasseCarta.PERSONALESC, 4, 4, new Effetto(TipoEffetto.Attacca, new Object[] { 1, -1, ClasseCarta.HACKERINO, 100 }), "Quando giochi questa carta distrugge TUTTI i personaggi che appartengono alla classe 'HACKERINO'"),
 		 new Carta(null, "Angelina", 2, RaritaCarta.LEGGENDARIA, ClasseCarta.PERSONALESC, 0, 2, "Non fa un cazzo"),
 		 new Carta(null, "Prof. Mariani", 3, RaritaCarta.RARA, ClasseCarta.PERSONALESC, 3, 3, new Effetto(TipoEffetto.GridoDiBattaglia, new Effetto(TipoEffetto.Attacca, new Object[] { 1, -1, "Nick", 100 })), "Quando giochi questa carta distrugge il personaggio 'Nick' se presente nel campo di battaglia"),
@@ -57,7 +57,7 @@ public class CollezioneCarte
 		 new Carta(null, "Prof. Giuimp", 5, RaritaCarta.RARA, ClasseCarta.PERSONALESC, 4, 4, new Effetto(TipoEffetto.GridoDiBattaglia, new Effetto(TipoEffetto.Evocazione, new String[] { "Studente generico", "Studente generico" })), "Quando giochi questa carta evoca 2 studenti generici 1/1"),
 		 new Carta(null, "Rappresentante scolastico", 7, RaritaCarta.LEGGENDARIA, ClasseCarta.STUDENTE, 5, 5, new Effetto(TipoEffetto.Miglioramento, new Object[] { 1, -1, ClasseCarta.STUDENTE, true, 2, true, 2 }), "Quando giochi questa carta fornisce +2/+2 a TUTTTI i personaggi di tipo 'STUDENTE'"),
 		 new Carta(null, "Tecnico fallito", 1, RaritaCarta.COMUNE, ClasseCarta.PERSONALESC, 1, 2, new Effetto(TipoEffetto.Probabilita, new Object[] { 50, new Effetto(TipoEffetto.ScartaCarta, new Object[] { 0, new int[] { -1 } }) }), "Quando giochi questa carta hai il 50% di possibilita di scartare una carta casuale dalla tua mano"),
-		 new Carta(null, "Mister X", 3, RaritaCarta.EPICA, ClasseCarta.HACKERINO, 3, 2, " "), // TODO: new AbilitaCarta[] {AbilitaCarta.FURTIVO}
+		 new Carta(null, "Mister X", 3, RaritaCarta.EPICA, ClasseCarta.HACKERINO, 3, 2, new Effetto(TipoEffetto.Furtivita), " "),
 		 new Carta(null, "Vice Preside", 6, RaritaCarta.EPICA, ClasseCarta.PERSONALESC, 4, 4, new Effetto(TipoEffetto.Miglioramento, new Object[] { 1, -1, ClasseCarta.PERSONALESC, true, 1, true, 1 }), "Quando giochi questa carta fornisce +1/+1 a TUTTI i personaggi di tipo 'PERSONALE SCOLASTICO'"),
 		 new Carta(null, "Prof. Catalano", 4, RaritaCarta.RARA, ClasseCarta.PERSONALESC, 4, 4, new Effetto(TipoEffetto.Provocazione), " "),
 		 new Carta(null, "Prof. Fea", 5, RaritaCarta.RARA, ClasseCarta.PERSONALESC, 3, 3, new Effetto(TipoEffetto.GridoDiBattaglia, new Effetto(TipoEffetto.ScartaCarta, new Object[] { 1, new int[] { -1 } })), "Quando giochi questa carta fai tornare un personaggio in mano all'avversario"),
@@ -84,7 +84,7 @@ public class CollezioneCarte
 		 new Carta(null, "Alla ricerca della F*ga!", 8, RaritaCarta.EPICA, null, "Se controlli 'Podz','Pegs','Rossi' e 'Stephen' sul campo di battaglia aumenta loro i parametri +3/+3 e gli fornisce PROVOCAZIONE"),
          new Carta(null, "Uguaglianza", 4, RaritaCarta.RARA, null, "Scegli un bersaglio sul terreno, TUTTI i personaggi sul campo di battaglia copiano il suo attacco e la sua difesa"),	
          new Carta(null, "Croccantelle", 2, RaritaCarta.COMUNE, null, "Aumenta di +1/+1 un bersaglio che NON appartiene alla classe 'PERSONALE SCOLASTICO"),
-         new Carta(null, "Fumo nei bagni", 3, RaritaCarta.RARA, null, "Fornisce furtivitÃ  a tutti i tuoi personaggi, se appartengono alla classe 'DROGATO' gli fornisce +1/+1"),
+         new Carta(null, "Fumo nei bagni", 3, RaritaCarta.RARA, null, "Fornisce furtivita' a tutti i tuoi personaggi, se appartengono alla classe 'DROGATO' gli fornisce +1/+1"),
          new Carta(null, "Interrogazione", 4, RaritaCarta.RARA, null, "Fai tornare i personaggi nemici che NON appartengono alla classe 'PERSONALE SCOLASTICO' nel mazzo dell'avversario"),
 	 };
 	
