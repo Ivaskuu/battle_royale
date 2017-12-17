@@ -37,12 +37,15 @@ public class Effetto
 		Evocazione,
 		Miglioramento,
 		GridoDiBattaglia,
+		Pesca,
 		Rabbia,
 		RantoloDiMorte,
 		InizioTurno,
 		FineTurno,
+		ScartaCarta,
 		
 		// Altro
+		Probabilita,
 		Altro,
 	}
 }
