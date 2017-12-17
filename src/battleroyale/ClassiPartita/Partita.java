@@ -306,8 +306,8 @@ public class Partita
 						}
 						else
 						{
-							cartaMia.saluteAtt -= cartaMia.attaccoAtt;
-							if(cartaMia.saluteAtt > 0) System.out.println("\nLa tua carta ha perso " + cartaMia.attaccoAtt + " HP (rimasti " + cartaMia.saluteAtt + " HP)\n");
+							cartaMia.saluteAtt -= cartaAvv.attaccoAtt;
+							if(cartaMia.saluteAtt > 0) System.out.println("\nLa tua carta ha perso " + cartaAvv.attaccoAtt + " HP (rimasti " + cartaMia.saluteAtt + " HP)\n");
 							else
 							{
 								campo[THIS_GG].remove(posCartaAtt);
