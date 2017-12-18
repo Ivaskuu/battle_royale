@@ -1,4 +1,4 @@
-package battleroyale.ClientServer;
+package einstone.ClientServer;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,10 +13,10 @@ import java.net.UnknownHostException;
 
 import com.google.gson.Gson;
 
-import battleroyale.ClassiPartita.AggiornamentoPartita;
-import battleroyale.ClassiPartita.GiocatoreSlim;
-import battleroyale.ClassiPartita.Partita;
-import battleroyale.ClassiPartita.AggiornamentoPartita.AzionePartita;
+import einstone.ClassiPartita.AggiornamentoPartita;
+import einstone.ClassiPartita.GiocatoreSlim;
+import einstone.ClassiPartita.Partita;
+import einstone.ClassiPartita.AggiornamentoPartita.AzionePartita;
 
 public class Server
 {

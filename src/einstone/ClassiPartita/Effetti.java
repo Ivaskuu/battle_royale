@@ -1,12 +1,12 @@
-package battleroyale.ClassiPartita;
+package einstone.ClassiPartita;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-import battleroyale.Carta;
-import battleroyale.CollezioneCarte;
-import battleroyale.ClassiPartita.Effetto.TipoEffetto;
+import einstone.Carta;
+import einstone.CollezioneCarte;
+import einstone.ClassiPartita.Effetto.TipoEffetto;
 
 public class Effetti 
 {

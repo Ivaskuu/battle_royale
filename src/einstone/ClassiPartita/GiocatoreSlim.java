@@ -1,7 +1,7 @@
-package battleroyale.ClassiPartita;
+package einstone.ClassiPartita;
 
-import battleroyale.CollezioneCarte;
-import battleroyale.Giocatore;
+import einstone.CollezioneCarte;
+import einstone.Giocatore;
 
 // Versione meno pesante della classe Giocatore
 public class GiocatoreSlim

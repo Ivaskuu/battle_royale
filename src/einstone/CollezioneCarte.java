@@ -1,4 +1,4 @@
-package battleroyale;
+package einstone;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -6,12 +6,12 @@ import java.util.Random;
 
 import com.sun.javafx.sg.prism.EffectFilter;
 
-import battleroyale.Carta.AbilitaCarta;
-import battleroyale.Carta.ClasseCarta;
-import battleroyale.Carta.RaritaCarta;
-import battleroyale.EffettoSpeciale.TriggerEffetto;
-import battleroyale.ClassiPartita.Effetto;
-import battleroyale.ClassiPartita.Effetto.TipoEffetto;
+import einstone.Carta.AbilitaCarta;
+import einstone.Carta.ClasseCarta;
+import einstone.Carta.RaritaCarta;
+import einstone.ClassiPartita.Effetto;
+import einstone.ClassiPartita.Effetto.TipoEffetto;
+import einstone.EffettoSpeciale.TriggerEffetto;
 
 public class CollezioneCarte
 {

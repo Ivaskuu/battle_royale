@@ -1,8 +1,8 @@
-package battleroyale.ClassiPartita;
+package einstone.ClassiPartita;
 
 import java.util.ArrayList;
 
-import battleroyale.Carta;
+import einstone.Carta;
 
 public class Combattente//SenzaPatente <= fa rima (iury)
 {

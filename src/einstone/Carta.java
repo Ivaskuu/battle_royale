@@ -1,9 +1,9 @@
-package battleroyale;
+package einstone;
 
 import java.awt.image.BufferedImage;
 
-import battleroyale.ClassiPartita.Effetto;
-import battleroyale.ClassiPartita.Effetto.TipoEffetto;
+import einstone.ClassiPartita.Effetto;
+import einstone.ClassiPartita.Effetto.TipoEffetto;
 
 public class Carta 
 {

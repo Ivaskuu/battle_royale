@@ -1,4 +1,4 @@
-package battleroyale.ClassiPartita;
+package einstone.ClassiPartita;
 
 public class AggiornamentoPartita
 {

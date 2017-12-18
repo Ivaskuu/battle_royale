@@ -1,4 +1,4 @@
-package battleroyale.ClientServer;
+package einstone.ClientServer;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -7,12 +7,12 @@ import java.net.Socket;
 
 import com.google.gson.Gson;
 
-import battleroyale.Giocatore;
-import battleroyale.ClassiPartita.AggiornamentoPartita;
-import battleroyale.ClassiPartita.Combattente;
-import battleroyale.ClassiPartita.GiocatoreSlim;
-import battleroyale.ClassiPartita.Partita;
-import battleroyale.ClassiPartita.AggiornamentoPartita.AzionePartita;
+import einstone.Giocatore;
+import einstone.ClassiPartita.AggiornamentoPartita;
+import einstone.ClassiPartita.Combattente;
+import einstone.ClassiPartita.GiocatoreSlim;
+import einstone.ClassiPartita.Partita;
+import einstone.ClassiPartita.AggiornamentoPartita.AzionePartita;
 
 public class Client extends Thread
 {

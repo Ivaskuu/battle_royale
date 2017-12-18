@@ -1,4 +1,4 @@
-package battleroyale.ClassiPartita;
+package einstone.ClassiPartita;
 
 import java.io.BufferedReader;
 import java.io.PrintWriter;
@@ -9,13 +9,13 @@ import java.util.Random;
 
 import com.google.gson.Gson;
 
-import battleroyale.Carta;
-import battleroyale.ClassiPartita.Effetti;
-import battleroyale.Carta.AbilitaCarta;
-import battleroyale.CollezioneCarte;
-import battleroyale.EffettoSpeciale.TriggerEffetto;
-import battleroyale.ClassiPartita.AggiornamentoPartita.AzionePartita;
-import battleroyale.ClassiPartita.Effetto.TipoEffetto;
+import einstone.Carta;
+import einstone.CollezioneCarte;
+import einstone.Carta.AbilitaCarta;
+import einstone.ClassiPartita.Effetti;
+import einstone.ClassiPartita.AggiornamentoPartita.AzionePartita;
+import einstone.ClassiPartita.Effetto.TipoEffetto;
+import einstone.EffettoSpeciale.TriggerEffetto;
 
 public class Partita
 {

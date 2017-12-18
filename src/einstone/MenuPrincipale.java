@@ -1,4 +1,4 @@
-package battleroyale;
+package einstone;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -6,9 +6,9 @@ import java.util.Scanner;
 
 import com.google.gson.Gson;
 
-import battleroyale.ClassiPartita.GiocatoreSlim;
-import battleroyale.ClientServer.Client;
-import battleroyale.ClientServer.Server;
+import einstone.ClassiPartita.GiocatoreSlim;
+import einstone.ClientServer.Client;
+import einstone.ClientServer.Server;
 
 public class MenuPrincipale
 {

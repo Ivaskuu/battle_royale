@@ -1,11 +1,11 @@
-package battleroyale.ClassiPartita;
+package einstone.ClassiPartita;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
 import com.google.gson.Gson;
 
-import battleroyale.ClassiPartita.AggiornamentoPartita.AzionePartita;
+import einstone.ClassiPartita.AggiornamentoPartita.AzionePartita;
 
 public class MenuPartita
 {

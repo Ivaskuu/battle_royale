@@ -1,8 +1,8 @@
-package battleroyale;
+package einstone;
 
 import java.util.Random;
 
-import battleroyale.ClassiPartita.Effetto;
+import einstone.ClassiPartita.Effetto;
 
 public class EffettoSpeciale {
 	
