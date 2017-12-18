@@ -3,6 +3,7 @@ package battleroyale.ClassiPartita;
 import java.io.BufferedReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;
 
@@ -306,8 +307,8 @@ public class Partita
 						}
 						else
 						{
-							cartaMia.saluteAtt -= cartaMia.attaccoAtt;
-							if(cartaMia.saluteAtt > 0) System.out.println("\nLa tua carta ha perso " + cartaMia.attaccoAtt + " HP (rimasti " + cartaMia.saluteAtt + " HP)\n");
+							cartaMia.saluteAtt -= cartaAvv.attaccoAtt;
+							if(cartaMia.saluteAtt > 0) System.out.println("\nLa tua carta ha perso " + cartaAvv.attaccoAtt + " HP (rimasti " + cartaMia.saluteAtt + " HP)\n");
 							else
 							{
 								campo[THIS_GG].remove(posCartaAtt);
@@ -505,18 +506,18 @@ public class Partita
 			{
 				System.out.println(" > Le tue carte nel campo");
 				System.out.println("|------------------------------------------------------|");
-				System.out.println("| Nome | Attacco | Salute | Stato carta | Provocazione |");
+				System.out.println("| Nome | Attacco | Salute | Stato carta | Effetti |");
 				System.out.println("|------------------------------------------------------|");
 				System.out.println("| Eroe " + ggIo.nome + " | 0 | " + ggIo.salute + " |");
 				
 				for (int i = 0; i < campo[j].size(); i++)
 				{
-					System.out.print("| " + campo[j].get(i).nome + " | " + campo[j].get(i).attaccoAtt + " | " + campo[j].get(i).saluteAtt + " | ");
-					System.out.print(campo[j].get(i).giocatePerTurnoAtt == 0 ? "E' esausto | " : "Puo attaccare | ");
+					Carta carta = campo[j].get(i);
+					System.out.print("| " + carta.nome + " | " + carta.attaccoAtt + " | " + carta.saluteAtt + " | ");
+					System.out.print(carta.giocatePerTurnoAtt == 0 ? "E' esausto | " : "Puo attaccare | ");
 					
-					boolean haProvocazione = campo[j].get(i).getEffetto(TipoEffetto.Provocazione) != null;
-					if(haProvocazione) System.out.println("Si' |");
-					else System.out.println("No |");
+					carta.printEffetti();
+					System.out.println(" |");
 				}
 				System.out.println("|------------------------------------------------------|\n");
 			}
@@ -524,17 +525,17 @@ public class Partita
 			{
 				System.out.println(" > Le carte dell'avversario nel campo");
 				System.out.println("|----------------------------------------|");
-				System.out.println("| Nome | Attacco | Salute | Provocazione |");
+				System.out.println("| Nome | Attacco | Salute | Effetti |");
 				System.out.println("|----------------------------------------|");
 				System.out.println("| Eroe " + ggAvversario.nome + " | 0 | " + ggAvversario.salute + " |");
 				
 				for (int i = 0; i < campo[j].size(); i++)
 				{
-					System.out.print("| " + campo[j].get(i).nome + " | " + campo[j].get(i).attaccoAtt + " | " + campo[j].get(i).saluteAtt + " | ");
+					Carta carta = campo[j].get(i);
+					System.out.print("| " + carta.nome + " | " + carta.attaccoAtt + " | " + carta.saluteAtt + " | ");
 					
-					boolean haProvocazione = campo[j].get(i).getEffetto(TipoEffetto.Provocazione) != null;
-					if(haProvocazione) System.out.println("Si' |");
-					else System.out.println("No |");
+					carta.printEffetti();
+					System.out.println(" |");
 				}
 				System.out.println("|----------------------------------------|\n");
 			}
@@ -546,33 +547,39 @@ public class Partita
 		if(giocatore == THIS_GG)
 		{
 			System.out.println(" > Le tue carte nel campo");
-			System.out.println("|-------------------------------------------|");
-			System.out.println("| N | Nome | Attacco | Salute | Stato carta |");
-			System.out.println("|-------------------------------------------|");
+			System.out.println("|-----------------------------------------------------|");
+			System.out.println("| N | Nome | Attacco | Salute | Stato carta | Effetti |");
+			System.out.println("|-----------------------------------------------------|");
+			
 			for (int i = 0; i < campo[giocatore].size(); i++)
 			{
-				System.out.print("| " + (i+1) + " | " + campo[giocatore].get(i).nome + " | " + campo[giocatore].get(i).attaccoAtt + " | " + campo[giocatore].get(i).saluteAtt + " | ");
-				System.out.println(campo[giocatore].get(i).giocatePerTurnoAtt == 0 ? "E' esausto |" : "Puo attaccare |");
+				Carta carta = campo[giocatore].get(i);
+				System.out.print("| " + (i+1) + " | " + carta.nome + " | " + carta.attaccoAtt + " | " + carta.saluteAtt + " | ");
+				System.out.print(carta.giocatePerTurnoAtt == 0 ? "E' esausto | " : "Puo attaccare | ");
+				
+				carta.printEffetti();
+				System.out.println(" |");
 			}
-			System.out.println("|-------------------------------------------|\n");
+			System.out.println("|----------------------------------------------------|\n");
 		}
 		else
 		{
 			System.out.println(" > Le carte dell'avversario nel campo");
-			System.out.println("|--------------------------------------------|");
-			System.out.println("| N | Nome | Attacco | Salute | Provocazione |");
-			System.out.println("|--------------------------------------------|");
+			System.out.println("|---------------------------------------|");
+			System.out.println("| N | Nome | Attacco | Salute | Effetti |");
+			System.out.println("|---------------------------------------|");
 			System.out.println("| 0 | Eroe " + ggAvversario.nome + "| 0 |   " + ggAvversario.salute + " |");
 			
 			for (int i = 0; i < campo[giocatore].size(); i++)
 			{
-				System.out.print("| " + (i+1) + " | " + campo[giocatore].get(i).nome + " | " + campo[giocatore].get(i).attaccoAtt + " | " + campo[giocatore].get(i).saluteAtt + " | ");
+				Carta carta = campo[giocatore].get(i);
+				System.out.print("| " + (i+1) + " | " + carta.nome + " | " + carta.attaccoAtt + " | " + carta.saluteAtt + " | ");
+				System.out.print(carta.giocatePerTurnoAtt == 0 ? "E' esausto | " : "Puo attaccare | ");
 				
-				boolean haProvocazione = campo[giocatore].get(i).getEffetto(TipoEffetto.Provocazione) != null;
-				if(haProvocazione) System.out.println("Si' |");
-				else System.out.println("No |");
+				carta.printEffetti();
+				System.out.println(" |");
 			}
-			System.out.println("|--------------------------------------------|\n");
+			System.out.println("|---------------------------------------|\n");
 		}
 	}
 	
@@ -587,14 +594,18 @@ public class Partita
 		else
 		{
 			System.out.println("\n > Hai " + combattente.manaAtt + " mana\n");
-			System.out.println("|------------------------------------------|");
-			System.out.println("| N | Nome | Attacco | Salute | Costo mana |"); // TODO: Tipo carta (pers, magia...)
-			System.out.println("|------------------------------------------|");
+			System.out.println("|----------------------------------------------------|");
+			System.out.println("| N | Nome | Attacco | Salute | Costo mana | Effetti |"); // TODO: Tipo carta (pers, magia...)
+			System.out.println("|----------------------------------------------------|");
 			for (int i = 0; i < combattente.mano.size(); i++)
 			{
-				System.out.println("| " + i + " | " + combattente.mano.get(i).nome + " | " + combattente.mano.get(i).attaccoAtt + " | " + combattente.mano.get(i).saluteAtt + " | " + combattente.mano.get(i).costoMana + " |");
+				Carta carta = combattente.mano.get(i);
+				System.out.print("| " + i + " | " + carta.nome + " | " + carta.attaccoAtt + " | " + carta.saluteAtt + " | " + carta.costoMana + " | ");
+				
+				carta.printEffetti();
+				System.out.println(" |");
 			}
-			System.out.println("|------------------------------------------|\n");
+			System.out.println("|----------------------------------------------------|\n");
 		}
 	}
 	

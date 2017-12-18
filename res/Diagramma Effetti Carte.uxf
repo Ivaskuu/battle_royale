@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="13.3">
-  <zoom_level>14</zoom_level>
+  <zoom_level>10</zoom_level>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>434</x>
+      <x>460</x>
       <y>0</y>
-      <w>280</w>
-      <h>560</h>
+      <w>200</w>
+      <h>400</h>
     </coordinates>
     <panel_attributes>
 + ListaEffetti
@@ -39,10 +39,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>434</x>
-      <y>602</y>
-      <w>280</w>
-      <h>210</h>
+      <x>460</x>
+      <y>430</y>
+      <w>200</w>
+      <h>150</h>
     </coordinates>
     <panel_attributes>
 + Effetti Senza Payload
@@ -58,10 +58,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>756</x>
+      <x>690</x>
       <y>0</y>
-      <w>756</w>
-      <h>1736</h>
+      <w>540</w>
+      <h>1240</h>
     </coordinates>
     <panel_attributes>
 + Effetti Con Payload
@@ -144,10 +144,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>434</x>
-      <y>854</y>
-      <w>280</w>
-      <h>210</h>
+      <x>460</x>
+      <y>610</y>
+      <w>200</w>
+      <h>150</h>
     </coordinates>
     <panel_attributes>
 + EffettoSpeciale
