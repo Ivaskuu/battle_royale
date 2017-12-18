@@ -40,7 +40,17 @@ public class CollezioneCarte
 		 new Carta(null, "Stephen", 6, RaritaCarta.RARA, ClasseCarta.AESTHETICS, 5, 4, new Effetto(TipoEffetto.Carica), " "),
 		 new Carta(null, "Riccardi", 7, RaritaCarta.EPICA, ClasseCarta.SECCHIONE, 4, 6, new Effetto(TipoEffetto.Miglioramento, new Object[] { 1, -1, -1, true, -1, true, -1 }), "Quando giochi questa carta diminuisce le statistiche di TUTTI i personaggi di -1/-1"), // TODO: new AbilitaCarta(AbilitaCarta.IMMUNE)
 		 new Carta(null, "Rossi", 5, RaritaCarta.RARA, ClasseCarta.AESTHETICS, 4, 3, new Effetto(TipoEffetto.Carica), " "),
-		 // TODO: new Carta(null, "Yuri pizzaiolo", 3, RaritaCarta.EPICA, null, new AbilitaCarta[] {AbilitaCarta.VELENO}, 1, 3, null, " "), 
+		 new Carta(null, "Yuri pizzaiolo", 3, RaritaCarta.EPICA, null, 1, 3, new Effetto(TipoEffetto.Veleno), " "), 
+		 new Carta(null, "Yuri pizzaiolo", 3, RaritaCarta.EPICA, null, 1, 3, new Effetto(TipoEffetto.Veleno), " "), 
+		 new Carta(null, "Yuri pizzaiolo", 3, RaritaCarta.EPICA, null, 1, 3, new Effetto(TipoEffetto.Veleno), " "), 
+		 new Carta(null, "Yuri pizzaiolo", 3, RaritaCarta.EPICA, null, 1, 3, new Effetto(TipoEffetto.Veleno), " "), 
+		 new Carta(null, "Yuri pizzaiolo", 3, RaritaCarta.EPICA, null, 1, 3, new Effetto(TipoEffetto.Veleno), " "), 
+		 new Carta(null, "Yuri pizzaiolo", 3, RaritaCarta.EPICA, null, 1, 3, new Effetto(TipoEffetto.Veleno), " "), 
+		 new Carta(null, "Yuri pizzaiolo", 3, RaritaCarta.EPICA, null, 1, 3, new Effetto(TipoEffetto.Veleno), " "), 
+		 new Carta(null, "Yuri pizzaiolo", 3, RaritaCarta.EPICA, null, 1, 3, new Effetto(TipoEffetto.Veleno), " "), 
+		 new Carta(null, "Yuri pizzaiolo", 3, RaritaCarta.EPICA, null, 1, 3, new Effetto(TipoEffetto.Veleno), " "), 
+		 new Carta(null, "Yuri pizzaiolo", 3, RaritaCarta.EPICA, null, 1, 3, new Effetto(TipoEffetto.Veleno), " "), 
+		 new Carta(null, "Yuri pizzaiolo", 3, RaritaCarta.EPICA, null, 1, 3, new Effetto(TipoEffetto.Veleno), " "), 
 		 new Carta(null, "Simone", 3, RaritaCarta.LEGGENDARIA, ClasseCarta.SVILUPPATORE, 2, 2, new Effetto[] { new Effetto(TipoEffetto.GridoDiBattaglia, new Effetto(TipoEffetto.Evocazione, new Object[] { 0, false, "Adrian" })), new Effetto(TipoEffetto.Carica), new Effetto(TipoEffetto.FuriaDelVento) }, "Quando giochi questa carta evoca sul terreno 'Adrian' dal tuo mazzo"),
 		 
 		

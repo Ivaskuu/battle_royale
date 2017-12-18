@@ -290,12 +290,20 @@ public class Partita
 						}
 						else
 						{
-							cartaAvv.saluteAtt -= cartaMia.attaccoAtt;
-							if(cartaAvv.saluteAtt > 0) System.out.println("\nLa carta dell'avversario ha perso " + cartaMia.attaccoAtt + " HP (rimasti " + cartaAvv.saluteAtt + " HP)\n");
-							else
+							if(cartaMia.getEffetto(TipoEffetto.Veleno) != null)
 							{
 								campo[contrario(THIS_GG)].remove(posCartaAvv);
-								System.out.println("\nLa carta dell'avversario e' stata distrutta\n");
+								System.out.println("\nLa tua carta ha l'effetto 'Veleno' e quindi ha distrutto la carta dell'avversario\n");
+							}
+							else
+							{
+								cartaAvv.saluteAtt -= cartaMia.attaccoAtt;
+								if(cartaAvv.saluteAtt > 0) System.out.println("\nLa carta dell'avversario ha perso " + cartaMia.attaccoAtt + " HP (rimasti " + cartaAvv.saluteAtt + " HP)\n");
+								else
+								{
+									campo[contrario(THIS_GG)].remove(posCartaAvv);
+									System.out.println("\nLa carta dell'avversario e' stata distrutta\n");
+								}
 							}
 						}
 		
@@ -307,12 +315,20 @@ public class Partita
 						}
 						else
 						{
-							cartaMia.saluteAtt -= cartaAvv.attaccoAtt;
-							if(cartaMia.saluteAtt > 0) System.out.println("\nLa tua carta ha perso " + cartaAvv.attaccoAtt + " HP (rimasti " + cartaMia.saluteAtt + " HP)\n");
-							else
+							if(cartaAvv.getEffetto(TipoEffetto.Veleno) != null)
 							{
 								campo[THIS_GG].remove(posCartaAtt);
-								System.out.println("\nLa tua carta e' stata distrutta\n");
+								System.out.println("\nLa carta dell'avversario ha l'effetto 'Veleno' e quindi ha distrutto la tua carta\n");
+							}
+							else
+							{
+								cartaMia.saluteAtt -= cartaAvv.attaccoAtt;
+								if(cartaMia.saluteAtt > 0) System.out.println("\nLa tua carta ha perso " + cartaAvv.attaccoAtt + " HP (rimasti " + cartaMia.saluteAtt + " HP)\n");
+								else
+								{
+									campo[THIS_GG].remove(posCartaAtt);
+									System.out.println("\nLa tua carta e' stata distrutta\n");
+								}
 							}
 						}
 						
@@ -377,7 +393,7 @@ public class Partita
 				System.out.println("La carta dell'avversario ha perso l'effetto 'Furtivita''");
 			}
 			
-			// Rimuovi la vita della carta dell'avversario (cioe io)
+			// Rimuovi la vita della carta mia (cioe io)
 			if(cartaMia.getEffetto(TipoEffetto.ScudoDivino) != null)
 			{
 				cartaMia.effetti[cartaMia.getEffetto(TipoEffetto.ScudoDivino)] = null;
@@ -385,12 +401,20 @@ public class Partita
 			}
 			else
 			{
-				cartaMia.saluteAtt -= cartaSua.attaccoAtt;
-				if(cartaMia.saluteAtt > 0) System.out.println("La tua carta ha perso " + cartaSua.attaccoAtt + " HP (rimasti " + cartaMia.saluteAtt + " HP)\n");
-				else
+				if(cartaSua.getEffetto(TipoEffetto.Veleno) != null)
 				{
 					campo[THIS_GG].remove(posCartaMia);
-					System.out.println("La tua carta e' stata distrutta\n");
+					System.out.println("\nLa sua carta ha l'effetto 'Veleno' quindi ha distrutto la tua carta\n");
+				}
+				else
+				{
+					cartaMia.saluteAtt -= cartaSua.attaccoAtt;
+					if(cartaMia.saluteAtt > 0) System.out.println("La tua carta ha perso " + cartaSua.attaccoAtt + " HP (rimasti " + cartaMia.saluteAtt + " HP)\n");
+					else
+					{
+						campo[THIS_GG].remove(posCartaMia);
+						System.out.println("La tua carta e' stata distrutta\n");
+					}
 				}
 			}
 		
@@ -402,12 +426,20 @@ public class Partita
 			}
 			else
 			{
-				cartaSua.saluteAtt -= cartaMia.attaccoAtt;
-				if(cartaSua.saluteAtt > 0) System.out.println("\nLa sua carta ha perso " + cartaMia.attaccoAtt + " HP (rimasti " + cartaSua.saluteAtt + " HP)\n");
-				else
+				if(cartaMia.getEffetto(TipoEffetto.Veleno) != null)
 				{
 					campo[contrario(THIS_GG)].remove(posCartaSua);
-					System.out.println("\nLa sua carta e' stata distrutta\n");
+					System.out.println("\nLa tua carta ha l'effetto 'Veleno' e quindi ha distrutto la carta dell'avversario\n");
+				}
+				else
+				{
+					cartaSua.saluteAtt -= cartaMia.attaccoAtt;
+					if(cartaSua.saluteAtt > 0) System.out.println("\nLa sua carta ha perso " + cartaMia.attaccoAtt + " HP (rimasti " + cartaSua.saluteAtt + " HP)\n");
+					else
+					{
+						campo[contrario(THIS_GG)].remove(posCartaSua);
+						System.out.println("\nLa sua carta e' stata distrutta\n");
+					}
 				}
 			}
 			
