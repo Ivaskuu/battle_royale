@@ -1,11 +1,55 @@
 package battleroyale.ClassiPartita;
 
-public enum Effetto
+public class Effetto
 {
-	PescaCarta, 
-	CopiaCarta,
-	DistruggiCarta, 
-	DaiVita,
-	EvocaDalDeck,
-				//TODO Aggiungere altri Tipoeffetto
+	public TipoEffetto tipoEffetto;
+	public Object[] payload;
+	
+	public Effetto(TipoEffetto tipoEffetto)
+	{
+		this.tipoEffetto = tipoEffetto;
+		this.payload = payload;
+	}
+	
+	public Effetto(TipoEffetto tipoEffetto, Object payload)
+	{
+		this.tipoEffetto = tipoEffetto;
+		this.payload = new Object[] { payload };
+	}
+	
+	public Effetto(TipoEffetto tipoEffetto, Object[] payload)
+	{
+		this.tipoEffetto = tipoEffetto;
+		this.payload = payload;
+	}
+	
+	public static enum TipoEffetto
+	{
+		// Senza payload
+		Provocazione,
+		Carica,
+		FuriaDelVento,
+		ScudoDivino,
+		Furtivita,
+		Veleno,
+		Rubavita,
+		Immune,
+		
+		// Con payload
+		Cura,
+		Attacca,
+		Evocazione,
+		Miglioramento,
+		GridoDiBattaglia,
+		Pesca,
+		Rabbia,
+		RantoloDiMorte,
+		InizioTurno,
+		FineTurno,
+		ScartaCarta,
+		
+		// Altro
+		Probabilita,
+		Altro,
+	}
 }

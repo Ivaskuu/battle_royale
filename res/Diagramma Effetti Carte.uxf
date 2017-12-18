@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="13.3">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>460</x>
+      <y>0</y>
+      <w>200</w>
+      <h>400</h>
+    </coordinates>
+    <panel_attributes>
++ ListaEffetti
+
+--
+
+&gt; Provocazione
+&gt; Grido di battaglia
+&gt; Carica
+&gt; Furia del vento
+&gt; Rantolo di morte
+&gt; Scudo Divino
+&gt; Inizio del turno
+&gt; Fine del turno
+&gt; Rabbia
+&gt; Cura
+&gt; Evocazione
+&gt; Miglioramento
+&gt; Pesca
+
+&gt; Furtivita // Non puo essere attaccato finche non attacca
+&gt; Veleno // Distrugge il nemico
+&gt; Rubavita // Salute += Attacco -- ???
+&gt; Immune // Immune alle carte magia
+
+&gt; Altro</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>460</x>
+      <y>430</y>
+      <w>200</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>
++ Effetti Senza Payload
+
+--
+
+&gt; Provocazione
+&gt; Carica
+&gt; Furia del vento
+&gt; Scudo Divino</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>690</x>
+      <y>0</y>
+      <w>540</w>
+      <h>1240</h>
+    </coordinates>
+    <panel_attributes>
++ Effetti Con Payload
+
+--
+
+&gt; Cura
+   &gt; int Cosa (0 per eroe oppure 1 per carte)
+   &gt; int Dove (0 per THIS_GG, 1 per contrario(THIS_GG), oppure -1 per entrambi)
+   &gt; se Cosa == 1 ?
+      [1] String[] QualeCarte (nomi delle carte)
+      [2] String QualeCarta (nome della carta)
+      [3] int QualeCarta ()
+      [4] null (la carta viene scelta dal giocatore)
+      [5] ClasseCarta QualeCarta
+   &gt; int DiQuanto (&gt; 0)
+
+&gt; Attacca
+   &gt; int Cosa (0 per eroe oppure 1 per carte)
+   &gt; int Dove (0 per THIS_GG, 1 per contrario(THIS_GG), oppure -1 per entrambi)
+   &gt; se Cosa == 1 ?
+      [1] String[] QualeCarte (nomi delle carte da attaccare)
+      [2] String QualeCarta (nome della carta)
+      [3] null (la carta viene scelta dal giocatore)
+      [4] ClasseCarta QualeCarta
+   &gt; int Danni (&gt; 0)
+
+&gt; Evocazione
+   &gt; int QualeCampo (0/1 oppure -1 per tutti e due)
+   &gt; boolean NelDeck (se la carta deve essere nel deck)
+   &gt;
+      [1] String QualeCarta (nome della carta)
+      [2] String[] QualeCarte (nomi delle carte)
+    // TODO: &gt; se NelDeck == true ? Transazione ()
+
+&gt; Miglioramento
+   &gt; int Cosa (0 per eroe oppure 1 per carte)
+   &gt; int Dove (0/1 oppure -1 per tutti e due i gg)
+   &gt; se Cosa == 1 ?
+      [1] int[] QualeCarte (pos nell'array campo, -1 per una a caso)
+      [2] int QualeCarta (pos nell'array campo oppure -1 per tutte le carte)
+      [5] String[] QualeCarte (nomi delle carte)
+      [4] String QualeCarta (nome della carta)
+      [5] ClasseCarta QualeCarta
+   &gt; se Cosa == 1 ? boolean aumentaAtk (true aumenta l'atk attuale, false lo impone)
+   &gt; se Cosa == 1 ? int ValoreAttacco (&gt;= 0)
+   &gt; boolean aumentaHp (true aumenta l'hp attuale, false lo impone)
+   &gt; int ValoreSalute (&gt;= 0)
+
+&gt; Scarta carta
+   &gt; int QualeCampo (0/1/-1)
+   &gt;
+      [1] String NomeCarta
+      [2] String[] NomiCarte
+      [3] int PosCarta (-1 per tutte le carte)
+      [4] int[] PosCarta (-1 qua nell'array significa random)
+      [5] ClasseCarta QualeCarta
+
+&gt; Probabilita
+   &gt; double prob (su 100)
+   &gt; Effetto
+
+&gt; Grido di battaglia
+   &gt; Effetto
+
+&gt; Rabbia
+   &gt; LvlVita (il triggere dell'effetto rabbia)
+   &gt; Effetto
+
+&gt; Rantolo di morte
+   &gt; Effetto
+  
+&gt; Inizio del turno
+   &gt; Effetto
+
+&gt; Fine del turno
+   &gt; Effetto</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>460</x>
+      <y>610</y>
+      <w>200</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>
++ EffettoSpeciale
+
+--
+
++ Trigger
++ Effetto</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>
