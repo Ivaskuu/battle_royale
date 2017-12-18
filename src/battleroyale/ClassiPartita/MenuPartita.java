@@ -81,11 +81,13 @@ public class MenuPartita
 		    					posAtt = Integer.parseInt(scelta) - 1;
 		    					if(posAtt >= partita.campo[partita.THIS_GG].size()) System.out.println("Per favore inserire una posizione valida");
 		    					else if(posAtt >= 0 && partita.campo[partita.THIS_GG].get(posAtt).giocatePerTurnoAtt <= 0) System.out.println("Hai gia' usato questa carta durante questo turno\n");
+		    					else if(partita.campo[partita.THIS_GG].get(posAtt).attaccoAtt == 0) System.out.println("Non puoi attaccare con una carta che ha 0 di attacco");
 							}
 							while
 							(
 								posAtt >= partita.campo[partita.THIS_GG].size()
-								|| posAtt >= 0 && partita.campo[partita.THIS_GG].get(posAtt).giocatePerTurnoAtt <= 0
+								|| (posAtt >= 0 && partita.campo[partita.THIS_GG].get(posAtt).giocatePerTurnoAtt <= 0)
+								|| partita.campo[partita.THIS_GG].get(posAtt).attaccoAtt == 0
 							);
 							
 							if(posAtt == -2) break; // Vuol dire che vuole annullare l'attacco
