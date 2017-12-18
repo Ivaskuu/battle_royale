@@ -146,6 +146,18 @@ public class Carta
     	return carta;
     }
     
+    public void printEffetti()
+    {
+    	if(effetti != null)
+    	{
+			for (int k = 0; k < effetti.length; k++)
+    		{
+    			if(effetti[k] != null) System.out.print(effetti[k].tipoEffetto.toString());
+    			if(k < effetti.length-1)  System.out.print(", ");
+    		}
+    	}
+    }
+    
     public Integer getEffetto(TipoEffetto tipoEffetto)
     {
     	if(effetti != null)
