@@ -293,7 +293,7 @@ public class Partita
 							if(cartaMia.getEffetto(TipoEffetto.Veleno) != null)
 							{
 								campo[contrario(THIS_GG)].remove(posCartaAvv);
-								System.out.println("\nLa tua carta ha l'effetto 'Veleno' e quindi ha distrutto la carta dell'avversario\n");
+								System.out.println("\nLa tua carta ha l'effetto 'Veleno' e quindi ha distrutto la carta dell'avversario");
 							}
 							else
 							{
@@ -429,7 +429,7 @@ public class Partita
 				if(cartaMia.getEffetto(TipoEffetto.Veleno) != null)
 				{
 					campo[contrario(THIS_GG)].remove(posCartaSua);
-					System.out.println("\nLa tua carta ha l'effetto 'Veleno' e quindi ha distrutto la carta dell'avversario\n");
+					System.out.println("\nLa tua carta ha l'effetto 'Veleno' e quindi ha distrutto la carta dell'avversario");
 				}
 				else
 				{
@@ -606,7 +606,6 @@ public class Partita
 			{
 				Carta carta = campo[giocatore].get(i);
 				System.out.print("| " + (i+1) + " | " + carta.nome + " | " + carta.attaccoAtt + " | " + carta.saluteAtt + " | ");
-				System.out.print(carta.giocatePerTurnoAtt == 0 ? "E' esausto | " : "Puo attaccare | ");
 				
 				carta.printEffetti();
 				System.out.println(" |");

@@ -140,8 +140,12 @@ public class Carta
     {
     	carta.saluteAtt = carta.saluteMax;
     	carta.attaccoAtt = carta.attaccoMax;
-    	carta.giocatePerTurnoMax = 1;
-    	carta.giocatePerTurnoAtt = 0;
+    	
+    	if(carta.getEffetto(TipoEffetto.FuriaDelVento) != null) carta.giocatePerTurnoMax = 2;
+    	else carta.giocatePerTurnoMax = 1;
+    	
+    	if(carta.getEffetto(TipoEffetto.Carica) != null) carta.giocatePerTurnoAtt = carta.giocatePerTurnoMax;
+    	else carta.giocatePerTurnoAtt = 0;
     	
     	return carta;
     }

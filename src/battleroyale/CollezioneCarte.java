@@ -32,7 +32,7 @@ public class CollezioneCarte
 		 new Carta(null, "Steve", 2, RaritaCarta.COMUNE, null, 2, 2, new Effetto(TipoEffetto.ScudoDivino), " "),
 		 new Carta(null, "Adrian", 4, RaritaCarta.LEGGENDARIA, ClasseCarta.SVILUPPATORE, 3, 4, new Effetto(TipoEffetto.GridoDiBattaglia, new Effetto(TipoEffetto.Evocazione, new Object[] { 0, false, "Simone" })), "Quando giochi questa carta evoca sul terreno 'Simone' dal tuo mazzo"),
 		 new Carta(null, "Fabio", 5, RaritaCarta.EPICA, ClasseCarta.COMUNISTA, 4, 4, new Effetto(TipoEffetto.FuriaDelVento), "Quando giochi questa carta silenzia TUTTI i personaggi sul terreno"), // TODO: AbilitaCarta.GRIDO
-		 new Carta(null, "Mande", 3, RaritaCarta.RARA, ClasseCarta.SECCHIONE, 1, 1, new Effetto[] { new Effetto(TipoEffetto.ScudoDivino), new Effetto(TipoEffetto.Furtivita), new Effetto(TipoEffetto.Miglioramento, new Object[] { 1, 0, "Michel", true, 1, true, 1 }) }, "Se e' presente 'Michel' nel tuo campo di battaglia aumenta le sue statistiche +1/+1"),
+		 new Carta(null, "Mande", 3, RaritaCarta.RARA, ClasseCarta.SECCHIONE, 1, 1, new Effetto[] { new Effetto(TipoEffetto.Veleno), new Effetto(TipoEffetto.ScudoDivino), new Effetto(TipoEffetto.Furtivita), new Effetto(TipoEffetto.Miglioramento, new Object[] { 1, 0, "Michel", true, 1, true, 1 }) }, "Se e' presente 'Michel' nel tuo campo di battaglia aumenta le sue statistiche +1/+1"),
 		 new Carta(null, "Mustafa", 4, RaritaCarta.RARA, null, 3, 4, "Quando giochi questa carta prendi il controllo di un nemico casuale"), // new AbilitaCarta[] {AbilitaCarta.GRIDO}
 		 new Carta(null, "Peg", 3, RaritaCarta.COMUNE, ClasseCarta.AESTHETICS, 3, 3, new Effetto(TipoEffetto.Provocazione), " "),
 		 new Carta(null, "Penatti", 5, RaritaCarta.RARA, null, 4, 2, new Effetto(TipoEffetto.Rubavita), " "),
@@ -40,17 +40,7 @@ public class CollezioneCarte
 		 new Carta(null, "Stephen", 6, RaritaCarta.RARA, ClasseCarta.AESTHETICS, 5, 4, new Effetto(TipoEffetto.Carica), " "),
 		 new Carta(null, "Riccardi", 7, RaritaCarta.EPICA, ClasseCarta.SECCHIONE, 4, 6, new Effetto(TipoEffetto.Miglioramento, new Object[] { 1, -1, -1, true, -1, true, -1 }), "Quando giochi questa carta diminuisce le statistiche di TUTTI i personaggi di -1/-1"), // TODO: new AbilitaCarta(AbilitaCarta.IMMUNE)
 		 new Carta(null, "Rossi", 5, RaritaCarta.RARA, ClasseCarta.AESTHETICS, 4, 3, new Effetto(TipoEffetto.Carica), " "),
-		 new Carta(null, "Yuri pizzaiolo", 3, RaritaCarta.EPICA, null, 1, 3, new Effetto(TipoEffetto.Veleno), " "), 
-		 new Carta(null, "Yuri pizzaiolo", 3, RaritaCarta.EPICA, null, 1, 3, new Effetto(TipoEffetto.Veleno), " "), 
-		 new Carta(null, "Yuri pizzaiolo", 3, RaritaCarta.EPICA, null, 1, 3, new Effetto(TipoEffetto.Veleno), " "), 
-		 new Carta(null, "Yuri pizzaiolo", 3, RaritaCarta.EPICA, null, 1, 3, new Effetto(TipoEffetto.Veleno), " "), 
-		 new Carta(null, "Yuri pizzaiolo", 3, RaritaCarta.EPICA, null, 1, 3, new Effetto(TipoEffetto.Veleno), " "), 
-		 new Carta(null, "Yuri pizzaiolo", 3, RaritaCarta.EPICA, null, 1, 3, new Effetto(TipoEffetto.Veleno), " "), 
-		 new Carta(null, "Yuri pizzaiolo", 3, RaritaCarta.EPICA, null, 1, 3, new Effetto(TipoEffetto.Veleno), " "), 
-		 new Carta(null, "Yuri pizzaiolo", 3, RaritaCarta.EPICA, null, 1, 3, new Effetto(TipoEffetto.Veleno), " "), 
-		 new Carta(null, "Yuri pizzaiolo", 3, RaritaCarta.EPICA, null, 1, 3, new Effetto(TipoEffetto.Veleno), " "), 
-		 new Carta(null, "Yuri pizzaiolo", 3, RaritaCarta.EPICA, null, 1, 3, new Effetto(TipoEffetto.Veleno), " "), 
-		 new Carta(null, "Yuri pizzaiolo", 3, RaritaCarta.EPICA, null, 1, 3, new Effetto(TipoEffetto.Veleno), " "), 
+		 new Carta(null, "Yuri pizzaiolo", 3, RaritaCarta.EPICA, null, 1, 3, new Effetto(TipoEffetto.Veleno), " "),
 		 new Carta(null, "Simone", 3, RaritaCarta.LEGGENDARIA, ClasseCarta.SVILUPPATORE, 2, 2, new Effetto[] { new Effetto(TipoEffetto.GridoDiBattaglia, new Effetto(TipoEffetto.Evocazione, new Object[] { 0, false, "Adrian" })), new Effetto(TipoEffetto.Carica), new Effetto(TipoEffetto.FuriaDelVento) }, "Quando giochi questa carta evoca sul terreno 'Adrian' dal tuo mazzo"),
 		 
 		
