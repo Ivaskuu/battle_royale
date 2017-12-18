@@ -37,6 +37,7 @@ public class MenuPartita
         				+ "[5] Aggiungi carta sul campo\n"
         				+ "[6] Esprimiti\n"
         				+ "[7] Finire il turno\n"
+        				+ "[8] Arrenditi\n"
         				+ "\nScelta: ");
         		
         		String sceltaMenu = tast.readLine(); // Evitare l'indexoutofbounds
@@ -167,6 +168,9 @@ public class MenuPartita
         				break;
         			case '7':
         				aspettaCambioTurno(false);
+        				break;
+        			case '8':
+        				System.out.println("Un guerriero vero non si arrende mai! :p\n(sono troppo pigro per aggiungere questa funzione ora...)\n");
         				break;
         			default:
         				System.out.println("\nCoes ?\n");
